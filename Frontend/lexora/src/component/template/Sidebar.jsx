@@ -28,7 +28,7 @@ export default function Sidebar({ children }) {
 
           <SidebarContext.Provider value={{ expanded }}>
             <ul
-              className={`flex-1 px-3 py-2 overflow-y-auto ${!expanded ? 'scrollbar-thin' : ''}`}
+              className={`flex-1 px-3 py-2 overflow-y-auto overflow-x-hidden ${!expanded ? 'scrollbar-thin' : ''}`}
               style={{ scrollbarWidth: 'thin' }}
             >
               {children}
@@ -46,9 +46,6 @@ export default function Sidebar({ children }) {
                 <h4 className="font-semibold text-gray-800">constGenius</h4>
                 <span className="text-xs text-gray-600">constgenius@gmail.com</span>
               </div>
-              <button className="p-1 rounded-md hover:bg-gray-200 transition-colors">
-                <MoreVertical size={20} className="text-gray-500" />
-              </button>
             </div>
           </div>
         </nav>

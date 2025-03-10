@@ -1,11 +1,10 @@
-import LineChart from './component/LineChart';
 import SidebarSub from './component/template/SidebarSub';
+import RoadmapPage from './pages/Functions/RoadmapPage';
 
 function App() {
   return (
     <>
-      <SidebarSub />
-      <LineChart />
+      <RoadmapPage />
     </>
   );
 }
