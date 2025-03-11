@@ -26,8 +26,8 @@ import {
   Info,
   Sliders,
 } from 'lucide-react';
-import Sidebar, { SidebarItem, SidebarSubItem } from '../../component/template/Sidebar';
-import Roadmap from '../../component/Roadmap';
+import Sidebar, { SidebarItem, SidebarSubItem } from '../../../component/template/Sidebar';
+import Roadmap from '../../../component/Roadmaps/Roadmap';
 
 // Categories for the filter dropdown
 const categories = [
@@ -150,8 +150,7 @@ export default function RoadmapPage() {
         <header className="bg-white p-4 shadow-sm z-10 border-b border-gray-200">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between md:items-center">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-gray-800">Job Market Insights</h1>
-              <span className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded-full">BETA</span>
+              <h1 className="text-2xl font-bold text-gray-800">Roadmap Generator</h1>
             </div>
 
             <div className="flex items-center gap-3 mt-4 md:mt-0">
@@ -380,34 +379,8 @@ export default function RoadmapPage() {
                 )}
               </div>
 
-              {/* Chart Footer with Insights */}
-              <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-                <div className="flex items-start gap-4 flex-wrap">
-                  <div className="bg-white p-3 rounded-lg border border-gray-200 flex-1 min-w-64">
-                    <div className="flex items-center gap-2">
-                      <TrendingUp size={16} className="text-green-500" />
-                      <span className="text-sm font-medium text-gray-800">Highest Demand</span>
-                    </div>
-                    <p className="text-sm text-gray-600 mt-1">Full Stack Developer (28% growth)</p>
-                  </div>
-
-                  <div className="bg-white p-3 rounded-lg border border-gray-200 flex-1 min-w-64">
-                    <div className="flex items-center gap-2">
-                      <TrendingUp size={16} className="text-blue-500 transform rotate-45" />
-                      <span className="text-sm font-medium text-gray-800">Emerging Role</span>
-                    </div>
-                    <p className="text-sm text-gray-600 mt-1">AI Engineer (203% YoY growth)</p>
-                  </div>
-
-                  <div className="bg-white p-3 rounded-lg border border-gray-200 flex-1 min-w-64">
-                    <div className="flex items-center gap-2">
-                      <Filter size={16} className="text-purple-500" />
-                      <span className="text-sm font-medium text-gray-800">Top Skill</span>
-                    </div>
-                    <p className="text-sm text-gray-600 mt-1">React (requested in 42% of job listings)</p>
-                  </div>
-                </div>
-              </div>
+              
+             
             </div>
           </div>
         </div>
