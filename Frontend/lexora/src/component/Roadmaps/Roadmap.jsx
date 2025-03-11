@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, Check, ArrowRight } from 'lucide-react';
+import { ChevronDown, Check} from 'lucide-react';
 
 const Roadmap = () => {
   // Rich dataset with carefully organized structure
@@ -335,19 +335,6 @@ const Roadmap = () => {
       <div className="p-6 border-b border-gray-100">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">React Developer Roadmap</h1>
-
-          <div className="flex items-center gap-4">
-            {/* Filters */}
-            <div className="flex items-center gap-2 border rounded-lg px-3 py-2">
-              <span className="text-sm font-medium">All Topics</span>
-              <ChevronDown size={16} className="text-gray-500" />
-            </div>
-
-            <div className="flex items-center gap-2 border rounded-lg px-3 py-2">
-              <span className="text-sm font-medium">Sort by Status</span>
-              <ChevronDown size={16} className="text-gray-500" />
-            </div>
-          </div>
         </div>
 
         {/* Progress Bar */}

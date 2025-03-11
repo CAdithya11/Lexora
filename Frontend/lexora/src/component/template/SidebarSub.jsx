@@ -21,8 +21,6 @@ import {
   Briefcase,
 } from 'lucide-react';
 import Sidebar, { SidebarItem, SidebarSubItem } from '../template/Sidebar';
-import LineChart from '../LineChart';
-import Roadmap from '../Roadmap';
 
 // Categories for the filter dropdown
 const categories = [
