@@ -1,9 +1,10 @@
-import SearchRoadmapPage from './pages/Functions/Roadmap/SearchRoadmapPage';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import RoadmapPage from './pages/Functions/Roadmap/RoadmapPage';
+
 import TrendingJobsPage from './pages/Functions/Industry Insights/TrendingJobsPage';
 import SignIn from './pages/Home/SignIn';
 import SignUpPage from './pages/Home/SignUpPage';
+
+import SearchRoadmapPage from './pages/Functions/Roadmap/SearchRoadmapPage';
+import RoadmapPage from './pages/Functions/Roadmap/RoadmapPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
 
         </Routes>
       </BrowserRouter>
+
     </>
   );
 }

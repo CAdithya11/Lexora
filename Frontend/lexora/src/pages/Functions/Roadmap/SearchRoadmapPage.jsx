@@ -274,8 +274,6 @@ export default function SearchRoadmapPage() {
           <div className="max-w-7xl mx-auto">
             {/* Chart Container */}
             <div className="bg-white rounded-xl shadow-sm mb-6 overflow-hidden border border-gray-200 bg-gradient-to-r from-blue-50 to-white">
-             
-
               {/* Chart Content with Loading State */}
               <div className="p-6 min-h-96">
                 {isLoading ? (
@@ -283,12 +281,9 @@ export default function SearchRoadmapPage() {
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
                   </div>
                 ) : (
-                  <SearchRoadmap/>
+                  <SearchRoadmap />
                 )}
               </div>
-
-              
-             
             </div>
           </div>
         </div>
@@ -296,4 +291,3 @@ export default function SearchRoadmapPage() {
     </div>
   );
 }
- 
