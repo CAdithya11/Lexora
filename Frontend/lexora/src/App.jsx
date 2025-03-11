@@ -9,7 +9,22 @@ import RoadmapPage from './pages/Functions/Roadmap/RoadmapPage';
 function App() {
   return (
     <>
-      <RoadmapPage />
+      <BrowserRouter>
+        <Routes>
+          {/* LEXORA COMMON PAGES  */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signIn" element={<SignIn />} />
+          <Route path="/signUp" element={<SignUpPage />} />
+
+          {/* Real-time industry insights dashboard */}
+          <Route path="/jobTrendings" element={<TrendingJobsPage />} />
+
+          {/* Personolized Roadmap Generator  */}
+
+          <Route path="/roadmap" element={<RoadmapPage />} />
+          <Route path="/searchRoadmap" element={<SearchRoadmapPage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Briefcase, ChevronDown, Globe, ArrowLeft, TrendingUp, Filter } from 'lucide-react';
 import SidebarSub from '../../../component/template/SidebarSub';
 import TopHeader from '../../../component/template/TopHeader';
-import LineChart from '../../../component/LineChart';
-import BubbleChart from '../../../component/BubbleChart';
-import JobDashboard from '../../../component/JobDashboard';
-import FocusChart from '../../../component/charts/FocusChart';
-import PieChartOne from '../../../component/charts/PieChartOne';
+import LineChart from '../../../component/IndustryInsights/LineChart';
+import BubbleChart from '../../../component/IndustryInsights/BubbleChart';
+import JobDashboard from '../../../component/IndustryInsights/JobDashboard';
+import FocusChart from '../../../component/IndustryInsights/charts/FocusChart';
+import PieChartOne from '../../../component/IndustryInsights/charts/PieChartOne';
 
 // Categories for the filter dropdown
 const categories = [
