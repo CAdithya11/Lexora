@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD:Frontend/lexora/src/pages/Functions/Roadmap/RoadmapPage.jsx
 import {
   LayoutDashboard,
   Home,
@@ -28,6 +29,13 @@ import {
 } from 'lucide-react';
 import Sidebar, { SidebarItem, SidebarSubItem } from '../../../component/template/Sidebar';
 import Roadmap from '../../../component/Roadmaps/Roadmap';
+=======
+import { Briefcase, ChevronDown, ArrowLeft, TrendingUp, Filter } from 'lucide-react';
+import Sidebar from '../../component/template/Sidebar';
+import Roadmap from '../../component/Roadmap';
+import SidebarSub from '../../component/template/SidebarSub';
+import TopHeader from '../../component/template/TopHeader';
+>>>>>>> b8958e14fd471f8d996054334348245ec8750169:Frontend/lexora/src/pages/Functions/RoadmapPage.jsx
 
 // Categories for the filter dropdown
 const categories = [
@@ -56,13 +64,11 @@ export default function RoadmapPage() {
   const [selectedYear, setSelectedYear] = useState('2025');
   const [showYearDropdown, setShowYearDropdown] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
-  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   // Available years for the filter
-  const years = ['2023', '2024', '2025', '2026'];
+  const years = ['2023', '2024', '2025'];
 
   // Simulate loading data
   useEffect(() => {
@@ -77,7 +83,6 @@ export default function RoadmapPage() {
     const handleClickOutside = () => {
       setShowCategoryDropdown(false);
       setShowYearDropdown(false);
-      setShowCountryDropdown(false);
       setShowProfileDropdown(false);
     };
 
@@ -93,59 +98,9 @@ export default function RoadmapPage() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
-      {/* Fixed Sidebar */}
-      <div className="h-screen flex-shrink-0">
-        <Sidebar>
-          <SidebarItem icon={<Home size={20} />} text="Home" />
-          <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active />
-
-          <SidebarItem icon={<StickyNote size={20} />} text="Projects" alwaysOpen={true}>
-            <SidebarSubItem text="Active Projects" active />
-            <SidebarSubItem text="Archived Projects" />
-            <SidebarSubItem text="Templates" />
-          </SidebarItem>
-
-          <SidebarItem icon={<Calendar size={20} />} text="Calendar" />
-
-          <SidebarItem icon={<Layers size={20} />} text="Tasks">
-            <SidebarSubItem text="My Tasks" />
-            <SidebarSubItem text="Assigned Tasks" />
-            <SidebarSubItem text="Completed" />
-          </SidebarItem>
-
-          <SidebarItem icon={<Users size={20} />} text="Team">
-            <SidebarSubItem text="Members" />
-            <SidebarSubItem text="Permissions" />
-          </SidebarItem>
-
-          <SidebarItem icon={<BarChart3 size={20} />} text="Reports">
-            <SidebarSubItem text="Analytics" />
-            <SidebarSubItem text="Exports" />
-            <SidebarSubItem text="Performance" />
-          </SidebarItem>
-
-          <SidebarItem icon={<Bell size={20} />} text="Notifications" alert />
-
-          <hr className="my-3 border-gray-200" />
-
-          <SidebarItem icon={<Settings size={20} />} text="Settings">
-            <SidebarSubItem text="Account" />
-            <SidebarSubItem text="Notifications" />
-            <SidebarSubItem text="Appearance" />
-          </SidebarItem>
-
-          <SidebarItem icon={<FileCog size={20} />} text="Admin">
-            <SidebarSubItem text="User Management" />
-            <SidebarSubItem text="System Settings" />
-          </SidebarItem>
-
-          <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
-          <SidebarItem icon={<FileCheck size={20} />} text="Documentation" />
-        </Sidebar>
-      </div>
-
-      {/* Main Content Area with Independent Scrolling */}
+      <SidebarSub />
       <div className="flex-1 flex flex-col overflow-hidden">
+<<<<<<< HEAD:Frontend/lexora/src/pages/Functions/Roadmap/RoadmapPage.jsx
         {/* Fixed Header */}
         <header className="bg-white p-4 shadow-sm z-10 border-b border-gray-200">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between md:items-center">
@@ -271,11 +226,12 @@ export default function RoadmapPage() {
         </div>
 
         {/* Scrollable Content */}
+=======
+        <TopHeader />
+>>>>>>> b8958e14fd471f8d996054334348245ec8750169:Frontend/lexora/src/pages/Functions/RoadmapPage.jsx
         <div className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
-            {/* Chart Container */}
             <div className="bg-white rounded-xl shadow-sm mb-6 overflow-hidden border border-gray-200">
-              {/* Title and Filters Section */}
               <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-white">
                 <div className="flex flex-wrap justify-between items-center">
                   <div>
