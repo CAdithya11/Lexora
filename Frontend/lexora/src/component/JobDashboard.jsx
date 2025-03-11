@@ -189,12 +189,49 @@ const JobDashboard = () => {
                   cy="50%"
                   outerRadius={120}
                   innerRadius={70}
+                  paddingAngle={2}
+                  labelLine={false}
+                  label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+                    const RADIAN = Math.PI / 180;
+                    const radius = outerRadius * 1.15;
+                    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+                    // Only show labels for segments with enough space (larger than 5%)
+                    if (percent < 0.05) return null;
+
+                    return (
+                      <text
+                        x={x}
+                        y={y}
+                        fill="#374151"
+                        textAnchor={x > cx ? 'start' : 'end'}
+                        dominantBaseline="central"
+                        className="text-xs font-medium"
+                      >
+                        {processedJobs[index].role} ({(percent * 100).toFixed(0)}%)
+                      </text>
+                    );
+                  }}
                 >
                   {processedJobs.map((entry, index) => (
-                    <Cell key={index} fill={getColorShade(entry.count, maxCount)} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={getColorShade(entry.count, maxCount)}
+                      stroke="#ffffff"
+                      strokeWidth={1}
+                    />
                   ))}
                 </Pie>
-                <Tooltip content={<CustomTooltip />} />
+                <Tooltip
+                  content={<CustomTooltip />}
+                  wrapperStyle={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '6px',
+                    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+                  }}
+                />
                 <Legend
                   layout="vertical"
                   align="right"
