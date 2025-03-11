@@ -29,62 +29,6 @@ const LineChart = () => {
 
   return (
     <div className="w-full max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-sm">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Job Trends</h1>
-
-        <div className="flex items-center gap-4">
-          {/* Country selector */}
-          <div className="flex items-center gap-2 border rounded-lg px-3 py-2">
-            <div className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-100">
-              <span className="text-sm">🌐</span>
-            </div>
-            <span className="text-sm font-medium">Sri Lanka</span>
-            <ChevronDown size={16} className="text-gray-500" />
-          </div>
-
-          {/* Search input */}
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search For Specific Job Roles"
-              className="pl-4 pr-10 py-2 bg-gray-50 rounded-lg w-64 text-sm"
-            />
-            <Search size={18} className="absolute right-3 top-2.5 text-gray-400" />
-          </div>
-        </div>
-      </div>
-
-      {/* Title and category */}
-      <h2 className="text-xl font-semibold mb-6">Software Engineering</h2>
-
-      {/* Filters */}
-      <div className="flex justify-between mb-8">
-        <div className="flex gap-4">
-          {/* Year filter */}
-          <div className="relative inline-block">
-            <button className="px-4 py-2 border rounded-lg flex items-center gap-2 text-sm font-medium">
-              {selectedYear}
-              <ChevronDown size={16} className="text-blue-500" />
-            </button>
-          </div>
-
-          {/* Category filter */}
-          <div className="relative inline-block">
-            <button className="px-4 py-2 border rounded-lg flex items-center gap-2 text-sm font-medium text-blue-500">
-              {selectedCategory}
-              <ChevronDown size={16} className="text-blue-500" />
-            </button>
-          </div>
-        </div>
-
-        {/* Go back button */}
-        <button className="flex items-center gap-1 text-sm font-medium">
-          <ArrowLeft size={16} />
-          Go Back
-        </button>
-      </div>
-
       {/* Chart */}
       <div className="relative mb-6">
         <div className="flex items-center justify-center mb-4">
