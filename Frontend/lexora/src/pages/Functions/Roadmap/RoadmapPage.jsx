@@ -49,7 +49,6 @@ const countries = [
   { name: 'United Kingdom', code: 'GB' },
   { name: 'Australia', code: 'AU' },
   { name: 'Canada', code: 'CA' },
-  { name: 'Singapore', code: 'SG' },
 ];
 
 export default function RoadmapPage() {
