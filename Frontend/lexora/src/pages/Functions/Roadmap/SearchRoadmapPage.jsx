@@ -32,6 +32,7 @@ import SearchRoadmap from '../../../component/Roadmaps/SearchRoadmap';
 import SidebarSub from '../../../component/template/SidebarSub';
 import TopHeader from '../../../component/template/TopHeader';
 
+
 // Categories for the filter dropdown
 const categories = [
   'Software Development & Engineering',
@@ -96,8 +97,7 @@ export default function SearchRoadmapPage() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
-      <SidebarSub/>
-      
+      <SidebarSub />
 
       {/* Main Content Area with Independent Scrolling */}
       <div className="flex-1 flex flex-col overflow-hidden">
