@@ -29,6 +29,7 @@ import {
 import Sidebar, { SidebarItem, SidebarSubItem } from '../../../component/template/Sidebar';
 import Roadmap from '../../../component/Roadmaps/Roadmap';
 import SearchRoadmap from '../../../component/Roadmaps/SearchRoadmap';
+import SidebarSub from '../../../component/template/SidebarSub';
 
 // Categories for the filter dropdown
 const categories = [
@@ -94,56 +95,7 @@ export default function SearchRoadmapPage() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
-      {/* Fixed Sidebar */}
-      <div className="h-screen flex-shrink-0">
-        <Sidebar>
-          <SidebarItem icon={<Home size={20} />} text="Home" />
-          <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active />
-
-          <SidebarItem icon={<StickyNote size={20} />} text="Projects" alwaysOpen={true}>
-            <SidebarSubItem text="Active Projects" active />
-            <SidebarSubItem text="Archived Projects" />
-            <SidebarSubItem text="Templates" />
-          </SidebarItem>
-
-          <SidebarItem icon={<Calendar size={20} />} text="Calendar" />
-
-          <SidebarItem icon={<Layers size={20} />} text="Tasks">
-            <SidebarSubItem text="My Tasks" />
-            <SidebarSubItem text="Assigned Tasks" />
-            <SidebarSubItem text="Completed" />
-          </SidebarItem>
-
-          <SidebarItem icon={<Users size={20} />} text="Team">
-            <SidebarSubItem text="Members" />
-            <SidebarSubItem text="Permissions" />
-          </SidebarItem>
-
-          <SidebarItem icon={<BarChart3 size={20} />} text="Reports">
-            <SidebarSubItem text="Analytics" />
-            <SidebarSubItem text="Exports" />
-            <SidebarSubItem text="Performance" />
-          </SidebarItem>
-
-          <SidebarItem icon={<Bell size={20} />} text="Notifications" alert />
-
-          <hr className="my-3 border-gray-200" />
-
-          <SidebarItem icon={<Settings size={20} />} text="Settings">
-            <SidebarSubItem text="Account" />
-            <SidebarSubItem text="Notifications" />
-            <SidebarSubItem text="Appearance" />
-          </SidebarItem>
-
-          <SidebarItem icon={<FileCog size={20} />} text="Admin">
-            <SidebarSubItem text="User Management" />
-            <SidebarSubItem text="System Settings" />
-          </SidebarItem>
-
-          <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
-          <SidebarItem icon={<FileCheck size={20} />} text="Documentation" />
-        </Sidebar>
-      </div>
+      <SidebarSub />
 
       {/* Main Content Area with Independent Scrolling */}
       <div className="flex-1 flex flex-col overflow-hidden">
