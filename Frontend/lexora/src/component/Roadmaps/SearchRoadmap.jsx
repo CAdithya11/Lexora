@@ -11,7 +11,7 @@ const SearchRoadmap = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column',justifyContent: 'center', alignItems: 'center', height: '60vh', textAlign: 'center'}}>
+    <div style={{ display: 'flex', flexDirection: 'column',justifyContent: 'center', alignItems: 'center', height: '62vh', textAlign: 'center'}}>
       <h1 style={{fontSize: '28px',fontWeight: 'bold', marginBottom: '20px'}}>GENERATE ROADMAP</h1>
       
       <div style={{display: 'flex',flexDirection: 'row',alignItems: 'center', marginBottom: '30px'}}>
