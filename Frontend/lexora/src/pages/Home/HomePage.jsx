@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBar from '../../component/template/NavBar';
+import Features from '../Home/FeaturesSum';
 
 export default function HomePage() {
   return (
@@ -59,6 +60,7 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+            <Features />
           </section>
         </div>
       </div>
