@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-<<<<<<< HEAD
-import { Briefcase, ChevronDown, ArrowLeft, TrendingUp, Filter } from 'lucide-react';
-import Sidebar from '../../component/template/Sidebar';
-=======
+
 import {
   LayoutDashboard,
   Home,
@@ -33,7 +30,6 @@ import {
 } from 'lucide-react';
 import Roadmap from '../../../component/Roadmaps/Roadmap';
 import SidebarSub from '../../../component/template/SidebarSub';
->>>>>>> 14eced8fc3b2146b30263d35c1c1364944dd9c7b
 
 // Categories for the filter dropdown
 const categories = [
@@ -168,10 +164,6 @@ export default function RoadmapPage() {
       <SidebarSub />
       <div className="flex-1 flex flex-col overflow-hidden">
         <TopHeader />
-<<<<<<< HEAD
-
-=======
->>>>>>> 14eced8fc3b2146b30263d35c1c1364944dd9c7b
         <div className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-xl shadow-sm mb-6 overflow-hidden border border-gray-200">
@@ -190,38 +182,7 @@ export default function RoadmapPage() {
                   </div>
 
                   <div className="flex flex-wrap gap-3 mt-4 sm:mt-0">
-                    {/* Year filter */}
-                    <div className="relative">
-                      <button
-                        className="px-4 py-2 border border-gray-200 rounded-lg flex items-center gap-2 text-sm font-medium bg-white hover:bg-gray-50 transition-colors duration-200"
-                        onClick={(e) => toggleDropdown(setShowYearDropdown, showYearDropdown, e)}
-                      >
-                        <span className="text-gray-700">{selectedYear}</span>
-                        <ChevronDown size={14} className="text-gray-500" />
-                      </button>
-
-                      {/* Year Dropdown */}
-                      {showYearDropdown && (
-                        <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-20">
-                          {years.map((year) => (
-                            <div
-                              key={year}
-                              className={`px-4 py-2 hover:bg-blue-50 cursor-pointer text-sm ${
-                                year === selectedYear ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700'
-                              }`}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedYear(year);
-                                setShowYearDropdown(false);
-                                setIsLoading(true);
-                              }}
-                            >
-                              {year}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                    
 
                     {/* Category filter with dropdown */}
                     <div className="relative">

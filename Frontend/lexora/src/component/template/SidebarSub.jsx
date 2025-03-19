@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 import {
   LayoutDashboard,
   Home,
   StickyNote,
+  Route,
   Layers,
   Calendar,
   LifeBuoy,
@@ -56,10 +58,9 @@ export default function SidebarSub() {
 
           <SidebarItem icon={<Calendar size={20} />} text="Calendar" />
 
-          <SidebarItem icon={<Layers size={20} />} text="Tasks">
-            <SidebarSubItem text="My Tasks" />
-            <SidebarSubItem text="Assigned Tasks" />
-            <SidebarSubItem text="Completed" />
+          <SidebarItem icon={<Route size={20} />} text="Roadmaps">
+             <SidebarSubItem text={<Link to="/searchRoadmap">Roadmaps Generator</Link>} />
+             <SidebarSubItem text={<Link to="/RoadmapDetails">Roadmap Details</Link>} />
           </SidebarItem>
 
           <SidebarItem icon={<Users size={20} />} text="Team">
