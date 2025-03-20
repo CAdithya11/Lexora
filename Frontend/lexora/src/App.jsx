@@ -5,6 +5,7 @@ import SignIn from './pages/Home/SignIn';
 import SignUpPage from './pages/Home/SignUpPage';
 import SearchRoadmapPage from './pages/Functions/Roadmap/SearchRoadmapPage';
 import RoadmapPage from './pages/Functions/Roadmap/RoadmapPage';
+import PersonaMatcher from './pages/Functions/PersonaMapper/PersonaMatcher';
 
 function App() {
   return (
@@ -23,6 +24,10 @@ function App() {
 
           <Route path="/roadmap" element={<RoadmapPage />} />
           <Route path="/searchRoadmap" element={<SearchRoadmapPage />} />
+
+          {/* AI Powered Persona Matcher */}
+          <Route path="/persona" element={<PersonaMatcher />} />
+
         </Routes>
       </BrowserRouter>
     </>
