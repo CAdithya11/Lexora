@@ -1,301 +1,278 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, Check} from 'lucide-react';
+import { ChevronDown, Check, ExternalLink } from 'lucide-react';
 
-const Roadmap = () => {
-  // Rich dataset with carefully organized structure
-  const timelineData = [
-    {
-      id: 1,
-      mainText: 'Fundamentals',
-      description: 'Essential web development building blocks',
-      categories: [
-        { id: '1.1', name: 'HTML', subCategories: ['Semantic Markup', 'Forms & Validation', 'Accessibility'] },
-        { id: '1.2', name: 'CSS', subCategories: ['Box Model', 'Flexbox', 'Grid', 'Animations'] },
-        {
-          id: '1.3',
-          name: 'JavaScript',
-          subCategories: ['ES6+ Features', 'DOM Manipulation', 'Async JS', 'Error Handling'],
-        },
-        {
-          id: '1.4',
-          name: 'Version Control',
-          subCategories: ['Git Basics', 'Branching Strategy', 'Collaborative Workflow'],
-        },
-        { id: '1.5', name: 'Package Managers', subCategories: ['npm', 'yarn', 'Package.json'] },
-      ],
-      color: '#4F46E5', // Indigo
-    },
-    {
-      id: 2,
-      mainText: 'React Core',
-      description: 'Essential React concepts and patterns',
-      categories: [
-        {
-          id: '2.1',
-          name: 'React Fundamentals',
-          subCategories: ['JSX', 'Component Architecture', 'Props & State', 'Lifecycle'],
-        },
-        {
-          id: '2.2',
-          name: 'Hooks',
-          subCategories: ['useState', 'useEffect', 'useContext', 'useReducer', 'Custom Hooks'],
-        },
-        {
-          id: '2.3',
-          name: 'Forms & Inputs',
-          subCategories: ['Controlled Components', 'Form Validation', 'Form Libraries'],
-        },
-        {
-          id: '2.4',
-          name: 'Styling Approaches',
-          subCategories: ['CSS Modules', 'Styled Components', 'Tailwind CSS', 'CSS-in-JS'],
-        },
-      ],
-      color: '#0EA5E9', // Sky blue
-    },
-    {
-      id: 3,
-      mainText: 'Advanced React',
-      description: 'Taking React to the next level',
-      categories: [
-        { id: '3.1', name: 'State Management', subCategories: ['Context API', 'Redux', 'Zustand', 'Recoil', 'Jotai'] },
-        {
-          id: '3.2',
-          name: 'Performance',
-          subCategories: ['Memoization', 'Code Splitting', 'Lazy Loading', 'Suspense'],
-        },
-        { id: '3.3', name: 'Testing', subCategories: ['Jest', 'React Testing Library', 'Cypress', 'Testing Patterns'] },
-        { id: '3.4', name: 'Architecture', subCategories: ['Design Patterns', 'Atomic Design', 'Project Structure'] },
-      ],
-      color: '#10B981', // Emerald
-    },
-    {
-      id: 4,
-      mainText: 'Full Stack',
-      description: 'Connecting front-end with back-end',
-      categories: [
-        { id: '4.1', name: 'API Integration', subCategories: ['REST', 'GraphQL', 'Data Fetching', 'Authentication'] },
-        { id: '4.2', name: 'Deployment', subCategories: ['CI/CD', 'Docker', 'Serverless', 'Cloud Platforms'] },
-        {
-          id: '4.3',
-          name: 'Backend Basics',
-          subCategories: ['Node.js', 'Express', 'Database Integration', 'Authentication'],
-        },
-        { id: '4.4', name: 'Project Architecture', subCategories: ['Monorepo', 'Microservices', 'Serverless'] },
-      ],
-      color: '#F97316', // Orange
-    },
-  ];
+const Roadmap = ({ jobGoal = "React Developer Roadmap" }) => {
+  // Sample data structure following the provided format
+  const roadmapData = {
+    "r_Id": 1,
+    "job_name": jobGoal,
+    "main_text": [
+      {
+        "main_text_id": "1",
+        "main_text_name": "Fundamentals",
+        "sub_category": [
+          {
+            "sub_id": "1.1",
+            "sub_name": "HTML",
+            "sub_description": "Essential markup language for web development",
+            "resources": [
+              {
+                "resource_id": "1.1.1",
+                "resource_description": "Semantic Markup",
+                "resource_link": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element"
+              },
+              {
+                "resource_id": "1.1.2",
+                "resource_description": "Forms & Validation",
+                "resource_link": "https://developer.mozilla.org/en-US/docs/Learn/Forms"
+              },
+              {
+                "resource_id": "1.1.3",
+                "resource_description": "Accessibility",
+                "resource_link": "https://web.dev/learn/accessibility"
+              }
+            ]
+          },
+          {
+            "sub_id": "1.2",
+            "sub_name": "CSS",
+            "sub_description": "Styling language for web applications",
+            "resources": [
+              {
+                "resource_id": "1.2.1",
+                "resource_description": "Box Model",
+                "resource_link": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model"
+              },
+              {
+                "resource_id": "1.2.2",
+                "resource_description": "Flexbox",
+                "resource_link": "https://css-tricks.com/snippets/css/a-guide-to-flexbox/"
+              },
+              {
+                "resource_id": "1.2.3",
+                "resource_description": "Grid",
+                "resource_link": "https://css-tricks.com/snippets/css/complete-guide-grid/"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "main_text_id": "2",
+        "main_text_name": "React Core",
+        "sub_category": [
+          {
+            "sub_id": "2.1",
+            "sub_name": "React Fundamentals",
+            "sub_description": "Core concepts for building React applications",
+            "resources": [
+              {
+                "resource_id": "2.1.1",
+                "resource_description": "JSX",
+                "resource_link": "https://react.dev/learn/writing-markup-with-jsx"
+              },
+              {
+                "resource_id": "2.1.2",
+                "resource_description": "Component Architecture",
+                "resource_link": "https://react.dev/learn/your-first-component"
+              }
+            ]
+          },
+          {
+            "sub_id": "2.2",
+            "sub_name": "Hooks",
+            "sub_description": "Modern React state and lifecycle management",
+            "resources": [
+              {
+                "resource_id": "2.2.1",
+                "resource_description": "useState",
+                "resource_link": "https://react.dev/reference/react/useState"
+              },
+              {
+                "resource_id": "2.2.2",
+                "resource_description": "useEffect",
+                "resource_link": "https://react.dev/reference/react/useEffect"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  };
 
-  // Track completion of main nodes, categories, and subcategories
+  // Track completion of main nodes, categories, and resources
   const [completedItems, setCompletedItems] = useState({
-    mainNodes: [1],
-    categories: [],
+    mainNodes: [],
     subCategories: [],
+    resources: []
   });
 
   // Calculate overall progress
   const [progress, setProgress] = useState(0);
   const [expanded, setExpanded] = useState(null);
 
+  // Scroll position state
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
   useEffect(() => {
     calculateProgress();
+    
+    // Add scroll event listener
+    const handleScroll = () => {
+      const position = window.scrollY;
+      setScrollPosition(position);
+      setShowScrollTop(position > 200);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [completedItems]);
 
   const calculateProgress = () => {
-    // Count total items
-    let totalItems = timelineData.length; // Main nodes
+    let totalResources = 0;
+    let completedResources = completedItems.resources.length;
 
-    let totalCategories = 0;
-    let totalSubCategories = 0;
-
-    timelineData.forEach((item) => {
-      totalCategories += item.categories.length;
-
-      item.categories.forEach((category) => {
-        totalSubCategories += category.subCategories.length;
+    roadmapData.main_text.forEach(mainText => {
+      mainText.sub_category.forEach(subCategory => {
+        totalResources += subCategory.resources.length;
       });
     });
 
-    // Weight different levels differently
-    const mainNodesWeight = 0.2;
-    const categoriesWeight = 0.3;
-    const subCategoriesWeight = 0.5;
-
-    const mainNodeProgress = (completedItems.mainNodes.length / totalItems) * mainNodesWeight;
-    const categoriesProgress = (completedItems.categories.length / totalCategories) * categoriesWeight;
-    const subCategoriesProgress = (completedItems.subCategories.length / totalSubCategories) * subCategoriesWeight;
-
-    const totalProgress = (mainNodeProgress + categoriesProgress + subCategoriesProgress) * 100;
-    setProgress(Math.round(totalProgress));
+    const totalProgress = (completedResources / totalResources) * 100;
+    setProgress(Math.round(totalProgress) || 0);
   };
 
   const handleMainNodeClick = (id) => {
-    setCompletedItems((prev) => {
+    setCompletedItems(prev => {
       if (prev.mainNodes.includes(id)) {
-        // If unchecking a main node, also uncheck all its categories and subcategories
-        const nodesToRemove = new Set();
-        const categoriesToRemove = new Set();
-        const subCategoriesToRemove = new Set();
-
-        // First add the main node
-        nodesToRemove.add(id);
-
-        // Then add all subsequent main nodes
-        timelineData.forEach((item) => {
-          if (item.id > id) nodesToRemove.add(item.id);
-        });
-
-        // Then add all relevant categories
-        timelineData.forEach((item) => {
-          if (nodesToRemove.has(item.id)) {
-            item.categories.forEach((cat) => {
-              categoriesToRemove.add(cat.id);
-              cat.subCategories.forEach((subCat) => {
-                subCategoriesToRemove.add(`${cat.id}-${subCat}`);
-              });
-            });
-          }
+        // If unchecking a main node, also uncheck all its subcategories and resources
+        const mainNode = roadmapData.main_text.find(item => item.main_text_id === id);
+        const subCategoriesToRemove = mainNode.sub_category.map(subCat => subCat.sub_id);
+        const resourcesToRemove = [];
+        
+        mainNode.sub_category.forEach(subCat => {
+          subCat.resources.forEach(resource => {
+            resourcesToRemove.push(resource.resource_id);
+          });
         });
 
         return {
-          mainNodes: prev.mainNodes.filter((n) => !nodesToRemove.has(n)),
-          categories: prev.categories.filter((c) => !categoriesToRemove.has(c)),
-          subCategories: prev.subCategories.filter((sc) => !subCategoriesToRemove.has(sc)),
+          mainNodes: prev.mainNodes.filter(item => item !== id),
+          subCategories: prev.subCategories.filter(item => !subCategoriesToRemove.includes(item)),
+          resources: prev.resources.filter(item => !resourcesToRemove.includes(item))
         };
       } else {
-        // If checking a main node, we need to ensure all previous nodes are checked
-        const newMainNodes = [...prev.mainNodes];
-        for (let i = 1; i <= id; i++) {
-          if (!newMainNodes.includes(i)) {
-            newMainNodes.push(i);
-          }
-        }
+        // If checking a main node, add all its subcategories and resources
+        const mainNode = roadmapData.main_text.find(item => item.main_text_id === id);
+        const subCategoriesToAdd = mainNode.sub_category.map(subCat => subCat.sub_id);
+        const resourcesToAdd = [];
+        
+        mainNode.sub_category.forEach(subCat => {
+          subCat.resources.forEach(resource => {
+            resourcesToAdd.push(resource.resource_id);
+          });
+        });
+
         return {
-          ...prev,
-          mainNodes: newMainNodes,
+          mainNodes: [...prev.mainNodes, id],
+          subCategories: [...new Set([...prev.subCategories, ...subCategoriesToAdd])],
+          resources: [...new Set([...prev.resources, ...resourcesToAdd])]
         };
       }
     });
   };
 
-  const handleCategoryClick = (categoryId, mainNodeId) => {
-    setCompletedItems((prev) => {
-      if (prev.categories.includes(categoryId)) {
-        // If unchecking a category, also uncheck all its subcategories
-        const subCategoriesToRemove = new Set();
-
-        const category = timelineData
-          .find((item) => item.id === mainNodeId)
-          ?.categories.find((cat) => cat.id === categoryId);
-
-        if (category) {
-          category.subCategories.forEach((subCat) => {
-            subCategoriesToRemove.add(`${categoryId}-${subCat}`);
-          });
-        }
+  const handleSubCategoryClick = (id, mainNodeId) => {
+    setCompletedItems(prev => {
+      if (prev.subCategories.includes(id)) {
+        // If unchecking a subcategory, also uncheck all its resources
+        const mainNode = roadmapData.main_text.find(item => item.main_text_id === mainNodeId);
+        const subCategory = mainNode.sub_category.find(subCat => subCat.sub_id === id);
+        const resourcesToRemove = subCategory.resources.map(resource => resource.resource_id);
 
         return {
           ...prev,
-          categories: prev.categories.filter((c) => c !== categoryId),
-          subCategories: prev.subCategories.filter((sc) => !subCategoriesToRemove.has(sc)),
+          subCategories: prev.subCategories.filter(item => item !== id),
+          resources: prev.resources.filter(item => !resourcesToRemove.includes(item))
         };
       } else {
-        // If checking a category, ensure the main node is checked
+        // If checking a subcategory, add all its resources
+        const mainNode = roadmapData.main_text.find(item => item.main_text_id === mainNodeId);
+        const subCategory = mainNode.sub_category.find(subCat => subCat.sub_id === id);
+        const resourcesToAdd = subCategory.resources.map(resource => resource.resource_id);
+
+        // Ensure main node is also checked
         let newMainNodes = [...prev.mainNodes];
         if (!newMainNodes.includes(mainNodeId)) {
           newMainNodes.push(mainNodeId);
         }
 
-        // Check if all subcategories should be marked completed
-        const allSubCategories = [];
-        const category = timelineData
-          .find((item) => item.id === mainNodeId)
-          ?.categories.find((cat) => cat.id === categoryId);
-
-        if (category) {
-          category.subCategories.forEach((subCat) => {
-            allSubCategories.push(`${categoryId}-${subCat}`);
-          });
-        }
-
-        // Add all subcategories that aren't already completed
-        const newSubCategories = [...prev.subCategories];
-        allSubCategories.forEach((subCatId) => {
-          if (!newSubCategories.includes(subCatId)) {
-            newSubCategories.push(subCatId);
-          }
-        });
-
         return {
           mainNodes: newMainNodes,
-          categories: [...prev.categories, categoryId],
-          subCategories: newSubCategories,
+          subCategories: [...prev.subCategories, id],
+          resources: [...new Set([...prev.resources, ...resourcesToAdd])]
         };
       }
     });
   };
 
-  const handleSubCategoryClick = (subCategoryId, categoryId, mainNodeId) => {
-    const fullSubCategoryId = `${categoryId}-${subCategoryId}`;
-
-    setCompletedItems((prev) => {
-      if (prev.subCategories.includes(fullSubCategoryId)) {
-        // If unchecking a subcategory
-        const newSubCategories = prev.subCategories.filter((sc) => sc !== fullSubCategoryId);
-
-        // If no subcategories remain checked for this category, uncheck the category too
-        const categorySubCats =
-          timelineData.find((item) => item.id === mainNodeId)?.categories.find((cat) => cat.id === categoryId)
-            ?.subCategories || [];
-
-        const hasCheckedSubCats = categorySubCats.some((subCat) =>
-          newSubCategories.includes(`${categoryId}-${subCat}`)
-        );
-
-        const newCategories = hasCheckedSubCats ? prev.categories : prev.categories.filter((c) => c !== categoryId);
-
+  const handleResourceClick = (id, subCategoryId, mainNodeId) => {
+    setCompletedItems(prev => {
+      if (prev.resources.includes(id)) {
+        // If unchecking a resource
         return {
           ...prev,
-          categories: newCategories,
-          subCategories: newSubCategories,
+          resources: prev.resources.filter(item => item !== id)
         };
       } else {
-        // If checking a subcategory, ensure the category and main node are checked
+        // If checking a resource, ensure the subcategory and main node are also checked
         let newMainNodes = [...prev.mainNodes];
-        let newCategories = [...prev.categories];
+        let newSubCategories = [...prev.subCategories];
 
         if (!newMainNodes.includes(mainNodeId)) {
           newMainNodes.push(mainNodeId);
         }
 
-        if (!newCategories.includes(categoryId)) {
-          newCategories.push(categoryId);
+        if (!newSubCategories.includes(subCategoryId)) {
+          newSubCategories.push(subCategoryId);
         }
 
         return {
           mainNodes: newMainNodes,
-          categories: newCategories,
-          subCategories: [...prev.subCategories, fullSubCategoryId],
+          subCategories: newSubCategories,
+          resources: [...prev.resources, id]
         };
       }
     });
   };
 
-  // Check if all subcategories of a category are completed
-  const areAllSubCategoriesCompleted = (categoryId, subCategories) => {
-    return subCategories.every((subCat) => completedItems.subCategories.includes(`${categoryId}-${subCat}`));
+  // Check if all resources in a subcategory are completed
+  const areAllResourcesCompleted = (subCategoryId, mainNodeId) => {
+    const mainNode = roadmapData.main_text.find(item => item.main_text_id === mainNodeId);
+    const subCategory = mainNode.sub_category.find(subCat => subCat.sub_id === subCategoryId);
+    return subCategory.resources.every(resource => completedItems.resources.includes(resource.resource_id));
   };
 
-  // Check if any subcategories of a category are completed
-  const isAnySubCategoryCompleted = (categoryId, subCategories) => {
-    return subCategories.some((subCat) => completedItems.subCategories.includes(`${categoryId}-${subCat}`));
+  // Check if any resources in a subcategory are completed
+  const isAnyResourceCompleted = (subCategoryId, mainNodeId) => {
+    const mainNode = roadmapData.main_text.find(item => item.main_text_id === mainNodeId);
+    const subCategory = mainNode.sub_category.find(subCat => subCat.sub_id === subCategoryId);
+    return subCategory.resources.some(resource => completedItems.resources.includes(resource.resource_id));
   };
 
-  // Get category completion status (0 = none, 1 = partial, 2 = complete)
-  const getCategoryCompletionStatus = (categoryId, subCategories) => {
-    if (areAllSubCategoriesCompleted(categoryId, subCategories)) return 2;
-    if (isAnySubCategoryCompleted(categoryId, subCategories)) return 1;
+  // Check if all subcategories in a main node are completed
+  const areAllSubCategoriesCompleted = (mainNodeId) => {
+    const mainNode = roadmapData.main_text.find(item => item.main_text_id === mainNodeId);
+    return mainNode.sub_category.every(subCat => completedItems.subCategories.includes(subCat.sub_id));
+  };
+
+  // Get subcategory completion status (0 = none, 1 = partial, 2 = complete)
+  const getSubCategoryCompletionStatus = (subCategoryId, mainNodeId) => {
+    if (areAllResourcesCompleted(subCategoryId, mainNodeId)) return 2;
+    if (isAnyResourceCompleted(subCategoryId, mainNodeId)) return 1;
     return 0;
   };
 
@@ -304,42 +281,89 @@ const Roadmap = () => {
     setExpanded(expanded === id ? null : id);
   };
 
-  // Get the count of completed items by section
-  const getCompletedCountBySection = (sectionId) => {
-    const section = timelineData.find((item) => item.id === sectionId);
-    if (!section) return { completed: 0, total: 0 };
+  // Get the count of completed resources by main node
+  const getCompletedCountByMainNode = (mainNodeId) => {
+    const mainNode = roadmapData.main_text.find(item => item.main_text_id === mainNodeId);
+    if (!mainNode) return { completed: 0, total: 0 };
 
-    let totalSubCategories = 0;
-    let completedSubCategories = 0;
+    let totalResources = 0;
+    let completedResources = 0;
 
-    section.categories.forEach((category) => {
-      totalSubCategories += category.subCategories.length;
-
-      category.subCategories.forEach((subCat) => {
-        if (completedItems.subCategories.includes(`${category.id}-${subCat}`)) {
-          completedSubCategories++;
+    mainNode.sub_category.forEach(subCategory => {
+      subCategory.resources.forEach(resource => {
+        totalResources++;
+        if (completedItems.resources.includes(resource.resource_id)) {
+          completedResources++;
         }
       });
     });
 
     return {
-      completed: completedSubCategories,
-      total: totalSubCategories,
-      percentage: Math.round((completedSubCategories / totalSubCategories) * 100) || 0,
+      completed: completedResources,
+      total: totalResources,
+      percentage: Math.round((completedResources / totalResources) * 100) || 0
     };
+  };
+
+  // Scroll to top function
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  // Scroll to section function
+  const scrollToSection = (id) => {
+    const element = document.getElementById(`section-${id}`);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
   };
 
   return (
     <div className="bg-white w-full max-w-6xl mx-auto rounded-lg shadow-sm border border-gray-200">
-      {/* Header & Progress Section */}
-      <div className="p-6 border-b border-gray-100">
+      {/* Header & Progress Section (fixed at top when scrolling) */}
+      <div className={`p-6 border-b border-gray-100 bg-white ${scrollPosition > 100 ? 'sticky top-0 z-10 shadow-md' : ''}`}>
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">React Developer Roadmap</h1>
+          <h1 className="text-2xl font-bold text-gray-800">{jobGoal}</h1>
+          
+          {/* Scroll to sections dropdown - only visible when scrolling */}
+          {scrollPosition > 100 && (
+            <div className="relative group">
+              <button className="px-4 py-2 bg-blue-50 text-blue-600 rounded-md flex items-center gap-2 text-sm hover:bg-blue-100">
+                Jump to section <ChevronDown size={16} />
+              </button>
+              <div className="absolute right-0 mt-1 bg-white shadow-lg rounded-md border border-gray-200 w-56 hidden group-hover:block z-20">
+                <ul className="py-1">
+                  {roadmapData.main_text.map((item) => (
+                    <li key={item.main_text_id}>
+                      <button 
+                        onClick={() => scrollToSection(item.main_text_id)}
+                        className="px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 w-full text-left flex items-center justify-between"
+                      >
+                        {item.main_text_name}
+                        <span className="text-xs text-gray-500">
+                          {getCompletedCountByMainNode(item.main_text_id).completed}/{getCompletedCountByMainNode(item.main_text_id).total}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Progress Bar */}
         <div className="w-full bg-gray-100 rounded-full h-4 mb-2">
-          <div className="bg-blue-500 h-full rounded-full" style={{ width: `${progress}%` }}></div>
+          <div 
+            className="bg-blue-500 h-full rounded-full transition-all duration-500 ease-in-out" 
+            style={{ width: `${progress}%` }}
+          ></div>
         </div>
         <div className="flex justify-between items-center text-sm text-gray-600">
           <span>Your progress</span>
@@ -347,31 +371,38 @@ const Roadmap = () => {
         </div>
       </div>
 
-      {/* Timeline Container */}
-      <div className="p-6">
+      {/* Timeline Container with overflow scroll for long content */}
+      <div className="p-6 max-h-screen overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
         <div className="relative">
           {/* Main Timeline Line */}
           <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200"></div>
 
           {/* Timeline Sections */}
           <ul className="relative space-y-6">
-            {timelineData.map((item, index) => {
-              const isCompleted = completedItems.mainNodes.includes(item.id);
-              const isExpanded = expanded === item.id;
-              const isLastItem = index === timelineData.length - 1;
-              const sectionStats = getCompletedCountBySection(item.id);
+            {roadmapData.main_text.map((mainItem, index) => {
+              const isCompleted = completedItems.mainNodes.includes(mainItem.main_text_id);
+              const isExpanded = expanded === mainItem.main_text_id;
+              const isLastItem = index === roadmapData.main_text.length - 1;
+              const mainNodeStats = getCompletedCountByMainNode(mainItem.main_text_id);
 
               return (
-                <li key={item.id} className="relative pl-10">
+                <li 
+                  key={mainItem.main_text_id} 
+                  className="relative pl-10" 
+                  id={`section-${mainItem.main_text_id}`}
+                >
                   {/* Main Node Circle */}
                   <div className="absolute left-4 top-2 transform -translate-x-1/2">
                     <button
                       className={`h-8 w-8 rounded-full flex items-center justify-center transition-all ${
                         isCompleted ? 'bg-blue-500 text-white shadow-sm' : 'border-2 border-gray-300 bg-white'
                       }`}
-                      onClick={() => handleMainNodeClick(item.id)}
+                      onClick={() => handleMainNodeClick(mainItem.main_text_id)}
                     >
-                      {isCompleted ? <Check size={16} /> : <span className="text-gray-500 font-medium">{item.id}</span>}
+                      {isCompleted ? 
+                        <Check size={16} /> : 
+                        <span className="text-gray-500 font-medium">{index + 1}</span>
+                      }
                     </button>
                   </div>
 
@@ -380,20 +411,19 @@ const Roadmap = () => {
                     {/* Header */}
                     <div
                       className="px-4 py-3 flex items-center justify-between cursor-pointer bg-gray-50"
-                      onClick={() => toggleExpand(item.id)}
+                      onClick={() => toggleExpand(mainItem.main_text_id)}
                     >
                       <div>
-                        <h2 className="text-lg font-semibold text-gray-800">{item.mainText}</h2>
-                        <p className="text-gray-500 text-sm">{item.description}</p>
+                        <h2 className="text-lg font-semibold text-gray-800">{mainItem.main_text_name}</h2>
                       </div>
 
                       <div className="flex items-center gap-4">
                         {/* Progress Stats */}
                         <div className="text-right">
                           <div className="text-sm font-medium">
-                            {sectionStats.completed}/{sectionStats.total}
+                            {mainNodeStats.completed}/{mainNodeStats.total}
                           </div>
-                          <div className="text-xs text-gray-500">Topics completed</div>
+                          <div className="text-xs text-gray-500">Resources completed</div>
                         </div>
 
                         {/* Expand/Collapse Icon */}
@@ -407,54 +437,60 @@ const Roadmap = () => {
                       </div>
                     </div>
 
-                    {/* Expandable Content */}
+                    {/* Expandable Content with internal scroll for very long sub-sections */}
                     <div
                       className={`transition-all duration-300 overflow-hidden ${
-                        isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+                        isExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
                       }`}
                     >
-                      <div className="p-4 border-t border-gray-100">
-                        {/* Categories Grid */}
+                      <div className="p-4 border-t border-gray-100 max-h-96 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+                        {/* Sub Categories */}
                         <div className="space-y-4">
-                          {item.categories.map((category) => {
-                            const categoryStatus = getCategoryCompletionStatus(category.id, category.subCategories);
-                            const completedSubCount = category.subCategories.filter((subCat) =>
-                              completedItems.subCategories.includes(`${category.id}-${subCat}`)
+                          {mainItem.sub_category.map((subCategory) => {
+                            const subCategoryStatus = getSubCategoryCompletionStatus(
+                              subCategory.sub_id, 
+                              mainItem.main_text_id
+                            );
+                            const completedResourceCount = subCategory.resources.filter(
+                              resource => completedItems.resources.includes(resource.resource_id)
                             ).length;
 
                             return (
-                              <div key={category.id} className="border border-gray-200 rounded-md overflow-hidden">
-                                {/* Category Header */}
+                              <div key={subCategory.sub_id} className="border border-gray-200 rounded-md overflow-hidden">
+                                {/* Sub Category Header */}
                                 <div
                                   className="px-4 py-3 flex items-center justify-between cursor-pointer bg-gray-50 border-b border-gray-200"
-                                  onClick={() => handleCategoryClick(category.id, item.id)}
+                                  onClick={() => handleSubCategoryClick(subCategory.sub_id, mainItem.main_text_id)}
                                 >
                                   <div className="flex items-center gap-3">
-                                    {/* Checkbox for category */}
+                                    {/* Checkbox for sub category */}
                                     <div
                                       className={`w-5 h-5 rounded flex-shrink-0 flex items-center justify-center ${
-                                        categoryStatus === 2
+                                        subCategoryStatus === 2
                                           ? 'bg-blue-500 text-white'
-                                          : categoryStatus === 1
+                                          : subCategoryStatus === 1
                                           ? 'bg-blue-100 border border-blue-300'
                                           : 'border border-gray-300 bg-white'
                                       }`}
                                     >
-                                      {categoryStatus > 0 && (
+                                      {subCategoryStatus > 0 && (
                                         <Check
                                           size={14}
-                                          className={categoryStatus === 2 ? 'text-white' : 'text-blue-500'}
+                                          className={subCategoryStatus === 2 ? 'text-white' : 'text-blue-500'}
                                         />
                                       )}
                                     </div>
 
-                                    <h3 className="text-base font-medium">{category.name}</h3>
+                                    <div>
+                                      <h3 className="text-base font-medium">{subCategory.sub_name}</h3>
+                                      <p className="text-sm text-gray-500">{subCategory.sub_description}</p>
+                                    </div>
                                   </div>
 
                                   {/* Completion indicator */}
                                   <div className="flex items-center gap-3">
                                     <div className="text-sm text-gray-500">
-                                      {completedSubCount}/{category.subCategories.length}
+                                      {completedResourceCount}/{subCategory.resources.length}
                                     </div>
 
                                     {/* Mini progress bar */}
@@ -462,43 +498,58 @@ const Roadmap = () => {
                                       <div
                                         className="h-full bg-blue-500 rounded-full"
                                         style={{
-                                          width: `${(completedSubCount / category.subCategories.length) * 100}%`,
+                                          width: `${(completedResourceCount / subCategory.resources.length) * 100}%`,
                                         }}
                                       ></div>
                                     </div>
                                   </div>
                                 </div>
 
-                                {/* Subcategories */}
-                                <div className="p-3 grid grid-cols-2 gap-2 bg-white">
-                                  {category.subCategories.map((subCat, subIdx) => {
-                                    const fullSubCatId = `${category.id}-${subCat}`;
-                                    const isSubCatCompleted = completedItems.subCategories.includes(fullSubCatId);
+                                {/* Resources */}
+                                <div className="p-3 space-y-2 bg-white">
+                                  {subCategory.resources.map((resource) => {
+                                    const isResourceCompleted = completedItems.resources.includes(resource.resource_id);
 
                                     return (
-                                      <div
-                                        key={subIdx}
-                                        className={`p-2 rounded flex items-center gap-2 cursor-pointer ${
-                                          isSubCatCompleted ? 'bg-blue-50' : 'bg-gray-50 hover:bg-gray-100'
-                                        }`}
-                                        onClick={() => handleSubCategoryClick(subCat, category.id, item.id)}
+                                      <div 
+                                        key={resource.resource_id} 
+                                        className="flex items-start gap-3"
                                       >
-                                        {/* Checkbox for subcategory */}
-                                        <div
-                                          className={`w-4 h-4 rounded flex-shrink-0 flex items-center justify-center ${
-                                            isSubCatCompleted
-                                              ? 'bg-blue-500 text-white'
-                                              : 'border border-gray-300 bg-white'
-                                          }`}
+                                        {/* Checkbox for resource */}
+                                        <div 
+                                          className="pt-1"
+                                          onClick={() => handleResourceClick(
+                                            resource.resource_id, 
+                                            subCategory.sub_id, 
+                                            mainItem.main_text_id
+                                          )}
                                         >
-                                          {isSubCatCompleted && <Check size={12} />}
+                                          <div
+                                            className={`w-4 h-4 rounded flex-shrink-0 flex items-center justify-center cursor-pointer ${
+                                              isResourceCompleted
+                                                ? 'bg-blue-500 text-white'
+                                                : 'border border-gray-300 bg-white'
+                                            }`}
+                                          >
+                                            {isResourceCompleted && <Check size={12} />}
+                                          </div>
                                         </div>
 
-                                        <span
-                                          className={`text-sm ${isSubCatCompleted ? 'font-medium' : 'text-gray-700'}`}
-                                        >
-                                          {subCat}
-                                        </span>
+                                        {/* Resource information */}
+                                        <div className="flex-grow">
+                                          <p className={`text-sm ${isResourceCompleted ? 'font-medium' : 'text-gray-700'}`}>
+                                            {resource.resource_description}
+                                          </p>
+                                          <a 
+                                            href={resource.resource_link} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="text-xs text-blue-500 hover:underline flex items-center gap-1"
+                                          >
+                                            {resource.resource_link}
+                                            <ExternalLink size={12} />
+                                          </a>
+                                        </div>
                                       </div>
                                     );
                                   })}
@@ -516,6 +567,17 @@ const Roadmap = () => {
           </ul>
         </div>
       </div>
+      
+      {/* Scroll to top button - only visible when scrolled down */}
+      {showScrollTop && (
+        <button 
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-blue-500 text-white shadow-lg flex items-center justify-center hover:bg-blue-600 transition-colors z-20"
+          aria-label="Scroll to top"
+        >
+          <ChevronDown size={24} className="transform rotate-180" />
+        </button>
+      )}
     </div>
   );
 };

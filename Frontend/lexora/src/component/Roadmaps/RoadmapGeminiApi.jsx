@@ -1,86 +1,110 @@
-import React, { useState } from "react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import React from 'react';
 
-const RoadmapGeminiApi = () => {
-  const [response, setResponse] = useState("");
-  const [prompt, setPrompt] = useState("");
-
-  const API_KEY = "AIzaSyDk93DVnzDnYhuJyHCLIsjMjHd47uODLvs";
-  const genAI = new GoogleGenerativeAI(API_KEY);
-
-  const createDynamicPrompt = (userInput) => {
-    const specificQuery = "I want to become a frontend developer with react";
-    
-    if (userInput.toLowerCase() === specificQuery.toLowerCase()) {
-      return `Generate a detailed roadmap for becoming a frontend developer with React. 
-        Divide the roadmap into two main branches (e.g., Fundamentals and Advanced Concepts). 
-        Include timelines, key topics, resources, and project suggestions for each branch. 
-        Make sure each step is explained in depth.`;
-    }
-
-    if (!userInput.toLowerCase().includes("with") && !userInput.toLowerCase().match(/\b(react|angular|vue|svelte|next\.js)\b/i)) {
-      return `The user wants to become a developer but didn't specify a technology. 
-        Respond with: 
-        "Please choose an option:
-        1. Not sure? Visit https://www.yorrrutube.com to assess your skill level
-        2. Which specific technology do you want to focus on?"`;
-    }
-
-    return `Generate a detailed roadmap for: ${userInput}. 
-      Include learning resources, practice projects, timeline estimates, 
-      and interview preparation tips. Break down into monthly milestones.`;
-  };
-
-  const fetchAIResponse = async () => {
-    if (!prompt) {
-      alert("Please enter your career goal!");
-      return;
-    }
-
-    try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-      const processedPrompt = createDynamicPrompt(prompt);
-      const result = await model.generateContent(processedPrompt);
-      const text = result.response.text();
-      setResponse(text.replace(/\n/g, "<br />")); // Handle line breaks for HTML
-    } catch (error) {
-      console.error("Error fetching AI response:", error);
-      setResponse("Oops! Something went wrong. Please try again.");
-    }
-  };
-
-  return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Career Roadmap Generator</h2>
-      
-      <div className="mb-4">
-        <input
-          type="text"
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Example: I want to become a frontend developer with React"
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+const RoadmapGeminiApi = ({ data, jobRole, onReset }) => {
+  // If we have raw HTML (like for option 3 or error messages)
+  if (data.html) {
+    return (
+      <div className="mt-8 p-5 rounded-lg bg-white text-left max-h-[500px] overflow-y-auto overflow-x-hidden shadow-lg border border-blue-100">
+        <h2 className="text-2xl font-bold mb-6 sticky top-0 bg-white py-3 text-blue-800 border-b border-blue-100 z-10">
+          {jobRole} Roadmap
+        </h2>
+        <div 
+          dangerouslySetInnerHTML={{ __html: data.html }} 
+          className="pb-16"
         />
-      </div>
-      
-      <button
-        onClick={fetchAIResponse}
-        className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
-      >
-        Generate Roadmap
-      </button>
-
-      {response && (
-        <div className="mt-8 p-6 bg-gray-50 rounded-lg">
-          <h3 className="text-xl font-semibold mb-4">Your Career Roadmap:</h3>
-          <div 
-            className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: response }} 
-          />
+        <div className="mt-8 text-center sticky bottom-0 bg-white py-3 border-t border-blue-100">
+          <button
+            onClick={onReset}
+            className="py-2 px-6 bg-blue-600 hover:bg-blue-700 text-white rounded-md cursor-pointer shadow-md transition-colors duration-200"
+          >
+            Generate Another Roadmap
+          </button>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
+
+  // If we have structured JSON data (for options 1 and 2)
+  if (data.jsonData) {
+    const roadmapData = data.jsonData;
+    
+    return (
+      <div className="mt-8 rounded-lg bg-white text-left max-h-[500px] overflow-y-auto overflow-x-hidden shadow-lg border border-blue-100">
+        {/* Main heading */}
+        <h2 className="text-2xl font-bold sticky top-0 bg-white py-4 px-6 text-blue-800 border-b border-blue-100 z-10">
+          {roadmapData.job_name} Roadmap
+        </h2>
+        
+        <div className="p-6">
+          {roadmapData.main_text.map((main) => (
+            <div key={main.main_text_id} className="mb-10">
+              {/* Main category (fundamentals, core concepts, etc.) */}
+              <h3 className="text-xl font-semibold text-blue-700 mb-4 pb-2 border-b border-blue-100">
+                {main.main_text_name}
+              </h3>
+              
+              <div className="pl-4">
+                {main.sub_category.map((sub) => (
+                  <div key={sub.sub_id} className="mb-6 bg-blue-50 p-4 rounded-lg shadow-sm">
+                    {/* Sub-category (HTML, CSS, etc.) */}
+                    <h4 className="text-lg font-medium text-blue-600 mb-2">
+                      {sub.sub_name}
+                    </h4>
+                    
+                    {/* Sub-description */}
+                    <p className="text-gray-700 mb-4 text-sm">
+                      {sub.sub_description}
+                    </p>
+                    
+                    <div className="mt-4 bg-white p-4 rounded-md shadow-sm border border-blue-50">
+                      <h5 className="font-medium text-blue-500 mb-2 text-sm uppercase tracking-wide">
+                        Resources:
+                      </h5>
+                      
+                      <div className="space-y-3">
+                        {sub.resources.map((resource) => (
+                          <div key={resource.resource_id} className="pl-3 border-l-2 border-blue-200">
+                            {/* Resource description */}
+                            <p className="text-gray-800 font-medium mb-1">
+                              {resource.resource_description}
+                            </p>
+                            
+                            {/* Resource link */}
+                            <a 
+                              href={resource.resource_link} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:text-blue-800 hover:underline text-sm flex items-center"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                              </svg>
+                              {resource.resource_link}
+                            </a>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="sticky bottom-0 bg-white py-3 px-6 border-t border-blue-100 text-center">
+          <button
+            onClick={onReset}
+            className="py-2 px-6 bg-blue-600 hover:bg-blue-700 text-white rounded-md cursor-pointer shadow-md transition-colors duration-200"
+          >
+            Generate Another Roadmap
+          </button>
+        </div>
+      </div>
+    );
+  }
+  
+  return null;
 };
 
 export default RoadmapGeminiApi;
