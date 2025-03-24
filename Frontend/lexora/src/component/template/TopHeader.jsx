@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Globe, ChevronDown, Search, Home, User, Settings, LogOut } from 'lucide-react';
+import { Globe, ChevronDown, Search, Home, User, Settings, LogOut, Bell } from 'lucide-react';
 
 const categories = [
   'Software Development & Engineering',
@@ -59,35 +59,16 @@ export default function TopHeader() {
 
   return (
     <>
-      <header className="bg-white p-4 shadow-sm z-10 border-b border-gray-200">
+      <header className="bg-white p-1 shadow-sm z-10 border-b border-gray-200">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between md:items-center">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold text-gray-800">Job Market Insights</h1>
-            <span className="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-semibold rounded-full">BETA</span>
+            <h1 className="text-2xl pl-5 font-bold text-gray-800">Job Market Insights</h1>
           </div>
 
           <div className="flex items-center gap-3 mt-4 md:mt-0">
-            
-
-            {/* Search input */}
-            <div className="relative w-full md:w-auto">
-              <input
-                type="text"
-                placeholder="Search job roles"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg w-full md:w-64 text-sm focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300 transition-all duration-200"
-              />
-              <Search size={16} className="absolute left-3 top-2.5 text-gray-400" />
-              {searchQuery && (
-                <button
-                  className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
-                  onClick={() => setSearchQuery('')}
-                >
-                  ×
-                </button>
-              )}
-            </div>
+            <button className="p-2 mr-2 ml-2 flex-col-reverse align-middle text-gray-500 hover:text-gray-700">
+              <Bell size={20} />
+            </button>
 
             {/* Profile dropdown */}
             <div className="relative">
@@ -98,13 +79,13 @@ export default function TopHeader() {
                 <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
                   JS
                 </div>
-                <span className="text-sm font-medium hidden md:inline">John Smith</span>
+                <span className="text-sm font-medium hidden md:inline pl-2">John Smith</span>
                 <ChevronDown size={14} className="text-gray-500" />
               </button>
 
               {/* Profile Dropdown Menu */}
               {showProfileDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50 pl-2 mr-2">
                   <div className="p-3 border-b border-gray-100">
                     <p className="text-sm font-semibold">John Smith</p>
                     <p className="text-xs text-gray-500">john.smith@example.com</p>
