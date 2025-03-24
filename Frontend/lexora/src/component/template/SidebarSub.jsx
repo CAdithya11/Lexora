@@ -47,7 +47,7 @@ export default function SidebarSub() {
     <>
       <div className="h-screen flex-shrink-0">
         <Sidebar>
-          <SidebarItem icon={<Home size={20} />} text="Home" />
+          
           <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active />
 
           <SidebarItem icon={<StickyNote size={20} />} text="Projects" alwaysOpen={true}>
@@ -59,7 +59,7 @@ export default function SidebarSub() {
           <SidebarItem icon={<Calendar size={20} />} text="Calendar" />
 
           <SidebarItem icon={<Route size={20} />} text="Roadmaps">
-             <SidebarSubItem text={<Link to="/searchRoadmap">Roadmaps Generator</Link>} />
+             <SidebarSubItem text={<Link to="/searchRoadmap" >Roadmaps Generator</Link>} />
              <SidebarSubItem text={<Link to="/RoadmapDetails">Roadmap Details</Link>} />
           </SidebarItem>
 

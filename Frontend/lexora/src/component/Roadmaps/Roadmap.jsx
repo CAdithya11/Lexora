@@ -1,97 +1,221 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, Check, ExternalLink } from 'lucide-react';
 
-const Roadmap = ({ jobGoal = "React Developer Roadmap" }) => {
+const Roadmap = ({ jobGoal = "React Developer Roadmap",JsonRoadmapData}) => {
+
+  console.log("DADADADA ", JsonRoadmapData);
   // Sample data structure following the provided format
+  
   const roadmapData = {
     "r_Id": 1,
-    "job_name": jobGoal,
+    "job_name": "Backend Developer",
     "main_text": [
       {
-        "main_text_id": "1",
-        "main_text_name": "Fundamentals",
+        "main_text_id": "1.1",
+        "main_text_name": "Programming Fundamentals",
         "sub_category": [
           {
-            "sub_id": "1.1",
-            "sub_name": "HTML",
-            "sub_description": "Essential markup language for web development",
+            "sub_id": "1.1.1",
+            "sub_name": "Data Structures and Algorithms",
+            "sub_description": "Understanding fundamental data structures (arrays, linked lists, trees, graphs) and algorithms (searching, sorting) is crucial for writing efficient and scalable code.",
             "resources": [
               {
-                "resource_id": "1.1.1",
-                "resource_description": "Semantic Markup",
-                "resource_link": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element"
+                "resource_id": "1.1.1.1",
+                "resource_description": "Introduction to Algorithms (CLRS)",
+                "resource_link": "https://mitpress.mit.edu/books/introduction-algorithms"
               },
               {
-                "resource_id": "1.1.2",
-                "resource_description": "Forms & Validation",
-                "resource_link": "https://developer.mozilla.org/en-US/docs/Learn/Forms"
-              },
-              {
-                "resource_id": "1.1.3",
-                "resource_description": "Accessibility",
-                "resource_link": "https://web.dev/learn/accessibility"
+                "resource_id": "1.1.1.2",
+                "resource_description": "Khan Academy - Algorithms",
+                "resource_link": "https://www.khanacademy.org/computing/computer-science/algorithms"
               }
             ]
           },
           {
-            "sub_id": "1.2",
-            "sub_name": "CSS",
-            "sub_description": "Styling language for web applications",
+            "sub_id": "1.1.2",
+            "sub_name": "Object-Oriented Programming (OOP)",
+            "sub_description": "Mastering OOP principles like encapsulation, inheritance, and polymorphism is essential for building well-structured and maintainable applications.",
             "resources": [
               {
-                "resource_id": "1.2.1",
-                "resource_description": "Box Model",
-                "resource_link": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model"
+                "resource_id": "1.1.2.1",
+                "resource_description": "Head First Object-Oriented Analysis and Design",
+                "resource_link": "https://www.headfirstlabs.com/books/hfoopad/"
               },
               {
-                "resource_id": "1.2.2",
-                "resource_description": "Flexbox",
-                "resource_link": "https://css-tricks.com/snippets/css/a-guide-to-flexbox/"
+                "resource_id": "1.1.2.2",
+                "resource_description": "Thinking in Java",
+                "resource_link": "https://www.amazon.com/Thinking-Java-Bruce-Eckel/dp/0131854720"
+              }
+            ]
+          },
+          {
+            "sub_id": "1.1.3",
+            "sub_name": "Version Control (Git)",
+            "sub_description": "Learn to use Git for managing code changes, collaborating with others, and tracking project history.",
+            "resources": [
+              {
+                "resource_id": "1.1.3.1",
+                "resource_description": "GitHub Learning Lab",
+                "resource_link": "https://lab.github.com/"
               },
               {
-                "resource_id": "1.2.3",
-                "resource_description": "Grid",
-                "resource_link": "https://css-tricks.com/snippets/css/complete-guide-grid/"
+                "resource_id": "1.1.3.2",
+                "resource_description": "Atlassian Git Tutorials",
+                "resource_link": "https://www.atlassian.com/git/tutorials"
               }
             ]
           }
         ]
       },
       {
-        "main_text_id": "2",
-        "main_text_name": "React Core",
+        "main_text_id": "1.2",
+        "main_text_name": "Backend Technologies",
         "sub_category": [
           {
-            "sub_id": "2.1",
-            "sub_name": "React Fundamentals",
-            "sub_description": "Core concepts for building React applications",
+            "sub_id": "1.2.1",
+            "sub_name": "Server-Side Languages (e.g., Python, Node.js, Java, Go)",
+            "sub_description": "Choose at least one language and become proficient in its syntax, libraries, and frameworks.",
             "resources": [
               {
-                "resource_id": "2.1.1",
-                "resource_description": "JSX",
-                "resource_link": "https://react.dev/learn/writing-markup-with-jsx"
+                "resource_id": "1.2.1.1",
+                "resource_description": "Official Language Documentation (Python, Node.js, Java, Go)",
+                "resource_link": "Search for relevant documentation on each language's official website."
               },
               {
-                "resource_id": "2.1.2",
-                "resource_description": "Component Architecture",
-                "resource_link": "https://react.dev/learn/your-first-component"
+                "resource_id": "1.2.1.2",
+                "resource_description": "Codecademy/freeCodeCamp Courses",
+                "resource_link": "https://www.codecademy.com/, https://www.freecodecamp.org/"
               }
             ]
           },
           {
-            "sub_id": "2.2",
-            "sub_name": "Hooks",
-            "sub_description": "Modern React state and lifecycle management",
+            "sub_id": "1.2.2",
+            "sub_name": "Databases (SQL & NoSQL)",
+            "sub_description": "Learn to design, implement, and query relational (SQL) and non-relational (NoSQL) databases.",
             "resources": [
               {
-                "resource_id": "2.2.1",
-                "resource_description": "useState",
-                "resource_link": "https://react.dev/reference/react/useState"
+                "resource_id": "1.2.2.1",
+                "resource_description": "SQLZoo",
+                "resource_link": "https://sqlzoo.net/"
               },
               {
-                "resource_id": "2.2.2",
-                "resource_description": "useEffect",
-                "resource_link": "https://react.dev/reference/react/useEffect"
+                "resource_id": "1.2.2.2",
+                "resource_description": "MongoDB University",
+                "resource_link": "https://university.mongodb.com/"
+              }
+            ]
+          },
+          {
+            "sub_id": "1.2.3",
+            "sub_name": "API Design and RESTful Services",
+            "sub_description": "Understand REST principles and build robust and well-documented APIs.",
+            "resources": [
+              {
+                "resource_id": "1.2.3.1",
+                "resource_description": "REST API Tutorial",
+                "resource_link": "https://restfulapi.net/"
+              },
+              {
+                "resource_id": "1.2.3.2",
+                "resource_description": "Understanding API Design",
+                "resource_link": "https://nordicapis.com/understanding-api-design/"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "main_text_id": "1.3",
+        "main_text_name": "Deployment and DevOps",
+        "sub_category": [
+          {
+            "sub_id": "1.3.1",
+            "sub_name": "Cloud Platforms (AWS, Azure, GCP)",
+            "sub_description": "Learn to deploy and manage applications on cloud platforms.",
+            "resources": [
+              {
+                "resource_id": "1.3.1.1",
+                "resource_description": "AWS Training and Certification",
+                "resource_link": "https://aws.amazon.com/training/"
+              },
+              {
+                "resource_id": "1.3.1.2",
+                "resource_description": "Azure Documentation",
+                "resource_link": "https://learn.microsoft.com/en-us/azure/"
+              }
+            ]
+          },
+          {
+            "sub_id": "1.3.2",
+            "sub_name": "Containerization (Docker, Kubernetes)",
+            "sub_description": "Learn to containerize your applications for easier deployment and scalability.",
+            "resources": [
+              {
+                "resource_id": "1.3.2.1",
+                "resource_description": "Docker Documentation",
+                "resource_link": "https://docs.docker.com/"
+              },
+              {
+                "resource_id": "1.3.2.2",
+                "resource_description": "Kubernetes Documentation",
+                "resource_link": "https://kubernetes.io/docs/home/"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "main_text_id": "1.4",
+        "main_text_name": "Software Engineering Practices",
+        "sub_category": [
+          {
+            "sub_id": "1.4.1",
+            "sub_name": "Testing and Debugging",
+            "sub_description": "Master techniques for writing unit tests, integration tests, and debugging code effectively.",
+            "resources": [
+              {
+                "resource_id": "1.4.1.1",
+                "resource_description": "Test-Driven Development (TDD)",
+                "resource_link": "https://en.wikipedia.org/wiki/Test-driven_development"
+              },
+              {
+                "resource_id": "1.4.1.2",
+                "resource_description": "Debugging Techniques",
+                "resource_link": "https://www.geeksforgeeks.org/debugging-techniques/"
+              }
+            ]
+          },
+          {
+            "sub_id": "1.4.2",
+            "sub_name": "Design Patterns",
+            "sub_description": "Learn common design patterns to solve recurring problems in software design.",
+            "resources": [
+              {
+                "resource_id": "1.4.2.1",
+                "resource_description": "Design Patterns: Elements of Reusable Object-Oriented Software",
+                "resource_link": "https://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612"
+              },
+              {
+                "resource_id": "1.4.2.2",
+                "resource_description": "Refactoring.guru",
+                "resource_link": "https://refactoring.guru/design-patterns"
+              }
+            ]
+          },
+          {
+            "sub_id": "1.4.3",
+            "sub_name": "Software Architecture",
+            "sub_description": "Understand different software architectures (microservices, monolithic) and choose the appropriate one for your project.",
+            "resources": [
+              {
+                "resource_id": "1.4.3.1",
+                "resource_description": "Microservices.io",
+                "resource_link": "https://microservices.io/"
+              },
+              {
+                "resource_id": "1.4.3.2",
+                "resource_description": "Martin Fowler - Microservices",
+                "resource_link": "https://martinfowler.com/articles/microservices.html"
               }
             ]
           }

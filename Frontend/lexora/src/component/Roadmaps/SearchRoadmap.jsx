@@ -38,7 +38,7 @@ const SearchRoadmap = () => {
       // Show Google link
       setRoadmapData({
         googleLink: true,
-        html: `<p>To assess your current skill level, please visit <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">Google</a> to find relevant skill assessment resources.</p>`
+        html: <p>To assess your current skill level, please visit <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">Google</a> to find relevant skill assessment resources.</p>
       });
     }
   };
@@ -113,7 +113,8 @@ const SearchRoadmap = () => {
           }
         ]
       }
-      Make sure the output is valid JSON that can be parsed directly. Cover all essential skills needed for this career path. Include at least 4 main_text categories, each with 3-4 sub_categories, and each sub_category with 2-3 resources.`;
+      Make sure the output is valid JSON that can be parsed directly. Cover all essential skills needed for this career path. Include at least 4 main_text categories, each with 3-4 sub_categories, and each sub_category with 2-3 resources.  
+      give the json format output only that covered with {}`;
     }
 
     return "";
@@ -133,12 +134,13 @@ const SearchRoadmap = () => {
       
       try {
         // Attempt to parse the JSON
-        const jsonData = JSON.parse(text);
+        const jsonData = JSON.stringify(JSON.parse(text));
         setRoadmapData({ jsonData });
       } catch (jsonError) {
         // If JSON parsing fails, display as text
         console.error("Error parsing JSON:", jsonError);
-        setRoadmapData({ html: `<pre>${text}</pre>` });
+        setRoadmapData({ html: `${text}` });
+        
       }
     } catch (error) {
       console.error("Error fetching AI response:", error);
@@ -247,8 +249,10 @@ const SearchRoadmap = () => {
               <p className="text-xl">Loading your roadmap...</p>
             </div>
           )}
+          
 
           {roadmapData && !isLoading && (
+            
             <RoadmapGeminiApi
               data={roadmapData} 
               jobRole={jobRole} 
