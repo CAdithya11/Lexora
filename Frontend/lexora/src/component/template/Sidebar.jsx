@@ -35,19 +35,7 @@ export default function Sidebar({ children }) {
             </ul>
           </SidebarContext.Provider>
 
-          <div className="border-t border-gray-200 flex p-3 bg-gray-50">
-            <img src={profile} className="w-10 h-10 rounded-md shadow-sm" alt="Profile" />
-            <div
-              className={`flex justify-between items-center overflow-hidden transition-all duration-300 ${
-                expanded ? 'w-52 ml-3' : 'w-0'
-              } `}
-            >
-              <div className="leading-4">
-                <h4 className="font-semibold text-gray-800">constGenius</h4>
-                <span className="text-xs text-gray-600">constgenius@gmail.com</span>
-              </div>
-            </div>
-          </div>
+          <div className="border-t border-gray-200 flex p-3 bg-gray-50"></div>
         </nav>
       </aside>
     </>

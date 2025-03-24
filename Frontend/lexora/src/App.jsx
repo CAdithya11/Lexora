@@ -13,6 +13,8 @@ import TeamPage from './pages/Home/TeamPage';
 import RoadmapDetailsPage from './pages/Functions/Roadmap/RoadmapDetailsPage';
 import RoadmapGeminiApi from './component/Roadmaps/RoadmapGeminiApi';
 import HomePage from '../src/pages/Home/HomePage';
+import IndustryInsightsGenerator from './pages/Functions/Industry Insights/Brain/IndustryInsightsGenerator';
+import UserProfileSettings from './pages/Home/UserProfileSettings';
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
           <Route path="/contactUs" element={<ContactUsPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/" element={<HomePage />} />
+          <Route path="/runBrain" element={<IndustryInsightsGenerator />} />
+          <Route path="/settings" element={<UserProfileSettings />} />
 
           {/* Real-time industry insights dashboard */}
           <Route path="/jobTrendings" element={<TrendingJobsPage />} />

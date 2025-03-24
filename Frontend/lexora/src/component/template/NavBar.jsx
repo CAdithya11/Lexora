@@ -97,7 +97,6 @@ const NavBar = ({ activeNavMenu }) => {
           {/* Logo and Brand */}
           <div className="flex-shrink-0 flex items-center">
             <img className="h-8 w-auto" src={logo} alt="Logo" />
-            <span className="ml-2 text-xl font-bold text-indigo-700">Lexora</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -109,35 +108,7 @@ const NavBar = ({ activeNavMenu }) => {
                   activeNavMenu === 'home' ? 'border-indigo-600' : 'border-transparent hover:border-indigo-600'
                 } `}
               >
-                <Home size={18} className="mr-1" />
                 Home
-              </a>
-              <a
-                href="#"
-                className={`text-gray-900 hover:text-indigo-600 px-3 py-2 font-medium transition-colors duration-200 flex items-center border-b-2 ${
-                  activeNavMenu === 'aboutUs' ? 'border-indigo-600' : 'border-transparent hover:border-indigo-600'
-                } `}
-              >
-                <Info size={18} className="mr-1" />
-                About Us
-              </a>
-              <a
-                href="#"
-                className={`text-gray-900 hover:text-indigo-600 px-3 py-2 font-medium transition-colors duration-200 flex items-center border-b-2 ${
-                  activeNavMenu === 'team' ? 'border-indigo-600' : 'border-transparent hover:border-indigo-600'
-                } `}
-              >
-                <Users size={18} className="mr-1" />
-                Our Team
-              </a>
-              <a
-                href="#"
-                className={`text-gray-900 hover:text-indigo-600 px-3 py-2 font-medium transition-colors duration-200 flex items-center border-b-2 ${
-                  activeNavMenu === 'vision' ? 'border-indigo-600' : 'border-transparent hover:border-indigo-600'
-                } `}
-              >
-                <Eye size={18} className="mr-1" />
-                Vision
               </a>
               <a
                 href="#"
@@ -145,50 +116,33 @@ const NavBar = ({ activeNavMenu }) => {
                   activeNavMenu === 'contactUs' ? 'border-indigo-600' : 'border-transparent hover:border-indigo-600'
                 } `}
               >
-                <Mail size={18} className="mr-1" />
+                Apps
+              </a>
+              <a
+                href="#"
+                className={`text-gray-900 hover:text-indigo-600 px-3 py-2 font-medium transition-colors duration-200 flex items-center border-b-2 ${
+                  activeNavMenu === 'contactUs' ? 'border-indigo-600' : 'border-transparent hover:border-indigo-600'
+                } `}
+              >
                 Contact Us
               </a>
+              <a
+                href="#"
+                className={`text-gray-900 hover:text-indigo-600 px-3 py-2 font-medium transition-colors duration-200 flex items-center border-b-2 ${
+                  activeNavMenu === 'aboutUs' ? 'border-indigo-600' : 'border-transparent hover:border-indigo-600'
+                } `}
+              >
+                About Us
+              </a>
 
-              {/* Apps Dropdown */}
-              <div className="relative" ref={appsDropdownRef}>
-                <button
-                  className={`text-gray-600 hover:text-indigo-600 px-3 py-2 font-medium transition-colors duration-200 inline-flex items-center border-b-2 ${
-                    showAppsDropdown ? 'border-indigo-600 text-indigo-600' : 'border-transparent'
-                  } hover:border-indigo-600`}
-                  onClick={toggleAppsDropdown}
-                  aria-expanded={showAppsDropdown}
-                  aria-haspopup="true"
-                >
-                  <Box size={18} className="mr-1" />
-                  Apps
-                  <ChevronDown
-                    size={16}
-                    className={`ml-1 transition-transform duration-200 ${
-                      showAppsDropdown ? 'transform rotate-180' : ''
-                    }`}
-                  />
-                </button>
-
-                {showAppsDropdown && (
-                  <div className="origin-top-right absolute right-0 mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 transition-all duration-200 opacity-100">
-                    <div className="py-1 divide-y divide-gray-100">
-                      {appItems.map((item, index) => (
-                        <a
-                          key={index}
-                          
-                          className="block px-4 py-3 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors duration-150"
-                        >
-                          <div className="font-medium flex items-center">
-                            {item.icon}
-                            <span className="ml-2">{item.title}</span>
-                          </div>
-                          <div className="text-xs text-gray-500 mt-1 ml-6">{item.description}</div>
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+              <a
+                href="#"
+                className={`text-gray-900 hover:text-indigo-600 px-3 py-2 font-medium transition-colors duration-200 flex items-center border-b-2 ${
+                  activeNavMenu === 'team' ? 'border-indigo-600' : 'border-transparent hover:border-indigo-600'
+                } `}
+              >
+                Our Team
+              </a>
             </div>
 
             {/* Auth Buttons */}
