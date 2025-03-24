@@ -2,32 +2,17 @@ import React, { useState, useEffect } from 'react';
 
 
 import {
-  LayoutDashboard,
-  Home,
-  StickyNote,
-  Layers,
-  Calendar,
-  LifeBuoy,
   Settings,
-  FileCog,
-  Users,
-  BarChart3,
-  FileCheck,
   Bell,
   ChevronDown,
   Search,
   ArrowLeft,
   Globe,
-  Filter,
-  TrendingUp,
   Briefcase,
   User,
   LogOut,
-  Download,
-  Share2,
-  Info,
-  Sliders,
 } from 'lucide-react';
+
 import Roadmap from '../../../component/Roadmaps/Roadmap';
 import SidebarSub from '../../../component/template/SidebarSub';
 
@@ -94,15 +79,8 @@ export default function RoadmapPage() {
     <header className="bg-white border-b border-gray-200 px-6 py-3">
       <div className="flex justify-between items-center">
         <div className="flex items-center">
-          <h1 className="text-xl font-semibold text-gray-800 mr-6">Career Analytics</h1>
-          <div className="relative ml-4">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
-            />
-            <Search size={16} className="absolute left-3 top-2.5 text-gray-400" />
-          </div>
+          <h1 className="text-xl font-semibold text-gray-800 mr-6">Roadmap Generator</h1>
+          
         </div>
         <div className="flex items-center space-x-4">
           <button className="p-2 text-gray-500 hover:text-gray-700">
@@ -165,79 +143,20 @@ export default function RoadmapPage() {
         <TopHeader />
         <div className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
-            <div className="bg-white rounded-xl shadow-sm mb-6 overflow-hidden border border-gray-200">
-              <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-white">
-                <div className="flex flex-wrap justify-between items-center">
-                  <div>
-                    <h2 className="text-xl font-semibold text-gray-800 flex items-center">
-                      <Briefcase size={20} className="mr-2 text-blue-500" />
-                      {selectedCategory === 'Software Development & Engineering'
-                        ? 'Software Engineering Trends'
-                        : `${selectedCategory} Trends`}
-                    </h2>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Job market demand by role in {selectedYear} • {selectedCountry.name}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap gap-3 mt-4 sm:mt-0">
-                    
-
-                    {/* Category filter with dropdown */}
-                    <div className="relative">
-                      <button
-                        className="px-4 py-2 border border-gray-200 rounded-lg flex items-center gap-2 text-sm font-medium bg-white hover:bg-gray-50 transition-colors duration-200"
-                        onClick={(e) => toggleDropdown(setShowCategoryDropdown, showCategoryDropdown, e)}
-                      >
-                        <span className="text-blue-600">
-                          {selectedCategory.length > 20 ? selectedCategory.substring(0, 20) + '...' : selectedCategory}
-                        </span>
-                        <ChevronDown size={14} className="text-blue-500" />
-                      </button>
-
-                      {/* Category Dropdown */}
-                      {showCategoryDropdown && (
-                        <div className="absolute right-0 mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-20 max-h-64 overflow-y-auto">
-                          {categories.map((category) => (
-                            <div
-                              key={category}
-                              className={`px-4 py-2 hover:bg-blue-50 cursor-pointer text-sm ${
-                                category === selectedCategory ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700'
-                              }`}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedCategory(category);
-                                setShowCategoryDropdown(false);
-                                setIsLoading(true);
-                              }}
-                            >
-                              {category}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* All Analytics button */}
-                    <button className="flex items-center gap-2 text-sm font-medium border border-gray-200 px-4 py-2 rounded-lg hover:bg-blue-50 text-blue-600 transition-colors duration-200 bg-white">
-                      <ArrowLeft size={14} />
-                      All Analytics
-                    </button>
-                  </div>
-                </div>
-              </div>
+           
+             
 
               {/* Chart Content with Loading State */}
-              <div className="p-6 min-h-96">
+              <div className="bg-white rounded-xl shadow-sm mb-6 overflow-hidden border border-gray-200">
                 {isLoading ? (
-                  <div className="flex items-center justify-center h-80">
+                  <div className="  flex items-center justify-center h-80">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
                   </div>
                 ) : (
                   <Roadmap />
                 )}
               </div>
-            </div>
+         
           </div>
         </div>
       </div>
