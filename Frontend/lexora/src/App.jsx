@@ -15,6 +15,8 @@ import RoadmapGeminiApi from './component/Roadmaps/RoadmapGeminiApi';
 import HomePage from '../src/pages/Home/HomePage';
 import IndustryInsightsGenerator from './pages/Functions/Industry Insights/Brain/IndustryInsightsGenerator';
 import UserProfileSettings from './pages/Home/UserProfileSettings';
+import FeedbackPage from './pages/Home/FeedbackPage';
+import { ProtectedRoute } from './component/template/protectedRoute/ProtectedRoute';
 
 function App() {
   return (
@@ -26,20 +28,25 @@ function App() {
           <Route path="/signIn" element={<SignIn />} />
           <Route path="/signUp" element={<SignUpPage />} />
           <Route path="/contactUs" element={<ContactUsPage />} />
+          <Route path="/feedback" element={<FeedbackPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/" element={<HomePage />} />
-          <Route path="/runBrain" element={<IndustryInsightsGenerator />} />
-          <Route path="/settings" element={<UserProfileSettings />} />
 
-          {/* Real-time industry insights dashboard */}
-          <Route path="/jobTrendings" element={<TrendingJobsPage />} />
+          <Route element={<ProtectedRoute />}>
+            {/* User profiles based*/}
+            <Route path="/settings" element={<UserProfileSettings />} />
 
-          {/* Personolized Roadmap Generator  */}
-          <Route path="/roadmap" element={<RoadmapPage />} />
-          <Route path="/searchRoadmap" element={<SearchRoadmapPage />} />
-          <Route path="/RoadmapDetails" element={<RoadmapDetailsPage />} />
-          <Route path="/rgapi" element={<RoadmapGeminiApi />} />
-          <Route path="/ro" element={<RoadmapOption />} />
+            {/* Real-time industry insights dashboard */}
+            <Route path="/jobTrendings" element={<TrendingJobsPage />} />
+            <Route path="/runBrain" element={<IndustryInsightsGenerator />} />
+
+            {/* Personolized Roadmap Generator  */}
+            <Route path="/roadmap" element={<RoadmapPage />} />
+            <Route path="/searchRoadmap" element={<SearchRoadmapPage />} />
+            <Route path="/RoadmapDetails" element={<RoadmapDetailsPage />} />
+            <Route path="/rgapi" element={<RoadmapGeminiApi />} />
+            <Route path="/ro" element={<RoadmapOption />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>
