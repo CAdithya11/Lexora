@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Globe, ChevronDown, Search, Home, User, Settings, LogOut, Bell } from 'lucide-react';
+import { authService } from '../../services/AuthService';
 
 const categories = [
   'Software Development & Engineering',
@@ -21,7 +22,7 @@ const countries = [
   { name: 'Singapore', code: 'SG' },
 ];
 
-export default function TopHeader() {
+export default function TopHeader({ HeaderMessage }) {
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -62,7 +63,7 @@ export default function TopHeader() {
       <header className="bg-white p-1 shadow-sm z-10 border-b border-gray-200">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between md:items-center">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl pl-5 font-bold text-gray-800">Job Market Insights</h1>
+            <h1 className="text-2xl pl-5 font-bold text-gray-800">{HeaderMessage}</h1>
           </div>
 
           <div className="flex items-center gap-3 mt-4 md:mt-0">
@@ -104,7 +105,10 @@ export default function TopHeader() {
                       <span className="text-sm">Settings</span>
                     </li>
                     <li className="border-t border-gray-100 mt-1">
-                      <button className="w-full text-left px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-red-600">
+                      <button
+                        onClick={() => authService.logout()}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-red-600"
+                      >
                         <LogOut size={16} className="text-red-500" />
                         <span className="text-sm">Logout</span>
                       </button>

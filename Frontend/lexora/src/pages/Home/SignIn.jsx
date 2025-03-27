@@ -1,65 +1,97 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { json } from 'react-router';
+import { authService } from '../../services/AuthService';
+import Alert from '../../component/template/alert/Alert';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAllertType] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setAlertMessage('');
+    setAllertType('');
+    try {
+      console.log('Hello');
+      const response = await authService.login(email, password);
+      console.log(response);
+      navigate('/jobtrendings');
+    } catch (err) {
+      console.log('Hello', JSON.stringify(err.error));
+      setError(err.error || 'Login failed');
+      setAllertType('error');
+      setAlertMessage(JSON.stringify(err.error));
+    }
+  };
   return (
     <>
-      <section class="bg-white">
-        <div class="grid grid-cols-1 lg:grid-cols-2">
-          <div class="flex items-center justify-center px-4 py-10 bg-white sm:px-6 lg:px-8 sm:py-16 lg:py-24">
-            <div class="xl:w-full xl:max-w-sm 2xl:max-w-md xl:mx-auto">
-              <h2 class="text-3xl font-bold leading-tight text-black sm:text-4xl">Sign in</h2>
-              <p class="mt-2 text-base text-gray-600">
-                Don’t have an account?{' '}
-                <a
-                  href="#"
-                  title=""
-                  class="font-medium text-blue-600 transition-all duration-200 hover:text-blue-700 hover:underline focus:text-blue-700"
-                >
-                  Create a free account
-                </a>
-              </p>
+      {alertMessage && <Alert message={alertMessage} type={alertType} />}
+      <section className="bg-white">
+        <div className="grid grid-cols-1 lg:grid-cols-2">
+          <div className="flex items-center justify-center px-4 py-10 bg-white sm:px-6 lg:px-8 sm:py-16 lg:py-24">
+            <div className="xl:w-full xl:max-w-sm 2xl:max-w-md xl:mx-auto">
+              <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl">Sign in</h2>
+              <div className="flex justify object-center m-2 ">
+                <p className="text-base text-gray-600 mr-1">Don’t have an account? </p>
+                <Link to={'/signUp'}>
+                  <div
+                    href=""
+                    title=""
+                    className="font-medium text-blue-600 transition-all duration-200 hover:text-blue-700 hover:underline focus:text-blue-700"
+                  >
+                    Create a free account
+                  </div>
+                </Link>
+              </div>
 
-              <form action="#" method="POST" class="mt-8">
-                <div class="space-y-5">
+              {!alertMessage ? (
+                <p className="mt-2 text-base text-red-0 opacity-0">Invalid Email or Password</p>
+              ) : (
+                <p className="mt-2 text-base text-red-600">Invalid Email or Password</p>
+              )}
+
+              <form onSubmit={handleLogin} className="mt-8">
+                <div className="space-y-5">
                   <div>
-                    <label for="" class="text-base font-medium text-gray-900">
+                    <label htmlFor="" className="text-base font-medium text-gray-900">
                       {' '}
                       Email address{' '}
                     </label>
-                    <div class="mt-2.5">
+                    <div className="mt-2.5">
                       <input
+                        required={true}
                         type="email"
-                        name=""
-                        id=""
+                        name="email"
+                        id="email"
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter email to get started"
-                        class="block w-full p-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
+                        className="block w-full p-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <div class="flex items-center justify-between">
-                      <label for="" class="text-base font-medium text-gray-900">
+                    <div className="flex items-center justify-between">
+                      <label htmlFor="" className="text-base font-medium text-gray-900">
                         {' '}
                         Password{' '}
                       </label>
 
-                      <a
-                        href="#"
-                        title=""
-                        class="text-sm font-medium text-blue-600 hover:underline hover:text-blue-700 focus:text-blue-700"
-                      >
-                        {' '}
-                        Forgot password?{' '}
-                      </a>
+                      <Link to={''}>Forgot password? </Link>
                     </div>
-                    <div class="mt-2.5">
+                    <div className="mt-2.5">
                       <input
                         type="password"
-                        name=""
-                        id=""
+                        name="password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        id="password"
                         placeholder="Enter your password"
-                        class="block w-full p-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
+                        className="block w-full p-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
                       />
                     </div>
                   </div>
@@ -67,7 +99,8 @@ export default function SignIn() {
                   <div>
                     <button
                       type="submit"
-                      class="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700"
+                      onClick={(e) => handleLogin(e)}
+                      className="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700"
                     >
                       Log in
                     </button>
@@ -77,17 +110,17 @@ export default function SignIn() {
             </div>
           </div>
 
-          <div class="flex items-center justify-center px-4 py-10 sm:py-16 lg:py-24 bg-gray-50 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center px-4 py-10 sm:py-16 lg:py-24 bg-gray-50 sm:px-6 lg:px-8">
             <div>
               <img
-                class="w-full mx-auto"
+                className="w-full mx-auto"
                 src="https://cdn.rareblocks.xyz/collection/celebration/images/signup/1/cards.png"
                 alt=""
               />
 
-              <div class="w-full max-w-md mx-auto xl:max-w-xl">
-                <h3 class="text-2xl font-bold text-center text-black">Design your own card</h3>
-                <p class="leading-relaxed text-center text-gray-500 mt-2.5">
+              <div className="w-full max-w-md mx-auto xl:max-w-xl">
+                <h3 className="text-2xl font-bold text-center text-black">Design your own card</h3>
+                <p className="leading-relaxed text-center text-gray-500 mt-2.5">
                   Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat
                   duis.
                 </p>

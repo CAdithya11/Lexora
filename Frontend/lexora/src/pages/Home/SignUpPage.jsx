@@ -1,4 +1,6 @@
 import React from 'react';
+import { Navigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export default function SignUpPage() {
   return (
@@ -10,13 +12,15 @@ export default function SignUpPage() {
               <h2 class="text-3xl font-bold leading-tight text-black sm:text-4xl">Sign up</h2>
               <p class="mt-2 text-base text-gray-600">
                 Already have an account?{' '}
-                <a
-                  href="#"
-                  title=""
-                  class="font-medium text-blue-600 transition-all duration-200 hover:text-blue-700 hover:underline focus:text-blue-700"
-                >
-                  Login
-                </a>
+                <Link to={'/signin'}>
+                  <a
+                    href="#"
+                    title=""
+                    class="font-medium text-blue-600 transition-all duration-200 hover:text-blue-700 hover:underline focus:text-blue-700"
+                  >
+                    Login
+                  </a>
+                </Link>
               </p>
 
               <form action="#" method="POST" class="mt-8">
@@ -24,14 +28,14 @@ export default function SignUpPage() {
                   <div>
                     <label for="" class="text-base font-medium text-gray-900">
                       {' '}
-                      Full Name{' '}
+                      Username{' '}
                     </label>
                     <div class="mt-2.5">
                       <input
                         type="text"
                         name=""
                         id=""
-                        placeholder="Enter your full name"
+                        placeholder="Enter your username"
                         class="block w-full p-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
                       />
                     </div>
@@ -71,7 +75,7 @@ export default function SignUpPage() {
 
                   <div>
                     <button
-                      type="submit"
+                      type="button"
                       class="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700"
                     >
                       Create free account
