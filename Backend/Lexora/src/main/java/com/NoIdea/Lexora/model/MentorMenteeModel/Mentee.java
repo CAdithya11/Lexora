@@ -3,6 +3,8 @@ package com.NoIdea.Lexora.model.MentorMenteeModel;
 import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,9 +31,17 @@ public class Mentee {
     private List<String> skills;
 
     @Column(nullable = false)
-    private String educationLevel;//this should be a enum
+    @Enumerated(EnumType.STRING)
+    private EducationLevel educationLevel;
+
+    public enum EducationLevel{
+        AL,
+        OL,
+        DEGREE,
+        PHD
+    }
 
     private String careerGoal;
 
-    private String preferredMentorshipType;//this should be a enum
+    private String preferredMentorshipType;
 }
