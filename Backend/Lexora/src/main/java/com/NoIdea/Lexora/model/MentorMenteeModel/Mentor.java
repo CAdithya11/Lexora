@@ -1,6 +1,10 @@
 package com.NoIdea.Lexora.model.MentorMenteeModel;
 
 import java.util.List;
+
+import com.NoIdea.Lexora.enums.MentorMentee.Availability;
+import com.NoIdea.Lexora.enums.MentorMentee.VerificationStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -32,17 +36,13 @@ public class Mentor {
 
     private String occupation;
 
-    private String Company;
+    private String company;
 
     @Enumerated(EnumType.STRING)
-    private String verificationStatus; //this should be a enum
-
-    public enum verificationStatus{//ensure this enum should be private or public
-        ACCEPTED,
-        REJECTED
-    }
+    private VerificationStatus verificationStatus;
 
     private List<String> skills;
 
-    private String availability;//this should be a enum
+    @Enumerated(EnumType.STRING)
+    private Availability availability;
 }
