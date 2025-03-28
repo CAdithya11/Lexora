@@ -1,0 +1,21 @@
+package com.NoIdea.Lexora.service.User;
+
+import com.NoIdea.Lexora.model.User.UserEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+@Service
+public interface UserEntityService {
+    public UserEntity createUser(UserEntity userEntity);
+    public UserEntity findUserById(Long id);
+    public UserEntity updateProfileImage(UserEntity userEntity);
+    public UserEntity updateUserProfile(UserEntity userEntity);
+
+    public String changePassword(String currentPassword,String newPassword,Long id);
+
+    public String updateProfessionalDetails(UserEntity userEntity,Long id);
+
+    public String createVerificationRequest(Long id, MultipartFile certificate) throws IOException;
+}

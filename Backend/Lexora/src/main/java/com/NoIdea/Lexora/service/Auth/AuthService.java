@@ -6,7 +6,7 @@ import com.NoIdea.Lexora.dto.LoginResponseDTO;
 import com.NoIdea.Lexora.dto.RegistrationRequestDTO;
 import com.NoIdea.Lexora.dto.RegistrationResponseDTO;
 import com.NoIdea.Lexora.model.User.UserEntity;
-import com.NoIdea.Lexora.repository.User.UserRepository;
+import com.NoIdea.Lexora.repository.User.UserEntityRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,13 +19,13 @@ import java.util.Map;
 
 @Service
 public class AuthService {
-    private final UserRepository userRepository;
+    private final UserEntityRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     private final JWTService jwtService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTService jwtService) {
+    public AuthService(UserEntityRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;

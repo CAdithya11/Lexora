@@ -2,7 +2,7 @@ package com.NoIdea.Lexora.config;
 
 
 import com.NoIdea.Lexora.filter.JWTFilter;
-import com.NoIdea.Lexora.repository.User.UserRepository;
+import com.NoIdea.Lexora.repository.User.UserEntityRepository;
 import com.NoIdea.Lexora.service.Auth.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,11 +27,11 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserRepository userRepository;
+    private final UserEntityRepository userRepository;
 
     private final JWTFilter jwtFilter;
 
-    public SecurityConfig(UserRepository userRepository, UserRepository userRepository1, JWTFilter jwtFilter) {
+    public SecurityConfig(UserEntityRepository userRepository, UserEntityRepository userRepository1, JWTFilter jwtFilter) {
         this.userRepository = userRepository1;
         this.jwtFilter = jwtFilter;
     }
@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(c -> c.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(a -> a.requestMatchers("/login","/api/v1/auth/login","/api/v1/auth/register")
+                .authorizeHttpRequests(a -> a.requestMatchers("/login","/api/v1/auth/login","/api/v1/auth/register","/api/**")
                         .permitAll().anyRequest()
                         .authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

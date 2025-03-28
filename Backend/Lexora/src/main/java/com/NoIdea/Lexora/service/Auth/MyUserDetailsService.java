@@ -1,16 +1,16 @@
 package com.NoIdea.Lexora.service.Auth;
 
 import com.NoIdea.Lexora.model.User.UserEntity;
-import com.NoIdea.Lexora.repository.User.UserRepository;
+import com.NoIdea.Lexora.repository.User.UserEntityRepository;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class MyUserDetailsService implements UserDetailsService {
-    private final UserRepository userRepository;
+    private final UserEntityRepository userRepository;
 
-    public MyUserDetailsService(UserRepository userRepository) {
+    public MyUserDetailsService(UserEntityRepository userRepository) {
         this.userRepository = userRepository;
     }
 

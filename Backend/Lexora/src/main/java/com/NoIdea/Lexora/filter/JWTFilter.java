@@ -2,7 +2,7 @@ package com.NoIdea.Lexora.filter;
 
 
 import com.NoIdea.Lexora.model.User.UserEntity;
-import com.NoIdea.Lexora.repository.User.UserRepository;
+import com.NoIdea.Lexora.repository.User.UserEntityRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,9 +22,9 @@ import java.io.IOException;
 @Component
 public class JWTFilter extends OncePerRequestFilter {
     private final JWTService jwtService;
-    private final UserRepository userRepository;
+    private final UserEntityRepository userRepository;
 
-    public JWTFilter(JWTService jwtService, UserRepository userRepository) {
+    public JWTFilter(JWTService jwtService, UserEntityRepository userRepository) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
     }
