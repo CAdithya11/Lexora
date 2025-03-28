@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-
 import {
   LayoutDashboard,
   Home,
@@ -163,7 +162,7 @@ export default function RoadmapPage() {
     <div className="flex h-screen overflow-hidden bg-gray-50">
       <SidebarSub />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <TopHeader />
+        <TopHeader HeaderMessage={'Roadmap Details'} />
         <div className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-xl shadow-sm mb-6 overflow-hidden border border-gray-200">
@@ -171,7 +170,6 @@ export default function RoadmapPage() {
                 <div className="flex flex-wrap justify-between items-center">
                   <div>
                     <h2 className="text-xl font-semibold text-gray-800 flex items-center">
-                      
                       {selectedCategory === 'Software Development & Engineering'
                         ? 'Generated Roadmap Details'
                         : `${selectedCategory} Trends`}
@@ -204,7 +202,6 @@ export default function RoadmapPage() {
           </div>
         </div>
       </div>
-      </div>
-   
+    </div>
   );
 }
