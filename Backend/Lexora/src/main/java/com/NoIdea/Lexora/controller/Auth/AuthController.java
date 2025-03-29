@@ -13,6 +13,8 @@ import com.NoIdea.Lexora.service.Auth.AuthService;
 
 import java.util.List;
 
+import static com.NoIdea.Lexora.enums.User.Role.STUDENT;
+
 @RestController
 @RequestMapping("api/v1/auth")
 public class AuthController {
@@ -29,12 +31,12 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<RegistrationResponseDTO> saveUser(@RequestBody RegistrationRequestDTO user) {
+        user.setRole(STUDENT);
         RegistrationResponseDTO res = authService.register(user);
         if (res.getError() != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
         }
         return ResponseEntity.status(HttpStatus.OK).body(res);
-
     }
 
     @PostMapping("/login")

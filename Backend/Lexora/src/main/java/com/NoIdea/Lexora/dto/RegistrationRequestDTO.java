@@ -1,30 +1,16 @@
 package com.NoIdea.Lexora.dto;
 
+import com.NoIdea.Lexora.enums.User.Role;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegistrationRequestDTO {
     private String email;
     private String password;
-
-    public RegistrationRequestDTO() {
-    }
-
-    public RegistrationRequestDTO( String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    private String username;
+    private Role role;
 }

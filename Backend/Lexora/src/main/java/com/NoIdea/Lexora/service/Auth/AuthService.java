@@ -40,6 +40,8 @@ public class AuthService {
         UserEntity newUser = new UserEntity();
         newUser.setEmail(user.getEmail());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setUsername(user.getUsername());
+        newUser.setRole(user.getRole());
         return userRepository.save(newUser);
     }
 
@@ -54,7 +56,7 @@ public class AuthService {
         }
         Map<String,Object> claims = new HashMap<String,Object>();
         claims.put("role","user");
-        claims.put("email","cadithya13@gmail.com");
+        claims.put("username",loginDetails.getEmail());
 
         String token = jwtService.getJWTToken(loginDetails.getEmail(),claims);
 
@@ -66,15 +68,13 @@ public class AuthService {
             return new RegistrationResponseDTO(null,"User already exists");
         }
         try{
+            System.out.println(registrationDetails);
             saveUser(registrationDetails);
         }catch (Exception e){
             return new RegistrationResponseDTO("Invalid Credentials",null);
         }
         return new RegistrationResponseDTO(null,"User Successfully registered");
     }
-
-
-
 
     public Boolean isUserExists(String email){
         System.out.println(userRepository.findByEmail(email).isPresent());
