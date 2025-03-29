@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import SidebarSub from '../../component/template/SidebarSub';
 import TopHeader from '../../component/template/TopHeader';
+import userProfileHandleService from '../../services/userProfileHandleService';
 
 export default function UserProfileSettings() {
   const [activeTab, setActiveTab] = useState('Profile');
   const tabs = ['Profile', 'Password'];
+  const [userData,setUserData] = useState("");
+
+  useEffect(()=>{
+    userProfileHandleService.findUserById(2).then((response)=>{
+      setUserData(response.data);
+      console.log(response.data);
+    })
+    
+  },[ ])
 
   return (
     <>

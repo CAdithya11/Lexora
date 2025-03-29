@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-const profileControllerAPI = 'http://localhost:8080/api/v1/profile';
+const profileControllerAPI = 'http://localhost:8080/api/v1/profile/';
 
-const registrationAPI = 'http://localhost:8080/api/v1/auth';
+const registrationAPI = 'http://localhost:8080/api/v1/auth/';
+
 
 class profileSettings {
   constructor() {}
@@ -12,7 +13,11 @@ class profileSettings {
     } */
 
   createUser(UserData) {
-    return axios.post(registrationAPI + '/register', UserData);
+    return axios.post(registrationAPI + 'register', UserData);
+  }
+
+  findUserById(id){
+    return axios.get(profileControllerAPI + id);
   }
 }
 
