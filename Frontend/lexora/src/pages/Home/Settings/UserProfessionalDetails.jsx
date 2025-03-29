@@ -1,11 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import SidebarSub from '../../component/template/SidebarSub';
-import TopHeader from '../../component/template/TopHeader';
+import SidebarSub from '../../../component/template/SidebarSub';
+import TopHeader from '../../../component/template/TopHeader';
+import userProfileHandleService from '../../../services/userProfileHandleService';
+import { Link } from 'react-router-dom';
 
-export default function UserProfileSettings() {
-  const [activeTab, setActiveTab] = useState('Profile');
-  const tabs = ['Profile', 'Password'];
+export default function UserProfessionalDetails() {
+  const [activeTab, setActiveTab] = useState('professional Details');
+  const tabs = {
+    Profile: '/settings/profile',
+    Password: '/settings/password',
+    'professional Details': '/settings/professionalDetails',
+  };
+  const [profileDetails, setProfileDetails] = useState('');
+
+  useEffect(() => {
+    userProfileHandleService.findUserById(1).then((response) => {
+      setProfileDetails(response.data);
+      console.log(response.data);
+    });
+  },[]);
 
   return (
     <>
@@ -16,27 +30,26 @@ export default function UserProfileSettings() {
         {/* Main Content Area with Independent Scrolling */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Fixed Header */}
-          <TopHeader />
+          <TopHeader HeaderMessage={'Settings'} />
 
           <div className="flex-1 flex m-5 flex-col pt-5 pl-10 overflow-auto">
-            {/* Settings title */}
-            <h1 className="text-2xl font-semibold mb-6">Settings</h1>
-
             {/* Tab navigation */}
             <div className="border-b border-gray-200 mb-6">
               <nav className="flex space-x-8">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab}
-                    className={`py-4 px-1 font-medium text-sm ${
-                      activeTab === tab
-                        ? 'text-indigo-600 border-b-2 border-indigo-600'
-                        : 'text-gray-500 hover:text-gray-700'
-                    }`}
-                    onClick={() => setActiveTab(tab)}
-                  >
-                    {tab}
-                  </button>
+                {Object.entries(tabs).map(([key, value]) => (
+                  <Link to={value}>
+                    <button
+                      key={key}
+                      className={`py-4 px-1 font-medium text-sm ${
+                        activeTab === key
+                          ? 'text-blue-600 border-b-2 border-blue-600'
+                          : 'text-gray-500 hover:text-gray-700'
+                      }`}
+                      onClick={() => setActiveTab(key)}
+                    >
+                      {key}
+                    </button>
+                  </Link>
                 ))}
               </nav>
             </div>

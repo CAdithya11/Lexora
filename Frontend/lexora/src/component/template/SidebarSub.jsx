@@ -50,11 +50,13 @@ export default function SidebarSub() {
   const [selectedYear, setSelectedYear] = useState('2025');
   const [showYearDropdown, setShowYearDropdown] = useState(false);
   const location = useLocation();
+  
 
   const isLocation = location.pathname;
 
   // Available years for the filter
   const years = ['2023', '2024', '2025', '2026'];
+  
 
   return (
     <>
@@ -92,13 +94,13 @@ export default function SidebarSub() {
             alwaysOpen={isLocation == '/jobtrendings' ? true : false}
           >
             <Link to="/jobtrendings">
-              <SidebarSubItem text="Job Trends" active />
+              <SidebarSubItem text="Job Trends" />
             </Link>
             <Link to="/jobtrendings">
-              <SidebarSubItem text="Skill Trends" active />
+              <SidebarSubItem text="Skill Trends" />
             </Link>
             <Link to="/jobtrendings">
-              <SidebarSubItem text="Salary Trends" active />
+              <SidebarSubItem text="Salary Trends" />
             </Link>
           </SidebarItem>
 
@@ -128,7 +130,9 @@ export default function SidebarSub() {
 
           <SidebarItem icon={<Settings size={20} />} text="Settings" alwaysOpen={true}>
             <SidebarSubItem text="Profile" />
-            <SidebarSubItem text="Change Password" />
+            <Link to={'/settings/password'}>
+              <SidebarSubItem text="Change Password" active={isLocation == '/settings/password' ? true : false} />
+            </Link>
             <SidebarSubItem text="Proffesional Profile" />
           </SidebarItem>
           <div onClick={() => authService.logout()}>
