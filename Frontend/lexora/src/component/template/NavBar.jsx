@@ -18,6 +18,7 @@ import {
   Users as UsersIcon,
 } from 'lucide-react';
 import logo from '../../assets/logo.png'; // Assuming logo path
+import { Link } from 'react-router-dom';
 
 const NavBar = ({ activeNavMenu }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -146,21 +147,21 @@ const NavBar = ({ activeNavMenu }) => {
             </div>
 
             {/* Auth Buttons */}
-            <div className="ml-6 flex items-center">
-              <a
-                href="#"
-                className="text-indigo-600 hover:text-indigo-800 px-3 py-2 font-medium flex items-center transition-colors duration-200 hover:bg-indigo-50 rounded"
-              >
-                <LogIn size={18} className="mr-1" />
-                Sign In
-              </a>
-              <a
-                href="#"
-                className="ml-4 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 flex items-center shadow-md hover:shadow-lg"
-              >
-                <UserPlus size={18} className="mr-1" />
-                Sign Up
-              </a>
+            <div className="flex-shrink-0 ml-22 mr-3">
+              <Link to={'/signIn'}>
+                <div className="  block w-full px-5 py-2 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100 rounded-md flex items-center justify-center transition-colors duration-150">
+                  <LogIn size={18} className="mr-1" />
+                  Sign In
+                </div>
+              </Link>
+            </div>
+            <div className="flex-shrink-0">
+              <Link to={'/signIn'}>
+                <div className="block w-full px-5 py-2 text-center font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md flex items-center justify-center transition-colors duration-150 shadow-md">
+                  <UserPlus size={18} className="mr-1" />
+                  Sign Up
+                </div>
+              </Link>
             </div>
           </div>
 
@@ -257,22 +258,20 @@ const NavBar = ({ activeNavMenu }) => {
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div className="flex items-center px-5">
               <div className="flex-shrink-0">
-                <a
-                  href="#"
-                  className="block w-full px-5 py-2 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100 rounded-md flex items-center justify-center transition-colors duration-150"
-                >
-                  <LogIn size={18} className="mr-1" />
-                  Sign In
-                </a>
+                <Link to={'/signIn'}>
+                  <div className="block w-full px-5 py-2 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100 rounded-md flex items-center justify-center transition-colors duration-150">
+                    <LogIn size={18} className="mr-1" />
+                    Sign In
+                  </div>
+                </Link>
               </div>
-              <div className="ml-3 w-full">
-                <a
-                  href="#"
-                  className="block w-full px-5 py-2 text-center font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md flex items-center justify-center transition-colors duration-150 shadow-md"
-                >
-                  <UserPlus size={18} className="mr-1" />
-                  Sign Up
-                </a>
+              <div className="flex-shrink-0">
+                <Link to={'/signIn'}>
+                  <div className="block w-full px-5 py-2 text-center font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md flex items-center justify-center transition-colors duration-150 shadow-md">
+                    <UserPlus size={18} className="mr-1" />
+                    Sign Up
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
