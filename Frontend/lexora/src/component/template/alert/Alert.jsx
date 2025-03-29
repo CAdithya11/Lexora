@@ -16,7 +16,7 @@ const Alert = ({ message, type }) => {
 
   return (
     <div
-      className="fixed top-4 right-4 bg-white shadow-md rounded-lg p-4 border border-gray-200 flex items-center space-x-3 max-w-md w-full
+      className="fixed z-999 top-4 right-4 bg-white shadow-md rounded-lg p-4 border border-gray-200 flex items-center space-x-3 max-w-md w-full
      transition-transform transform ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
       `}"
     >
@@ -25,7 +25,7 @@ const Alert = ({ message, type }) => {
       ) : type == 'success' ? (
         <CheckCircle className="text-green-500 w-6 h-6" />
       ) : (
-        <CheckCircle className="text-green-500 w-6 h-6" />
+        <CheckCircle className="text-red-500 w-6 h-6" />
       )}
       <div className="flex-grow">
         <p className="text-gray-800 font-semibold">{message}</p>

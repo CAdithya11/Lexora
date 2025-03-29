@@ -14,9 +14,10 @@ import RoadmapDetailsPage from './pages/Functions/Roadmap/RoadmapDetailsPage';
 import RoadmapGeminiApi from './component/Roadmaps/RoadmapGeminiApi';
 import HomePage from '../src/pages/Home/HomePage';
 import IndustryInsightsGenerator from './pages/Functions/Industry Insights/Brain/IndustryInsightsGenerator';
-import UserProfileSettings from './pages/Home/UserProfileSettings';
 import FeedbackPage from './pages/Home/FeedbackPage';
 import { ProtectedRoute } from './component/template/protectedRoute/ProtectedRoute';
+import UserProfileSettings from './pages/Home/Settings/UserProfileSettings';
+import UserChangePassword from './pages/Home/Settings/UserChangePassword';
 
 function App() {
   return (
@@ -34,7 +35,9 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             {/* User profiles based*/}
-            <Route path="/settings" element={<UserProfileSettings />} />
+            <Route path="/settings/profile" element={<UserProfileSettings />} />
+            <Route path="/settings/password" element={<UserChangePassword />} />
+            <Route path="/settings/professionalDetails" element={<UserProfileSettings />} />
 
             {/* Real-time industry insights dashboard */}
             <Route path="/jobTrendings" element={<TrendingJobsPage />} />
