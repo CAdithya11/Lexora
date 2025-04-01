@@ -11,10 +11,17 @@ import RoadmapOption from './component/Roadmaps/RoadmapOption';
 import ContactUsPage from './pages/Home/ContactUsPage';
 import TeamPage from './pages/Home/TeamPage';
 import RoadmapDetailsPage from './pages/Functions/Roadmap/RoadmapDetailsPage';
+import Persona from './pages/Functions/Roadmap/Persona';
 import RoadmapGeminiApi from './component/Roadmaps/RoadmapGeminiApi';
 import HomePage from '../src/pages/Home/HomePage';
 import IndustryInsightsGenerator from './pages/Functions/Industry Insights/Brain/IndustryInsightsGenerator';
 import UserProfileSettings from './pages/Home/UserProfileSettings';
+import CareerPersosna from './pages/Functions/CareerPersonaMatching/PersonaMatcher';
+import MatchedPersosna from './pages/Functions/CareerPersonaMatching/MatchedPersona';
+import Skill from './pages/Functions/SkillGapAnalyzer/SkillGapAnalyzer';
+import Skill1 from './pages/Functions/SkillGapAnalyzer/SkillQuiz';
+import Skill2 from './pages/Functions/SkillGapAnalyzer/Results';
+import Skill3 from './pages/Functions/SkillGapAnalyzer/Resultvisualize';
 
 function App() {
   return (
@@ -38,8 +45,15 @@ function App() {
           <Route path="/roadmap" element={<RoadmapPage />} />
           <Route path="/searchRoadmap" element={<SearchRoadmapPage />} />
           <Route path="/RoadmapDetails" element={<RoadmapDetailsPage />} />
+          <Route path="/PersonaMatching" element={<CareerPersosna />} />
+          <Route path="/Personas" element={<MatchedPersosna />} />
+          <Route path="/persona" element={<Persona />} />
           <Route path="/rgapi" element={<RoadmapGeminiApi />} />
           <Route path="/ro" element={<RoadmapOption />} />
+          <Route path="/sk" element={<Skill />} />
+          <Route path="/sk1" element={<Skill1 />} />
+          <Route path="/sk2" element={<Skill2 />} />
+          <Route path="/sk3" element={<Skill3 />} />
         </Routes>
       </BrowserRouter>
     </>
