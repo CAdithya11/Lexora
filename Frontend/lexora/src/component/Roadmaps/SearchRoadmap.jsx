@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Roadmap from './Roadmap';
+import { Link } from 'react-router';
 
 const SearchRoadmap = () => {
   const [searchInput, setSearchInput] = useState('');
@@ -65,25 +66,18 @@ const SearchRoadmap = () => {
                 "sub_name": "Sub Category Name",
                 "sub_description": "Detailed description of this skill/concept",
                 "sub_steps": [
-                  {
+                    {
                     "steps_id": "1.1.1.1",
-                    "steps_description": "Detailed step-by-step task to improve this specific skill"
+                    "steps_description": " Step-by-step indetail explain tasks that improve this specific skill"
                   },
-                  {
-                    "steps_id": "1.1.1.2", 
-                    "steps_description": "Another specific action item or learning task"
-                  },
-                  {
-                    "steps_id": "1.1.1.3",
-                    "steps_description": "Additional practice or implementation task"
-                  }
+                 
                 ]
               }
             ]
           }
         ]
       }
-      Make sure the output is valid JSON that can be parsed directly. Focus specifically on ${skillInput} skills for this ${jobGoal} role. Include at least 3 main_text categories related to ${skillInput}, each with 2-3 sub_categories, and each sub_category with 4-6 detailed step-by-step tasks that explain exactly what the user needs to do to improve in that specific skill area. These sub_steps should be practical, actionable items in a logical progression.`;
+      Make sure the output is valid JSON that can be parsed directly. Focus specifically on ${skillInput} skills for this ${jobGoal} role. Include 5-10 main_text categories related to ${skillInput}, each with 10-20 sub_categories, and each sub_category with 10-20 step-by-step detailed tasks flow that describe exactly what the user needs to do to improve in that specific skill area. These sub_steps should be practical, actionable items in a logical progression.`;
     }
     
     // Option 2: General roadmap
@@ -106,13 +100,8 @@ const SearchRoadmap = () => {
                 "sub_steps": [
                   {
                     "steps_id": "1.1.1.1",
-                    "steps_description":[
-                          "steps": "First point explaining what to do specifically for this sub-category",
-                                   "Second point with additional action items",
-                                   "Third point with more detailed guidance",
-                                   "Fourth point with practical implementation tasks",
-                                   "Fifth point with assessment criteria"
-                    ] 
+                    "steps_description": " Step-by-step indetail explain tasks that improve this specific skill"
+                  },
                   }
                   
                 ]
@@ -121,7 +110,7 @@ const SearchRoadmap = () => {
           }
         ]
       }
-      Cover all essential skills needed for this career path. Include 5-20 main_text categories, each with 5-10 sub_categories, and each sub_category with 4-10 detailed step-by-step tasks that explain what the user needs to do. These sub_steps should be practical, actionable items in a logical progression that build on each other. Make each step specific and measurable so users know when they've completed it.`;
+      Cover all essential skills needed for this career path. Include 5-20 main_text categories, each with 5-20 sub_categories, and each sub_category with 10-20 step-by-step detailed tasks flow that describe exactly what the user needs to do to improve in that specific area. These sub_steps should be practical, actionable items in a logical progression that build on each other. Make each step specific and measurable so users know when they've completed it.`;
     }
 
     return "";
@@ -147,6 +136,7 @@ const SearchRoadmap = () => {
         
         // Parse the JSON
         const parsedJson = JSON.parse(text);
+        console.log(parsedJson);
         
         // Ensure the job_name includes skill information if option 1 was selected
         if (option === 1 && skill) {
@@ -198,7 +188,7 @@ const SearchRoadmap = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-[75vh] text-center">
+    <div className="flex flex-col justify-center items-center min-h-[85vh] text-center">
       {!showRoadmap ? (
         <div>
           <h1 className="text-2xl font-bold mb-5">GENERATE ROADMAP</h1>
@@ -249,7 +239,7 @@ const SearchRoadmap = () => {
               </button>
             </div>
           ) : selectedOption === 1 ? (
-            <div className="p-5 border border-gray-200 rounded-lg bg-gray-50">
+            <div className="p-5 border border-gray-200 rounded-lg bg-white-50">
               <h3 className="text-xl font-bold mb-5">Which specific skill do you want to focus on?</h3>
               <div className="mb-5">
                 <input
@@ -295,12 +285,15 @@ const SearchRoadmap = () => {
                 <div>{roadmapData.html}</div>
               )}
               <div className="mt-4 text-center">
-                <button
-                  onClick={resetForm}
-                  className="py-2 px-5 bg-gray-100 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-200"
-                >
-                  Start Over
+                
+                <button className="py-2 px-5 bg-gray-100 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-200"
+                onClick={resetForm}>
+                Cancel
                 </button>
+                <Link to={'/RoadmapDetails'}>
+                <button className="py-2 px-5 bg-gray-100 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-200">
+                  Save
+                </button></Link>
               </div>
             </div>
           )}

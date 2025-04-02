@@ -6,7 +6,6 @@ import SignUpPage from './pages/Home/SignUpPage';
 
 import SearchRoadmapPage from './pages/Functions/Roadmap/SearchRoadmapPage';
 import RoadmapPage from './pages/Functions/Roadmap/RoadmapPage';
-import RoadmapOption from './component/Roadmaps/RoadmapOption';
 
 import ContactUsPage from './pages/Home/ContactUsPage';
 import TeamPage from './pages/Home/TeamPage';
@@ -44,8 +43,6 @@ function App() {
             <Route path="/roadmap" element={<RoadmapPage />} />
             <Route path="/searchRoadmap" element={<SearchRoadmapPage />} />
             <Route path="/RoadmapDetails" element={<RoadmapDetailsPage />} />
-            <Route path="/rgapi" element={<RoadmapGeminiApi />} />
-            <Route path="/ro" element={<RoadmapOption />} />
           </Route>
         </Routes>
       </BrowserRouter>

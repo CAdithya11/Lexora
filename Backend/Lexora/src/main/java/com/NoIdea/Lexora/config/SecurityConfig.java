@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(c -> c.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(a -> a.requestMatchers("/login","/api/v1/auth/login","/api/v1/auth/register","/api/**")
+                .authorizeHttpRequests(a -> a.requestMatchers("/login","/api/v1/auth/login","/api/v1/auth/register","/**")
                         .permitAll().anyRequest()
                         .authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

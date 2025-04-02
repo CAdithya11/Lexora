@@ -41,6 +41,11 @@ export default function SearchRoadmapPage() {
         {/* Header */}
         <TopHeader HeaderMessage={'Roadmap Generator'} />
         
+
+        <div className=" overflow-y-auto ">
+          <div className=" mx-auto">
+            <div className="bg-white overflow-hidden ">
+              <div className="">
                 {isLoading ? (
                   <div className="flex items-center justify-center h-80">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
@@ -48,6 +53,10 @@ export default function SearchRoadmapPage() {
                 ) : (
                   <SearchRoadmap />
                 )}
+              </div>
+              </div>
+              </div>
+              </div>
               </div>
             </div>
           
