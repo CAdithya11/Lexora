@@ -8,11 +8,8 @@ import org.openqa.selenium.WebDriver;
 @SpringBootApplication
 public class LexoraApplication {
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
 		SpringApplication.run(LexoraApplication.class, args);
-
-
-
 
 	} 
 
