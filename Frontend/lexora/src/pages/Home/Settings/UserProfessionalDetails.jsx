@@ -4,6 +4,7 @@ import SidebarSub from '../../../component/template/SidebarSub';
 import TopHeader from '../../../component/template/TopHeader';
 import userProfileHandleService from '../../../services/userProfileHandleService';
 import { Link } from 'react-router-dom';
+import Alert from '../../../component/template/alert/Alert';
 
 export default function UserProfessionalDetails() {
   const [activeTab, setActiveTab] = useState('professional Details');
@@ -12,24 +13,105 @@ export default function UserProfessionalDetails() {
     Password: '/settings/password',
     'professional Details': '/settings/professionalDetails',
   };
-  const [profileDetails, setProfileDetails] = useState('');
+
+  const [profileDetails, setProfileDetails] = useState({
+    occupation: '',
+    company: '',
+    experience: '',
+    career: '',
+    v_status: '',
+  });
+
+  const [degree_certificate, setDegree_certificate] = useState();
+  const [previewImage, setPreviewImage] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState('');
 
   useEffect(() => {
-    userProfileHandleService.findUserById(1).then((response) => {
-      setProfileDetails(response.data);
+    userProfileHandleService.findUserProfileById(1).then((response) => {
+      const userData = response.data || {};
+      setProfileDetails({
+        occupation: userData.occupation || '',
+        company: userData.company || '',
+        experience: userData.experience || '',
+        career: userData.career || '',
+        v_status: userData.v_status || '',
+        degree_certificate: userData.degree_certificate || '',
+      });
       console.log(response.data);
     });
-  },[]);
+  }, []);
+
+  const handleVerificationDetails = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setDegree_certificate(file);
+    }
+  };
+
+  const uploadProfileImage = async (e) => {
+    e.preventDefault();
+    setAlertMessage('');
+
+    try {
+      await userProfileHandleService.requestVerifyAccount(degree_certificate).then((response) => {
+        console.log(response);
+        if (response.status == 200) {
+          setAlertMessage(response.data);
+          setAlertType('success');
+        }
+      });
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setAlertMessage('Server Error ');
+        setAlertType('error');
+      } else {
+        setAlertMessage("File is large, can't update");
+        setAlertType('error');
+      }
+    }
+  };
+
+  const handleProfileDetailsChange = (e) => {
+    const { name, value } = e.target;
+    setProfileDetails({
+      ...profileDetails,
+      [name]: value,
+    });
+  };
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    setAlertMessage('');
+    const updatedDetails = { ...profileDetails };
+    delete updatedDetails.degree_certificate;
+    delete updatedDetails.v_status;
+
+    const confirmed = confirm('Are you sure you want to update current professional Details ?');
+
+    if (confirmed) {
+      try {
+        const response = await userProfileHandleService.updateProfessionalDetails(updatedDetails);
+        if (response.status === 200) {
+          setAlertMessage('Profile updated successfully');
+          setAlertType('success');
+        }
+      } catch (error) {
+        setAlertMessage(error.response?.data || 'Failed to update profile');
+        setAlertType('error');
+      }
+    }
+  };
 
   return (
     <>
-      <div className="flex h-screen overflow-hidden bg-gray-50">
-        {/* Fixed Sidebar */}
+      {alertMessage && <Alert message={alertMessage} type={alertType} />}
+      <div className="flex h-screen overflow-hidden bg-white">
         <SidebarSub />
 
         {/* Main Content Area with Independent Scrolling */}
         <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Fixed Header */}
+          {/* Header */}
           <TopHeader HeaderMessage={'Settings'} />
 
           <div className="flex-1 flex m-5 flex-col pt-5 pl-10 overflow-auto">
@@ -56,149 +138,138 @@ export default function UserProfessionalDetails() {
 
             {/* Profile content */}
             <div className="max-w-3xl">
-              <div className="mb-6">
-                <h2 className="text-lg font-medium mb-2">Profile</h2>
-                <p className="text-gray-500 text-sm">Lorem ipsum dolor sit amet, consectetur adipis.</p>
+              <div className="mb-6 ">
+                <div className="flex flex-row object-center items-center mb-2">
+                  <h2 className="text-lg font-medium mr-2">Professional Details</h2>
+                  <p className="text-sm text-red-600">* Not verified</p>
+                </div>
+                <p className="text-gray-500 text-sm">
+                  It is important to Update your professional details to get verified as a mentor
+                </p>
               </div>
 
-              {/* Profile Photo */}
-              <div className="flex items-center mb-6">
-                <div className="w-28">
-                  <label className="block text-sm font-medium text-gray-700">Profile Photo</label>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <img
-                    src="https://via.placeholder.com/40"
-                    alt="Profile"
-                    className="w-10 h-10 rounded-md object-cover"
-                  />
-                  <button className="text-gray-500 text-sm hover:text-gray-700">Remove</button>
-                  <button className="text-indigo-600 text-sm font-medium hover:text-indigo-700">Update</button>
-                </div>
-              </div>
-
-              {/* First & Last Name */}
-              <div className="flex mb-6">
-                <div className="w-28">
-                  <label className="block text-sm font-medium text-gray-700">First & Last Name</label>
-                </div>
-                <div className="flex-1 grid grid-cols-2 gap-4">
-                  <input type="text" value="Martin" className="rounded-md border border-gray-300 px-3 py-2 text-sm" />
-                  <input type="text" value="Janiter" className="rounded-md border border-gray-300 px-3 py-2 text-sm" />
-                </div>
-              </div>
-
-              {/* Email Address */}
-              <div className="flex mb-6">
-                <div className="w-28">
-                  <label className="block text-sm font-medium text-gray-700">Email Address</label>
-                </div>
-                <div className="flex-1">
-                  <input
-                    type="email"
-                    value="martin@gmail.com"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-                  />
-                </div>
-              </div>
-
-              {/* Bio */}
-              <div className="flex mb-6">
-                <div className="w-28">
-                  <label className="block text-sm font-medium text-gray-700">Write Your Bio</label>
-                </div>
-                <div className="flex-1">
-                  <textarea
-                    placeholder="Write about you"
-                    rows={4}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-                  ></textarea>
-                </div>
-              </div>
-
-              {/* Username */}
-              <div className="flex mb-6">
-                <div className="w-28">
-                  <label className="block text-sm font-medium text-gray-700">Username</label>
-                  <p className="text-xs text-gray-500 mt-1">You can change it later</p>
-                </div>
-                <div className="flex-1">
-                  <div className="flex rounded-md shadow-sm">
-                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                      rareblocks.co/user/
-                    </span>
+              <form onSubmit={handleProfileUpdate}>
+                {/* Career */}
+                <div className="flex mb-6">
+                  <div className="w-35 mr-5">
+                    <label className="block text-sm font-medium text-gray-700">Career</label>
+                  </div>
+                  <div className="flex-1">
                     <input
-                      type="text"
-                      value="martin.janiter"
-                      className="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md border border-gray-300 text-sm"
+                      type="career"
+                      name="career"
+                      onChange={handleProfileDetailsChange}
+                      value={profileDetails.career}
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
                     />
                   </div>
                 </div>
-              </div>
 
-              {/* Website */}
-              <div className="flex mb-6">
-                <div className="w-28">
-                  <label className="block text-sm font-medium text-gray-700">Website</label>
-                </div>
-                <div className="flex-1">
-                  <div className="flex rounded-md shadow-sm">
-                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                      https://
-                    </span>
+                {/* Occupation */}
+                <div className="flex mb-6">
+                  <div className="w-35 mr-5">
+                    <label className="block text-sm font-medium text-gray-700">Occupation</label>
+                  </div>
+                  <div className="flex-1">
                     <input
-                      type="text"
-                      value="postcrafts.co"
-                      className="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md border border-gray-300 text-sm"
+                      type="occupation"
+                      name="occupation"
+                      onChange={handleProfileDetailsChange}
+                      value={profileDetails.occupation}
+                      className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
                     />
                   </div>
                 </div>
-              </div>
 
-              {/* Job Title */}
-              <div className="flex mb-6">
-                <div className="w-28">
-                  <label className="block text-sm font-medium text-gray-700">Job Title</label>
-                </div>
-                <div className="flex-1">
-                  <input
-                    type="text"
-                    value="Software Developer"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-                  />
-                  <div className="mt-2">
-                    <label className="inline-flex items-center">
-                      <input type="checkbox" className="rounded text-indigo-600" checked />
-                      <span className="ml-2 text-sm text-gray-700">Show this on my profile</span>
-                    </label>
+                {/* company */}
+                <div className="flex mb-6">
+                  <div className="w-35 mr-5">
+                    <label className="block text-sm font-medium text-gray-700">Company</label>
                   </div>
-                </div>
-              </div>
-
-              {/* Country */}
-              <div className="flex mb-8">
-                <div className="w-28">
-                  <label className="block text-sm font-medium text-gray-700">Country</label>
-                </div>
-                <div className="flex-1">
-                  <div className="relative">
-                    <select className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-sm appearance-none">
-                      <option>United States</option>
-                      <option>Canada</option>
-                      <option>United Kingdom</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
-                      <ChevronDown size={16} />
+                  <div className="flex-1">
+                    <div className="flex rounded-md shadow-sm">
+                      <input
+                        type="text"
+                        value={profileDetails.company}
+                        name="company"
+                        onChange={handleProfileDetailsChange}
+                        className="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md border border-gray-300 text-sm"
+                      />
                     </div>
                   </div>
                 </div>
-              </div>
+                <div className="flex mb-6">
+                  <div className="w-35 mr-5">
+                    <label className="block text-sm font-medium text-gray-700">Experiance</label>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex rounded-md shadow-sm">
+                      <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                        In Years
+                      </span>
+                      <input
+                        type="number"
+                        value={profileDetails.experience}
+                        name="experience"
+                        placeholder="4"
+                        onChange={handleProfileDetailsChange}
+                        className="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md border border-gray-300 text-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
 
-              {/* Update button */}
-              <div className="ml-28">
-                <button className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
-                  Update
-                </button>
+                {/* Update button */}
+                <div className="ml-40">
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+                  >
+                    Update Professional Details
+                  </button>
+                </div>
+              </form>
+              <div className="max-w-3xl mt-7">
+                <div className="mb-6">
+                  <h2 className="text-lg font-medium mb-2">Verify Account</h2>
+                  <p className="text-gray-500 text-sm">
+                    Should have a at least a bacholor degree to get verified as a mentor
+                  </p>
+                </div>
+                <form onSubmit={uploadProfileImage} enctype="multipart/form-data">
+                  {/* Profile Photo */}
+                  <div className="flex items-center mb-6">
+                    <div className="w-35 mr-5">
+                      <label className="block text-sm font-medium text-gray-700">Degree Cirtificate</label>
+                    </div>
+                    <div className="flex flex items-center space-x-4">
+                      <div class="flex items-center space-x-6">
+                        <label class="block">
+                          <span class="sr-only">Choose Cirtificate</span>
+                          <input
+                            type="file"
+                            onChange={handleVerificationDetails}
+                            class="block w-full text-sm text-slate-500
+        file:mr-4 file:py-2 file:px-4
+        file:rounded-full file:border-0
+        file:text-sm file:font-semibold
+        file:bg-violet-50 file:text-blue-700
+        hover:file:bg-violet-100
+      "
+                          />
+                        </label>
+                      </div>
+                      <div>
+                        <button
+                          type="submit"
+                          className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
+                        >
+                          Send Request
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>

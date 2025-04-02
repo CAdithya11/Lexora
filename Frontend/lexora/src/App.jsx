@@ -27,6 +27,9 @@ import FeedbackPage from './pages/Home/FeedbackPage';
 import { ProtectedRoute } from './component/template/protectedRoute/ProtectedRoute';
 import UserProfileSettings from './pages/Home/Settings/UserProfileSettings';
 import UserChangePassword from './pages/Home/Settings/UserChangePassword';
+import UserProfessionalDetails from './pages/Home/Settings/UserProfessionalDetails';
+import JobTrendsPage from './pages/Functions/Industry Insights/JobTrendsPage';
+import SalaryTrendsPage from './pages/Functions/Industry Insights/SalaryTrendsPage';
 
 
 function App() {
@@ -42,6 +45,8 @@ function App() {
           <Route path="/feedback" element={<FeedbackPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/" element={<HomePage />} />
+          <Route path="/jobTrends" element={<JobTrendsPage />} />
+          <Route path="/salaryTrends" element={<SalaryTrendsPage />} />
           <Route path="/PersonaMatching" element={<CareerPersosna />} />
           <Route path="/Personas" element={<MatchedPersosna />} />
           <Route path="/persona" element={<Persona />} />
@@ -56,7 +61,7 @@ function App() {
             {/* User profiles based*/}
             <Route path="/settings/profile" element={<UserProfileSettings />} />
             <Route path="/settings/password" element={<UserChangePassword />} />
-            <Route path="/settings/professionalDetails" element={<UserProfileSettings />} />
+            <Route path="/settings/professionalDetails" element={<UserProfessionalDetails />} />
 
             {/* Real-time industry insights dashboard */}
             <Route path="/jobTrendings" element={<TrendingJobsPage />} />
