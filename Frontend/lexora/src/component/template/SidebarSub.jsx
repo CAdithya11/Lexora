@@ -50,13 +50,13 @@ export default function SidebarSub() {
   const [selectedYear, setSelectedYear] = useState('2025');
   const [showYearDropdown, setShowYearDropdown] = useState(false);
   const location = useLocation();
-  
 
   const isLocation = location.pathname;
 
+  console.log(isLocation);
+
   // Available years for the filter
   const years = ['2023', '2024', '2025', '2026'];
-  
 
   return (
     <>
@@ -91,16 +91,16 @@ export default function SidebarSub() {
           <SidebarItem
             icon={<BarChart4Icon size={20} />}
             text="Industry Insights"
-            alwaysOpen={isLocation == '/jobtrendings' ? true : false}
+            alwaysOpen={isLocation == '/jobTrends' || isLocation == '/salaryTrends' ? true : false}
           >
-            <Link to="/jobtrendings">
-              <SidebarSubItem text="Job Trends" />
+            <Link to="/jobTrends">
+              <SidebarSubItem text="Job Trends" active={isLocation == '/jobTrends' ? true : false} />
             </Link>
-            <Link to="/jobtrendings">
+            <Link to="/jobTrends">
               <SidebarSubItem text="Skill Trends" />
             </Link>
-            <Link to="/jobtrendings">
-              <SidebarSubItem text="Salary Trends" />
+            <Link to="/salaryTrends">
+              <SidebarSubItem text="Salary Trends" active={isLocation == '/salaryTrends' ? true : false} />
             </Link>
           </SidebarItem>
 
@@ -127,14 +127,22 @@ export default function SidebarSub() {
             <SidebarSubItem text="Mentor Varification" />
             <SidebarSubItem text="Feedback" />
           </SidebarItem>
-
-          <SidebarItem icon={<Settings size={20} />} text="Settings" alwaysOpen={true}>
-            <SidebarSubItem text="Profile" />
-            <Link to={'/settings/password'}>
-              <SidebarSubItem text="Change Password" active={isLocation == '/settings/password' ? true : false} />
-            </Link>
-            <SidebarSubItem text="Proffesional Profile" />
-          </SidebarItem>
+          <Link to={'/settings/profile'}>
+            <SidebarItem icon={<Settings size={20} />} text="Settings" alwaysOpen={true}>
+              <Link to={'/settings/profile'}>
+                <SidebarSubItem text="Profile" active={isLocation == '/settings/profile'} />
+              </Link>
+              <Link to={'/settings/password'}>
+                <SidebarSubItem text="Change Password" active={isLocation == '/settings/password' ? true : false} />
+              </Link>
+              <Link to={'/settings/professionalDetails'}>
+                <SidebarSubItem
+                  text="Proffesional Profile"
+                  active={isLocation == '/settings/professionalDetails' ? true : false}
+                />
+              </Link>
+            </SidebarItem>
+          </Link>
           <div onClick={() => authService.logout()}>
             <SidebarItem icon={<LogOut size={20} />} text="Logout"></SidebarItem>
           </div>

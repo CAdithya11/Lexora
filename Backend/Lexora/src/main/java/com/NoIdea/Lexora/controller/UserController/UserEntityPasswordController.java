@@ -18,13 +18,11 @@ public class UserEntityPasswordController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<String> changePassword(@RequestBody Map<String,String> passwords, @PathVariable Long id){
+    public ResponseEntity<String> changePassword(@RequestBody Map<String,String> passwords, @PathVariable Long id) {
         try {
-            String response = userEntityService.changePassword(passwords.get("currentPassword"),passwords.get("newPassword"),id);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Current Password Does not match");
+            return userEntityService.changePassword(passwords.get("currentPassword"), passwords.get("newPassword"), id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Network Failure");
         }
     }
-
 }

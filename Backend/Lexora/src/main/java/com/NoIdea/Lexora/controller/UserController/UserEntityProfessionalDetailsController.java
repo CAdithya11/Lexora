@@ -22,6 +22,7 @@ public class UserEntityProfessionalDetailsController {
 
     @PostMapping("/{id}")
     public ResponseEntity<String> createProfessionalDetails(@RequestBody UserEntity userEntity, @PathVariable Long id){
+        System.out.println(userEntity);
         String professionalUser = userEntityService.updateProfessionalDetails(userEntity,id);
         return ResponseEntity.status(HttpStatus.OK).body(professionalUser);
     }

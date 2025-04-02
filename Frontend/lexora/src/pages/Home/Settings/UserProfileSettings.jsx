@@ -67,7 +67,7 @@ export default function UserProfileSettings() {
         setAlertMessage('Server Error ');
         setAlertType('error');
       } else {
-        setAlertMessage(error.message);
+        setAlertMessage("Image file is large, can't update");
         setAlertType('error');
       }
     }
@@ -83,20 +83,24 @@ export default function UserProfileSettings() {
 
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
+    setAlertMessage('');
     const updatedDetails = {
       ...profileDetails,
       profile_image: null,
     };
 
-    try {
-      const response = await userProfileHandleService.updateProfileDetails(updatedDetails);
-      if (response.status === 200) {
-        setAlertMessage('Profile updated successfully');
-        setAlertType('success');
+    const confirmed = confirm('Are you sure you want to update the profile ?');
+    if (confirmed) {
+      try {
+        const response = await userProfileHandleService.updateProfileDetails(updatedDetails);
+        if (response.status === 200) {
+          setAlertMessage('Profile updated successfully');
+          setAlertType('success');
+        }
+      } catch (error) {
+        setAlertMessage(error.response?.data || 'Failed to update profile');
+        setAlertType('error');
       }
-    } catch (error) {
-      setAlertMessage(error.response?.data || 'Failed to update profile');
-      setAlertType('error');
     }
   };
 
@@ -104,12 +108,11 @@ export default function UserProfileSettings() {
     <>
       {alertMessage && <Alert message={alertMessage} type={alertType} />}
       <div className="flex h-screen overflow-hidden bg-white">
-        {/* Fixed Sidebar */}
         <SidebarSub />
 
         {/* Main Content Area with Independent Scrolling */}
         <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Fixed Header */}
+          {/* Header */}
           <TopHeader HeaderMessage={'Settings'} />
 
           <div className="flex-1 flex m-5 flex-col pt-5 pl-10 overflow-auto">
@@ -262,7 +265,7 @@ export default function UserProfileSettings() {
                 </div>
 
                 {/* Update button */}
-                <div className="ml-28">
+                <div className="ml-40">
                   <button
                     type="submit"
                     className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"

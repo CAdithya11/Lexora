@@ -1,14 +1,14 @@
 package com.NoIdea.Lexora.controller.Auth;
 
-import com.NoIdea.Lexora.dto.LoginRequestDTO;
-import com.NoIdea.Lexora.dto.LoginResponseDTO;
-import com.NoIdea.Lexora.dto.RegistrationRequestDTO;
+import com.NoIdea.Lexora.dto.UserProfile.LoginRequestDTO;
+import com.NoIdea.Lexora.dto.UserProfile.LoginResponseDTO;
+import com.NoIdea.Lexora.dto.UserProfile.RegistrationRequestDTO;
 import com.NoIdea.Lexora.model.User.UserEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.NoIdea.Lexora.dto.RegistrationResponseDTO;
+import com.NoIdea.Lexora.dto.UserProfile.RegistrationResponseDTO;
 import com.NoIdea.Lexora.service.Auth.AuthService;
 
 import java.util.List;

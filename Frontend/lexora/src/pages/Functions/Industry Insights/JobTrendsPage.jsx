@@ -26,13 +26,14 @@ const countries = [
   { name: 'India', code: 'IN' },
 ];
 
-export default function TrendingJobsPage() {
+export default function JobTrendsPage() {
   const [selectedCategory, setSelectedCategory] = useState('Software Development & Engineering');
   const [selectedYear, setSelectedYear] = useState('2025');
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [chartTitle, setChartTitle] = useState('Software Engineering Trends');
+  const [role,setRole] = useState("");
 
   const years = ['2023', '2024', '2025', '2026'];
 
@@ -142,7 +143,7 @@ export default function TrendingJobsPage() {
           </div>
           {/* Chart Content */}
           <div className="p-2">
-            <JobDashboard Datatype={"Jobs"} />
+            <JobDashboard Datatype={'Jobs'} jobRole={role} />
           </div>
           {/* Job Categories Section */}
 
@@ -166,7 +167,7 @@ export default function TrendingJobsPage() {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <span className={`ml-3 font-medium text-gray-700`}>{category}</span>
+                      <span className={`ml-3 font-medium text-gray-700`} onClick={()=>setRole(category)}>{category}</span>
                     </div>
                   </div>
                 </div>

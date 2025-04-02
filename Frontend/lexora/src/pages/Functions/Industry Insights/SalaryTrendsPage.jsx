@@ -26,7 +26,7 @@ const countries = [
   { name: 'India', code: 'IN' },
 ];
 
-export default function TrendingJobsPage() {
+export default function SalaryTrendsPage() {
   const [selectedCategory, setSelectedCategory] = useState('Software Development & Engineering');
   const [selectedYear, setSelectedYear] = useState('2025');
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
@@ -71,7 +71,7 @@ export default function TrendingJobsPage() {
           <div className="m-5">
             <div className="mb-6 ">
               <div className="flex flex-row object-center items-center mb-2">
-                <h2 className="text-lg font-medium mr-2">Worlwide Trending Jobs </h2>
+                <h2 className="text-lg font-medium mr-2">Worlwide Salary Trends </h2>
               </div>
             </div>
           </div>
@@ -142,7 +142,7 @@ export default function TrendingJobsPage() {
           </div>
           {/* Chart Content */}
           <div className="p-2">
-            <JobDashboard Datatype={"Jobs"} />
+            <JobDashboard Datatype={'Salary'} />
           </div>
           {/* Job Categories Section */}
 

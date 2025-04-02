@@ -1,4 +1,4 @@
-package com.NoIdea.Lexora.dto;
+package com.NoIdea.Lexora.dto.UserProfile;
 
 import com.NoIdea.Lexora.enums.User.Role;
 import lombok.AllArgsConstructor;
