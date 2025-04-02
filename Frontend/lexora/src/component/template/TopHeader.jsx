@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Globe, ChevronDown, Search, Home, User, Settings, LogOut, Bell } from 'lucide-react';
+import { authService } from '../../services/AuthService';
+import userProfileHandleService from '../../services/userProfileHandleService';
 
 const categories = [
   'Software Development & Engineering',
@@ -21,7 +23,7 @@ const countries = [
   { name: 'Singapore', code: 'SG' },
 ];
 
-export default function TopHeader() {
+export default function TopHeader({ HeaderMessage }) {
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -30,14 +32,21 @@ export default function TopHeader() {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [showYearDropdown, setShowYearDropdown] = useState(false);
+  const [profileDetails, setProfileDetails] = useState('');
 
-  // Simulate loading data
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
     return () => clearTimeout(timer);
   }, [selectedCategory, selectedYear, selectedCountry]);
+
+  useEffect(() => {
+    userProfileHandleService.findUserProfileById(1).then((response) => {
+      setProfileDetails(response.data);
+      console.log(response.data);
+    });
+  }, []);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -62,7 +71,7 @@ export default function TopHeader() {
       <header className="bg-white p-1 shadow-sm z-10 border-b border-gray-200">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between md:items-center">
           <div className="flex items-center space-x-4">
-            <h1 className="text-2xl pl-5 font-bold text-gray-800">Job Market Insights</h1>
+            <h1 className="text-2xl pl-5 font-bold text-gray-800">{HeaderMessage}</h1>
           </div>
 
           <div className="flex items-center gap-3 mt-4 md:mt-0">
@@ -76,10 +85,13 @@ export default function TopHeader() {
                 className="flex items-center gap-2  border-gray-200 rounded-lg px-3 py-2 hover:border-blue-300 transition-colors duration-200 bg-white"
                 onClick={(e) => toggleDropdown(setShowProfileDropdown, showProfileDropdown, e)}
               >
-                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
-                  JS
+                <img src={profileDetails.profile_image} className="h-10 w-10 object-cover rounded-full " />
+                <div className="flex justify-start object-center flex-col mr-3">
+                  <span className="text-sm font-medium hidden md:inline pl-2">{profileDetails.username}</span>
+                  <span style={{ fontSize: '0.7em' }} className="font-medium hidden md:inline pl-2 text-gray-800">
+                    {profileDetails.role}
+                  </span>
                 </div>
-                <span className="text-sm font-medium hidden md:inline pl-2">John Smith</span>
                 <ChevronDown size={14} className="text-gray-500" />
               </button>
 
@@ -87,8 +99,8 @@ export default function TopHeader() {
               {showProfileDropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50 pl-2 mr-2">
                   <div className="p-3 border-b border-gray-100">
-                    <p className="text-sm font-semibold">John Smith</p>
-                    <p className="text-xs text-gray-500">john.smith@example.com</p>
+                    <p className="text-sm font-semibold">{profileDetails.username}</p>
+                    <p className="text-xs text-gray-500">{profileDetails.email}</p>
                   </div>
                   <ul className="py-1">
                     <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-gray-700">
@@ -104,7 +116,10 @@ export default function TopHeader() {
                       <span className="text-sm">Settings</span>
                     </li>
                     <li className="border-t border-gray-100 mt-1">
-                      <button className="w-full text-left px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-red-600">
+                      <button
+                        onClick={() => authService.logout()}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-red-600"
+                      >
                         <LogOut size={16} className="text-red-500" />
                         <span className="text-sm">Logout</span>
                       </button>

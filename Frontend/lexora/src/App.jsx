@@ -15,13 +15,19 @@ import Persona from './pages/Functions/Roadmap/Persona';
 import RoadmapGeminiApi from './component/Roadmaps/RoadmapGeminiApi';
 import HomePage from '../src/pages/Home/HomePage';
 import IndustryInsightsGenerator from './pages/Functions/Industry Insights/Brain/IndustryInsightsGenerator';
-import UserProfileSettings from './pages/Home/UserProfileSettings';
+
 import CareerPersosna from './pages/Functions/CareerPersonaMatching/PersonaMatcher';
 import MatchedPersosna from './pages/Functions/CareerPersonaMatching/MatchedPersona';
 import Skill from './pages/Functions/SkillGapAnalyzer/SkillGapAnalyzer';
 import Skill1 from './pages/Functions/SkillGapAnalyzer/SkillQuiz';
 import Skill2 from './pages/Functions/SkillGapAnalyzer/Results';
 import Skill3 from './pages/Functions/SkillGapAnalyzer/Resultvisualize';
+
+import FeedbackPage from './pages/Home/FeedbackPage';
+import { ProtectedRoute } from './component/template/protectedRoute/ProtectedRoute';
+import UserProfileSettings from './pages/Home/Settings/UserProfileSettings';
+import UserChangePassword from './pages/Home/Settings/UserChangePassword';
+
 
 function App() {
   return (
@@ -33,18 +39,9 @@ function App() {
           <Route path="/signIn" element={<SignIn />} />
           <Route path="/signUp" element={<SignUpPage />} />
           <Route path="/contactUs" element={<ContactUsPage />} />
+          <Route path="/feedback" element={<FeedbackPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/" element={<HomePage />} />
-          <Route path="/runBrain" element={<IndustryInsightsGenerator />} />
-          <Route path="/settings" element={<UserProfileSettings />} />
-
-          {/* Real-time industry insights dashboard */}
-          <Route path="/jobTrendings" element={<TrendingJobsPage />} />
-
-          {/* Personolized Roadmap Generator  */}
-          <Route path="/roadmap" element={<RoadmapPage />} />
-          <Route path="/searchRoadmap" element={<SearchRoadmapPage />} />
-          <Route path="/RoadmapDetails" element={<RoadmapDetailsPage />} />
           <Route path="/PersonaMatching" element={<CareerPersosna />} />
           <Route path="/Personas" element={<MatchedPersosna />} />
           <Route path="/persona" element={<Persona />} />
@@ -54,6 +51,24 @@ function App() {
           <Route path="/sk1" element={<Skill1 />} />
           <Route path="/sk2" element={<Skill2 />} />
           <Route path="/sk3" element={<Skill3 />} />
+
+          <Route element={<ProtectedRoute />}>
+            {/* User profiles based*/}
+            <Route path="/settings/profile" element={<UserProfileSettings />} />
+            <Route path="/settings/password" element={<UserChangePassword />} />
+            <Route path="/settings/professionalDetails" element={<UserProfileSettings />} />
+
+            {/* Real-time industry insights dashboard */}
+            <Route path="/jobTrendings" element={<TrendingJobsPage />} />
+            <Route path="/runBrain" element={<IndustryInsightsGenerator />} />
+
+            {/* Personolized Roadmap Generator  */}
+            <Route path="/roadmap" element={<RoadmapPage />} />
+            <Route path="/searchRoadmap" element={<SearchRoadmapPage />} />
+            <Route path="/RoadmapDetails" element={<RoadmapDetailsPage />} />
+            <Route path="/rgapi" element={<RoadmapGeminiApi />} />
+            <Route path="/ro" element={<RoadmapOption />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>
