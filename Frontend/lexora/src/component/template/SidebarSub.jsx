@@ -83,8 +83,11 @@ export default function SidebarSub() {
             </Link>
           </SidebarItem>
 
-          <SidebarItem icon={<Users size={20} />} text="Mentoring Sessions">
-            <SidebarSubItem text="Members" />
+          <SidebarItem icon={<Users size={20} />} 
+          text="Mentoring Sessions" alwaysOpen={isLocation == '/mentorDashboard'}>
+            {/* <Link to={''}> */}
+              <SidebarSubItem text="Members" active={isLocation == '/mentorDashboard'}/>
+            {/* </Link> */}
             <SidebarSubItem text="Permissions" />
           </SidebarItem>
 
@@ -119,8 +122,12 @@ export default function SidebarSub() {
           <SidebarItem icon={<Bell size={20} />} text="Notifications" alert />
 
           <SidebarItem icon={<User size={20} />} text="Mentor" alwaysOpen={isLocation}>
-            <SidebarSubItem text="Dashboard" />
-            <SidebarSubItem text="Sessions" />
+          <Link to={'/mentorDashboard'}>
+              <SidebarSubItem text="Dashboard" active={isLocation == '/mentorDashboard'}/>
+          </Link>
+          <Link to={'/mentorSessions'}>
+              <SidebarSubItem text="Sessions" active={isLocation == '/mentorSessions'}/>
+          </Link>
           </SidebarItem>
 
           <SidebarItem icon={<FileCog size={20} />} text="Admin">
