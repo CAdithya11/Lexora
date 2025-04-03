@@ -14,7 +14,6 @@ import RoadmapDetailsPage from './pages/Functions/Roadmap/RoadmapDetailsPage';
 import Persona from './pages/Functions/Roadmap/Persona';
 import RoadmapGeminiApi from './component/Roadmaps/RoadmapGeminiApi';
 import HomePage from '../src/pages/Home/HomePage';
-import IndustryInsightsGenerator from './pages/Functions/Industry Insights/Brain/IndustryInsightsGenerator';
 
 import CareerPersosna from './pages/Functions/CareerPersonaMatching/PersonaMatcher';
 import MatchedPersosna from './pages/Functions/CareerPersonaMatching/MatchedPersona';
@@ -30,7 +29,6 @@ import UserChangePassword from './pages/Home/Settings/UserChangePassword';
 import UserProfessionalDetails from './pages/Home/Settings/UserProfessionalDetails';
 import JobTrendsPage from './pages/Functions/Industry Insights/JobTrendsPage';
 import SalaryTrendsPage from './pages/Functions/Industry Insights/SalaryTrendsPage';
-
 
 function App() {
   return (
@@ -65,7 +63,6 @@ function App() {
 
             {/* Real-time industry insights dashboard */}
             <Route path="/jobTrendings" element={<TrendingJobsPage />} />
-            <Route path="/runBrain" element={<IndustryInsightsGenerator />} />
 
             {/* Personolized Roadmap Generator  */}
             <Route path="/roadmap" element={<RoadmapPage />} />

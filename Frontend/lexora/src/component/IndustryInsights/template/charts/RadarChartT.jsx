@@ -12,6 +12,7 @@ import {
 const COLOR_SCALE = ['#93C5FD', '#60A5FA', '#3B82F6', '#2563EB', '#1D4ED8'];
 
 export default function RadarChartT({ Datatype, DataSet }) {
+  
   const RadarData = DataSet;
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
