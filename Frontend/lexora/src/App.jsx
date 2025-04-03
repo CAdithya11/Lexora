@@ -14,7 +14,6 @@ import RoadmapDetailsPage from './pages/Functions/Roadmap/RoadmapDetailsPage';
 import Persona from './pages/Functions/Roadmap/Persona';
 import RoadmapGeminiApi from './component/Roadmaps/RoadmapGeminiApi';
 import HomePage from '../src/pages/Home/HomePage';
-import IndustryInsightsGenerator from './pages/Functions/Industry Insights/Brain/IndustryInsightsGenerator';
 
 import CareerPersosna from './pages/Functions/CareerPersonaMatching/PersonaMatcher';
 import MatchedPersosna from './pages/Functions/CareerPersonaMatching/MatchedPersona';
@@ -34,7 +33,6 @@ import SalaryTrendsPage from './pages/Functions/Industry Insights/SalaryTrendsPa
 import MentorDashboard from './pages/Functions/MentorMenteeMatchmaking/MentorDashboard';
 import MenteeDashboard from './pages/Functions/MentorMenteeMatchmaking/MenteeDashboard';
 import MentorSessions from './pages/Functions/MentorMenteeMatchmaking/MentorSession';
-
 
 function App() {
   return (
@@ -69,7 +67,6 @@ function App() {
 
             {/* Real-time industry insights dashboard */}
             <Route path="/jobTrendings" element={<TrendingJobsPage />} />
-            <Route path="/runBrain" element={<IndustryInsightsGenerator />} />
 
             {/* Personolized Roadmap Generator  */}
             <Route path="/roadmap" element={<RoadmapPage />} />
@@ -79,9 +76,9 @@ function App() {
             <Route path="/ro" element={<RoadmapOption />} />
 
             {/* Mentor Mentee matchmaking */}
-            <Route path='/mentorDashboard' element={<MentorDashboard/>}/>
-            <Route path='/menteeDashboard' element={<MenteeDashboard/>}/>
-            <Route path='/mentorSessions' element={<MentorSessions/>}/>
+            <Route path="/mentorDashboard" element={<MentorDashboard />} />
+            <Route path="/menteeDashboard" element={<MenteeDashboard />} />
+            <Route path="/mentorSessions" element={<MentorSessions />} />
           </Route>
         </Routes>
       </BrowserRouter>

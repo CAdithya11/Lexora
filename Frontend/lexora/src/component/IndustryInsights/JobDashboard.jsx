@@ -20,258 +20,31 @@ import DollarChart from './template/charts/DollarChart';
 
 const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
   const [dataType, setDataType] = useState(Datatype);
-
-  const jobData = [
-    {
-      year: '2025',
-      role: 'Software Engineer',
-      count: 180000,
-      growthRate: 8.5,
-      avgSalary: 135000,
-      minSalary: 100000,
-      maxSalary: 170000,
-    },
-    {
-      year: '2025',
-      role: 'Full-Stack Developer',
-      count: 220000,
-      growthRate: 12.1,
-      avgSalary: 140000,
-      minSalary: 105000,
-      maxSalary: 175000,
-    },
-    {
-      year: '2025',
-      role: 'Mobile App Developer',
-      count: 165000,
-      growthRate: 9.8,
-      avgSalary: 130000,
-      minSalary: 95000,
-      maxSalary: 165000,
-    },
-    {
-      year: '2025',
-      role: 'Game Developer',
-      count: 95000,
-      growthRate: 6.7,
-      avgSalary: 115000,
-      minSalary: 85000,
-      maxSalary: 145000,
-    },
-    {
-      year: '2025',
-      role: 'DevOps Engineer',
-      count: 210000,
-      growthRate: 14.3,
-      avgSalary: 155000,
-      minSalary: 120000,
-      maxSalary: 190000,
-    },
-    {
-      year: '2025',
-      role: 'Web Developer',
-      count: 185000,
-      growthRate: 7.2,
-      avgSalary: 125000,
-      minSalary: 90000,
-      maxSalary: 160000,
-    },
-    {
-      year: '2025',
-      role: 'UI/UX Developer',
-      count: 135000,
-      growthRate: 10.5,
-      avgSalary: 128000,
-      minSalary: 95000,
-      maxSalary: 160000,
-    },
-
-    {
-      year: '2025',
-      role: 'Data Scientist',
-      count: 250000,
-      growthRate: 15.0,
-      avgSalary: 165000,
-      minSalary: 130000,
-      maxSalary: 200000,
-    },
-    {
-      year: '2025',
-      role: 'Machine Learning Engineer',
-      count: 190000,
-      growthRate: 18.4,
-      avgSalary: 175000,
-      minSalary: 140000,
-      maxSalary: 210000,
-    },
-
-    {
-      year: '2025',
-      role: 'AI Engineer',
-      count: 145000,
-      growthRate: 22.7,
-      avgSalary: 185000,
-      minSalary: 150000,
-      maxSalary: 220000,
-    },
-    {
-      year: '2025',
-      role: 'Computer Vision Engineer',
-      count: 120000,
-      growthRate: 20.5,
-      avgSalary: 180000,
-      minSalary: 145000,
-      maxSalary: 215000,
-    },
-
-    {
-      year: '2025',
-      role: 'Cybersecurity Analyst',
-      count: 175000,
-      growthRate: 16.8,
-      avgSalary: 150000,
-      minSalary: 115000,
-      maxSalary: 185000,
-    },
-    {
-      year: '2025',
-      role: 'Ethical Hacker',
-      count: 85000,
-      growthRate: 19.3,
-      avgSalary: 160000,
-      minSalary: 125000,
-      maxSalary: 195000,
-    },
-
-    {
-      year: '2025',
-      role: 'Cloud Architect',
-      count: 130000,
-      growthRate: 13.9,
-      avgSalary: 170000,
-      minSalary: 135000,
-      maxSalary: 205000,
-    },
-    {
-      year: '2025',
-      role: 'Site Reliability Engineer (SRE)',
-      count: 110000,
-      growthRate: 11.5,
-      avgSalary: 158000,
-      minSalary: 125000,
-      maxSalary: 190000,
-    },
-    {
-      year: '2025',
-      role: 'IT Support Specialist',
-      count: 220000,
-      growthRate: 4.5,
-      avgSalary: 80000,
-      minSalary: 60000,
-      maxSalary: 100000,
-    },
-
-    {
-      year: '2025',
-      role: 'Database Administrator (DBA)',
-      count: 95000,
-      growthRate: 5.8,
-      avgSalary: 135000,
-      minSalary: 105000,
-      maxSalary: 165000,
-    },
-
-    // 9. IT Project Management
-    {
-      year: '2025',
-      role: 'IT Project Manager',
-      count: 150000,
-      growthRate: 9.1,
-      avgSalary: 145000,
-      minSalary: 110000,
-      maxSalary: 180000,
-    },
-
-    // 10. Software Testing & QA
-    {
-      year: '2025',
-      role: 'QA Engineer',
-      count: 120000,
-      growthRate: 6.3,
-      avgSalary: 115000,
-      minSalary: 85000,
-      maxSalary: 145000,
-    },
-
-    // 11. Blockchain & Web3
-    {
-      year: '2025',
-      role: 'Blockchain Developer',
-      count: 75000,
-      growthRate: 25.4,
-      avgSalary: 195000,
-      minSalary: 155000,
-      maxSalary: 235000,
-    },
-
-    // 12. Network & Telecommunications
-    {
-      year: '2025',
-      role: 'Network Engineer',
-      count: 105000,
-      growthRate: 7.6,
-      avgSalary: 125000,
-      minSalary: 95000,
-      maxSalary: 155000,
-    },
-
-    // 13. Hardware & Embedded Systems
-    {
-      year: '2025',
-      role: 'IoT Engineer',
-      count: 90000,
-      growthRate: 12.9,
-      avgSalary: 140000,
-      minSalary: 110000,
-      maxSalary: 170000,
-    },
-
-    // 14. IT Governance & Compliance
-    {
-      year: '2025',
-      role: 'IT Auditor',
-      count: 65000,
-      growthRate: 8.7,
-      avgSalary: 130000,
-      minSalary: 100000,
-      maxSalary: 160000,
-    },
-
-    // 15. IT Sales & Marketing
-    {
-      year: '2025',
-      role: 'IT Sales Engineer',
-      count: 80000,
-      growthRate: 7.4,
-      avgSalary: 120000,
-      minSalary: 90000,
-      maxSalary: 150000,
-    },
-  ];
-
+  const [jobData, setJobData] = useState([]);
   const [selectedYear, setSelectedYear] = useState('2025');
-
   const [activeChart, setActiveChart] = useState('radar');
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredJob, setHoveredJob] = useState(null);
-
   const [selectedCategory, setSelectedCategory] = useState('Software Development & Engineering');
-
   const [isLoading, setIsLoading] = useState(true);
   const [chartTitle, setChartTitle] = useState('Software Engineering Trends');
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-
   const filterRef = useRef(null);
+  const API_KEY = 'AIzaSyDk93DVnzDnYhuJyHCLIsjMjHd47uODLvs'; // Use the same API key from GoogleAIStudio
+
+  const countries = [
+    { name: 'United States', code: 'US' },
+    { name: 'Canada', code: 'CA' },
+    { name: 'United Kingdom', code: 'UK' },
+    { name: 'Australia', code: 'AU' },
+    { name: 'Germany', code: 'DE' },
+    { name: 'France', code: 'FR' },
+    { name: 'Japan', code: 'JP' },
+    { name: 'India', code: 'IN' },
+  ];
+
+  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
+  const years = ['2023', '2024', '2025', '2026'];
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -287,28 +60,105 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
     };
   }, []);
 
-  const countries = [
-    { name: 'United States', code: 'US' },
-    { name: 'Canada', code: 'CA' },
-    { name: 'United Kingdom', code: 'UK' },
-    { name: 'Australia', code: 'AU' },
-    { name: 'Germany', code: 'DE' },
-    { name: 'France', code: 'FR' },
-    { name: 'Japan', code: 'JP' },
-    { name: 'India', code: 'IN' },
-  ];
+  // Function to create a dynamic prompt for Google Gemini API
+  // Function to create a dynamic prompt for Google Gemini API
+  const createJobDataPrompt = (year, country, jobCategory) => {
+    return `Generate realistic IT job market data for the year ${year} in ${country.name}. 
+  Focus on the ${jobCategory || selectedCategory} category.
+  
+  Format the response as a pure JSON array of objects WITHOUT any markdown formatting, code blocks, or backticks. The output should be directly parseable by JSON.parse(). Each object should have the following structure:
+  {
+    "year": "${year}",
+    "role": "Main Job Title",
+    "subRole": "Specific Job Title",
+    "jobRole": "Specific Job Function",
+    "count": number of available jobs,
+    "growthRate": year-over-year percentage growth rate,
+    "avgSalary": average annual salary in USD,
+    "minSalary": minimum typical salary in USD,
+    "maxSalary": maximum typical salary in USD
+  }
+  
+  Include at least 15 different IT job roles across these categories:
+  - Software Development & Engineering (roles like Software Engineer, Full-Stack Developer, Mobile App Developer, etc.)
+  - Data Science & Analytics (Data Scientist, Data Engineer, Business Intelligence Analyst, etc.)
+  - Cybersecurity (Security Analyst, Penetration Tester, Security Engineer, etc.)
+  - Cloud Computing (Cloud Architect, DevOps Engineer, Site Reliability Engineer, etc.)
+  - IT Support & Infrastructure (System Administrator, Network Engineer, IT Support Specialist, etc.)
+  - AI & Machine Learning (ML Engineer, AI Researcher, Computer Vision Engineer, etc.)
+  - Blockchain & Web3 (Blockchain Developer, Smart Contract Engineer, etc.)
+  
+  IMPORTANT: Return ONLY the valid JSON array with NO additional text, formatting, or code blocks. The response should start with "[" and end with "]".`;
+  };
 
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
+  // Function to fetch data from Google's Gemini API
+  // Modify the fetchJobData function to clean the JSON response
+  const fetchJobData = async (year = selectedYear, countryObj = selectedCountry, category = selectedCategory) => {
+    setIsLoading(true);
+    try {
+      // Import GoogleGenerativeAI dynamically
+      const { GoogleGenerativeAI } = await import('@google/generative-ai');
+      const genAI = new GoogleGenerativeAI(API_KEY);
 
-  // Available years for the filter
-  const years = ['2023', '2024', '2025', '2026'];
+      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      const prompt = createJobDataPrompt(year, countryObj, category);
+      const result = await model.generateContent(prompt);
+      const text = result.response.text();
+
+      try {
+        // Clean the response - remove markdown code blocks and any other non-JSON content
+        let cleanedText = text;
+
+        // Remove markdown code blocks (```json and ```)
+        cleanedText = cleanedText.replace(/```json|```/g, '');
+
+        // Trim whitespace
+        cleanedText = cleanedText.trim();
+
+        // Parse the cleaned JSON
+        const parsedData = JSON.parse(cleanedText);
+        setJobData(parsedData);
+        console.log('Fetched job data:', parsedData);
+      } catch (jsonError) {
+        console.error('Error parsing JSON response:', jsonError);
+        console.error('Raw response:', text);
+        // If parsing fails, keep the previous data or set a default
+        setJobData([]);
+      }
+    } catch (error) {
+      console.error('Error fetching data from Google API:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Effect to fetch data when filters change
+  useEffect(() => {
+    // Initialize with parameters or defaults
+    const yearToUse = dateTime || selectedYear;
+    const countryToUse = country || selectedCountry;
+    const categoryToUse = jobCategory || selectedCategory;
+
+    fetchJobData(yearToUse, countryToUse, categoryToUse);
+
+    // Update local state to match props if they exist
+    if (dateTime) setSelectedYear(dateTime);
+    if (country) setSelectedCountry(country);
+    if (jobCategory) setSelectedCategory(jobCategory);
+  }, [dateTime, country, jobCategory, selectedYear, selectedCountry, selectedCategory]);
 
   const toggleDropdown = (setter, state, event) => {
     event.stopPropagation();
     setter(!state);
   };
 
-  // Chart components
+  // Apply filters button handler
+  const handleApplyFilters = () => {
+    fetchJobData();
+    setShowFilterDropdown(false);
+  };
+
+  // Chart tooltip component
   const CustomTooltip = ({ active, payload }) => {
     if (!active || !payload) return null;
     const { role, count, growthRate, avgSalary, minSalary, maxSalary } = payload[0].payload;
@@ -330,18 +180,20 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6  mt-10">
+      <div className="flex justify-between items-center mb-6 mt-10">
         <div className="max-w-3xl">
-          <div className="mb-6 ">
+          <div className="mb-6">
             <div className="flex flex-row object-center items-center mb-2">
-              <h2 className="ml-6  text-lg font-medium mr-2">2025 Worldwide Trending Jobs View</h2>
+              <h2 className="ml-6 text-lg font-medium mr-2">
+                {selectedYear} {selectedCountry.name} Trending Jobs View
+              </h2>
             </div>
           </div>
         </div>
         <div></div>
         <div className="flex gap-3 items-center">
           {/* Back button - moved outside filter */}
-          <button className="flex items-center justify-center text-sm font-medium px-3 py-2 rounded-lg  hover:bg-blue-100 transition-colors duration-200 shadow-sm">
+          <button className="flex items-center justify-center text-sm font-medium px-3 py-2 rounded-lg hover:bg-blue-100 transition-colors duration-200 shadow-sm">
             <ArrowLeft size={16} className="mr-1" />
             Back
           </button>
@@ -400,7 +252,6 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
                         onChange={(e) => {
                           const country = countries.find((c) => c.code === e.target.value);
                           setSelectedCountry(country);
-                          setIsLoading(true);
                         }}
                       >
                         {countries.map((country) => (
@@ -414,7 +265,10 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
                   </div>
 
                   {/* Apply filters button */}
-                  <button className="w-full flex items-center justify-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 shadow-sm">
+                  <button
+                    className="w-full flex items-center justify-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 shadow-sm"
+                    onClick={handleApplyFilters}
+                  >
                     Apply Filters
                   </button>
                 </div>
@@ -456,9 +310,7 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
                 title={chart.charAt(0).toUpperCase() + chart.slice(1)}
               >
                 {chart === 'bar' && <BarIcon className="h-5 w-5" />}
-
                 {chart === 'pie' && <PieIcon className="h-5 w-5" />}
-
                 {chart === 'radar' && <Radar className="h-5 w-5" />}
                 {chart === 'salary' && <DollarSign className="h-5 w-5" />}
                 {chart === 'line' && <LineChart className="h-5 w-5" />}
@@ -469,23 +321,31 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
       </div>
 
       <div className="bg-white rounded-xl p-6">
-        {activeChart === 'bar' && <BarChart Datatype={Datatype} DataSet={jobData} />}
-        {activeChart === 'pie' && <PieChartT Datatype={Datatype} DataSet={jobData} />}
-        {activeChart === 'radar' && <RadarChartT Datatype={Datatype} DataSet={jobData} />}
-        {activeChart === 'salary' && <DollarChart DataType={dataType} DataSet={jobData} />}
-        {activeChart === 'line' && <DollarChart DataType={dataType} DataSet={jobData} />}
+        {isLoading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        ) : (
+          <>
+            {activeChart === 'bar' && <BarChart Datatype={Datatype} DataSet={jobData} />}
+            {activeChart === 'pie' && <PieChartT Datatype={Datatype} DataSet={jobData} />}
+            {activeChart === 'radar' && <RadarChartT Datatype={Datatype} DataSet={jobData} />}
+            {activeChart === 'salary' && <DollarChart DataType={dataType} DataSet={jobData} />}
+            {activeChart === 'line' && <DollarChart DataType={dataType} DataSet={jobData} />}
+          </>
+        )}
 
-        <div className="flex w-full ">
-          <div className="flex justify-center bg-white gap-2 mt-4 p-1 rounded-lg w-full 	">
-            <button className="flex items-center justify-center text-sm font-medium px-3 py-2 rounded-lg bg-white  transition-colors duration-200 shadow-sm cursor-pointer">
+        <div className="flex w-full">
+          <div className="flex justify-center bg-white gap-2 mt-4 p-1 rounded-lg w-full">
+            <button className="flex items-center justify-center text-sm font-medium px-3 py-2 rounded-lg bg-white transition-colors duration-200 shadow-sm cursor-pointer">
               <LineChartIcon size={16} className="mr-4" />
               Weekly
             </button>
-            <button className="flex items-center justify-center text-sm font-medium px-3 py-2 rounded-lg  hover:bg-gray-200 transition-colors duration-200 cursor-pointer">
+            <button className="flex items-center justify-center text-sm font-medium px-3 py-2 rounded-lg hover:bg-gray-200 transition-colors duration-200 cursor-pointer">
               <LineChartIcon size={16} className="mr-4" />
               Monthly
             </button>
-            <button className="flex items-center justify-center text-sm font-medium px-3 py-2 rounded-lg  hover:bg-gray-200 transition-colors duration-200 cursor-pointer">
+            <button className="flex items-center justify-center text-sm font-medium px-3 py-2 rounded-lg hover:bg-gray-200 transition-colors duration-200 cursor-pointer">
               <LineChartIcon size={16} className="mr-4" />
               Yearly
             </button>
