@@ -31,6 +31,10 @@ import UserProfessionalDetails from './pages/Home/Settings/UserProfessionalDetai
 import JobTrendsPage from './pages/Functions/Industry Insights/JobTrendsPage';
 import SalaryTrendsPage from './pages/Functions/Industry Insights/SalaryTrendsPage';
 
+import MentorDashboard from './pages/Functions/MentorMenteeMatchmaking/MentorDashboard';
+import MenteeDashboard from './pages/Functions/MentorMenteeMatchmaking/MenteeDashboard';
+import MentorSessions from './pages/Functions/MentorMenteeMatchmaking/MentorSession';
+
 
 function App() {
   return (
@@ -73,6 +77,11 @@ function App() {
             <Route path="/RoadmapDetails" element={<RoadmapDetailsPage />} />
             <Route path="/rgapi" element={<RoadmapGeminiApi />} />
             <Route path="/ro" element={<RoadmapOption />} />
+
+            {/* Mentor Mentee matchmaking */}
+            <Route path='/mentorDashboard' element={<MentorDashboard/>}/>
+            <Route path='/menteeDashboard' element={<MenteeDashboard/>}/>
+            <Route path='/mentorSessions' element={<MentorSessions/>}/>
           </Route>
         </Routes>
       </BrowserRouter>
