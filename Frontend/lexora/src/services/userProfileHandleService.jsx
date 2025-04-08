@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const profileControllerAPI = 'http://localhost:8080/api/v1/profile/';
+
 const professionalDetailsControllerAPI = 'http://localhost:8080/api/v1/professionalDetails/';
 const registrationAPI = 'http://localhost:8080/api/v1/auth/';
 const resetPasswordAPI = 'http://localhost:8080/api/v1/password/';
@@ -9,6 +10,7 @@ const resetPasswordAPI = 'http://localhost:8080/api/v1/password/';
 const useUserAuth = () => {
   const [token, setToken] = useState('');
   const [user_id, setUserId] = useState('');
+
 
   useEffect(() => {
     const user = localStorage.getItem('user');
@@ -21,6 +23,7 @@ const useUserAuth = () => {
 
   return { token, user_id };
 };
+
 
 class ProfileSettings {
   constructor() {
@@ -67,6 +70,7 @@ class ProfileSettings {
   }
   requestVerifyAccount(degree_certificate) {
     return axios.post(`${professionalDetailsControllerAPI}verify/${this.user_id}`, degree_certificate);
+
   }
 }
 

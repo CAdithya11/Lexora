@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import RoadmapGeminiApi from './RoadmapGeminiApi';
 import Roadmap from './Roadmap';
+import { Link } from 'react-router';
 
 const SearchRoadmap = () => {
   const [searchInput, setSearchInput] = useState('');
@@ -30,17 +30,11 @@ const SearchRoadmap = () => {
     setSelectedOption(option);
     
     if (option === 1) {
-      // Show skill input field
+      // Show job role and skill 
     } else if (option === 2) {
-      // Generate general roadmap
+      // Generate normal roadmap
       fetchAIResponse(option);
-    } else if (option === 3) {
-      // Show Google link
-      setRoadmapData({
-        googleLink: true,
-        html: <p>To assess your current skill level, please visit <a href="https://www.google.com" target="_blank" rel="noopener noreferrer">Google</a> to find relevant skill assessment resources.</p>
-      });
-    }
+    } 
   };
 
   const handleSkillSubmit = () => {
@@ -54,13 +48,14 @@ const SearchRoadmap = () => {
   const createDynamicPrompt = (userInput, option, skillInput = "") => {
     const jobGoal = userInput.replace(/i want to become a/i, "").replace(/i want to become/i, "").trim();
     
-    // Option 1: Specific skill improvement
+    // Option 1: Specific job and skill improvement
     if (option === 1) {
       return `Generate a detailed JSON roadmap for becoming a ${jobGoal} with focus on improving ${skillInput} skills.
+      The response should be ONLY valid JSON data with no markdown formatting, no code blocks, no backticks.
       Format the response as a valid JSON object with the following structure:
       {
         "r_Id": 1,
-        "job_name": "${jobGoal}",
+        "job_name": "${jobGoal} with focus on ${skillInput}",
         "main_text": [
           {
             "main_text_id": "1.1",
@@ -70,24 +65,25 @@ const SearchRoadmap = () => {
                 "sub_id": "1.1.1",
                 "sub_name": "Sub Category Name",
                 "sub_description": "Detailed description of this skill/concept",
-                "resources": [
-                  {
-                    "resource_id": "1.1.1.1",
-                    "resource_description": "Resource description",
-                    "resource_link": "https://example.com"
-                  }
+                "sub_steps": [
+                    {
+                    "steps_id": "1.1.1.1",
+                    "steps_description": " Step-by-step indetail explain tasks that improve this specific skill"
+                  },
+                 
                 ]
               }
             ]
           }
         ]
       }
-      Make sure the output is valid JSON that can be parsed directly. Include at least 3 main_text categories, each with 2-3 sub_categories, and each sub_category with 2-3 resources.`;
+      Make sure the output is valid JSON that can be parsed directly. Focus specifically on ${skillInput} skills for this ${jobGoal} role. Include 5-10 main_text categories related to ${skillInput}, each with 10-20 sub_categories, and each sub_category with 10-20 step-by-step detailed tasks flow that describe exactly what the user needs to do to improve in that specific skill area. These sub_steps should be practical, actionable items in a logical progression.`;
     }
     
     // Option 2: General roadmap
     else if (option === 2) {
       return `Generate a comprehensive JSON roadmap for becoming a ${jobGoal}.
+      IMPORTANT: The response should be ONLY valid JSON data with no markdown formatting, no code blocks, no backticks.
       Format the response as a valid JSON object with the following structure:
       {
         "r_Id": 1,
@@ -101,20 +97,20 @@ const SearchRoadmap = () => {
                 "sub_id": "1.1.1",
                 "sub_name": "Sub Category Name",
                 "sub_description": "Detailed description of this skill/concept",
-                "resources": [
+                "sub_steps": [
                   {
-                    "resource_id": "1.1.1.1",
-                    "resource_description": "Resource description",
-                    "resource_link": "https://example.com"
+                    "steps_id": "1.1.1.1",
+                    "steps_description": " Step-by-step indetail explain tasks that improve this specific skill"
+                  },
                   }
+                  
                 ]
               }
             ]
           }
         ]
       }
-      Make sure the output is valid JSON that can be parsed directly. Cover all essential skills needed for this career path. Include at least 4 main_text categories, each with 3-4 sub_categories, and each sub_category with 2-3 resources.  
-      give the json format output only that covered with {}`;
+      Cover all essential skills needed for this career path. Include 5-20 main_text categories, each with 5-20 sub_categories, and each sub_category with 10-20 step-by-step detailed tasks flow that describe exactly what the user needs to do to improve in that specific area. These sub_steps should be practical, actionable items in a logical progression that build on each other. Make each step specific and measurable so users know when they've completed it.`;
     }
 
     return "";
@@ -130,21 +126,45 @@ const SearchRoadmap = () => {
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       const processedPrompt = createDynamicPrompt(searchInput, option, skill);
       const result = await model.generateContent(processedPrompt);
-      const text = result.response.text();
+      let text = result.response.text();
       
       try {
-        // Attempt to parse the JSON
-        const jsonData = JSON.stringify(JSON.parse(text));
-        setRoadmapData({ jsonData });
-      } catch (jsonError) {
-        // If JSON parsing fails, display as text
-        console.error("Error parsing JSON:", jsonError);
-        setRoadmapData({ html: `${text}` });
+        // Remove any markdown code blocks or backticks that might be in the response
+        if (text.includes("```json")) {
+          text = text.replace(/```json/g, "").replace(/```/g, "").trim();
+        }
         
+        // Parse the JSON
+        const parsedJson = JSON.parse(text);
+        console.log(parsedJson);
+        
+        // Ensure the job_name includes skill information if option 1 was selected
+        if (option === 1 && skill) {
+          if (!parsedJson.job_name.toLowerCase().includes(skill.toLowerCase())) {
+            parsedJson.job_name = `${parsedJson.job_name} (${skill} focus)`;
+          }
+        }
+        
+        setRoadmapData({ jsonData: parsedJson });
+      } catch (jsonError) {
+        console.error("Error parsing JSON:", jsonError);
+        setRoadmapData({ 
+          html: <div className="p-5 border border-red-200 rounded-lg bg-red-50 text-red-700">
+            <h3 className="font-bold mb-2">Error parsing response data</h3>
+            <p>The AI generated an invalid JSON response. Please try again.</p>
+            <pre className="mt-4 p-3 bg-gray-100 rounded text-sm overflow-x-auto">{text}</pre>
+          </div>
+        });
       }
     } catch (error) {
-      console.error("Error fetching AI response:", error);
-      setRoadmapData({ html: "Oops! Something went wrong. Please try again." });
+      console.error("Error fetching or parsing roadmap data:", error);
+      setRoadmapData({ 
+        html: <div className="p-5 border border-red-200 rounded-lg bg-red-50 text-red-700">
+          <h3 className="font-bold mb-2">Something went wrong</h3>
+          <p>Error: {error.message}</p>
+          <p className="mt-2">Please try again later.</p>
+        </div> 
+      });
     } finally {
       setIsLoading(false);
     }
@@ -159,8 +179,16 @@ const SearchRoadmap = () => {
     setJobRole("");
   };
 
+  // Create a dynamic title based on job role and skill
+  const getRoadmapTitle = () => {
+    if (selectedOption === 1 && skill) {
+      return `${jobRole} Roadmap( ${skill} ) `;
+    }
+    return `${jobRole} Roadmap`;
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center h-[62vh] text-center">
+    <div className="flex flex-col justify-center items-center min-h-[85vh] text-center">
       {!showRoadmap ? (
         <div>
           <h1 className="text-2xl font-bold mb-5">GENERATE ROADMAP</h1>
@@ -181,11 +209,13 @@ const SearchRoadmap = () => {
           </div>
         </div>
       ) : (
-        <div className="w-full max-w-4xl h-full">
+        <div className="w-full max-w-4xl">
           {!optionStep ? (
-            <div>Loading options...</div>
+            <div className="flex items-center justify-center h-80">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            </div>
           ) : selectedOption === null ? (
-            <div className="p-5">
+            <div className="p-5 flex flex-col justify-center items-center min-h-[75vh] text-center">
               <h3 className="text-xl font-bold mb-9">Please select an option:</h3>
               <div className="flex flex-col gap-4">
                 <button 
@@ -200,12 +230,6 @@ const SearchRoadmap = () => {
                 >
                   2. No idea where to start, just need a general roadmap.
                 </button>
-                <button 
-                  onClick={() => handleOptionSelect(3)}
-                  className="p-4 text-left border border-gray-300 rounded-md bg-white hover:bg-gray-100 cursor-pointer transition-colors"
-                >
-                  3. I don't know my current skill levels.
-                </button>
               </div>
               <button
                 onClick={resetForm}
@@ -215,7 +239,7 @@ const SearchRoadmap = () => {
               </button>
             </div>
           ) : selectedOption === 1 ? (
-            <div className="p-5 border border-gray-200 rounded-lg bg-gray-50">
+            <div className="p-5 border border-gray-200 rounded-lg bg-white-50">
               <h3 className="text-xl font-bold mb-5">Which specific skill do you want to focus on?</h3>
               <div className="mb-5">
                 <input
@@ -245,19 +269,33 @@ const SearchRoadmap = () => {
           ) : null}
 
           {isLoading && (
-            <div className="mt-8 p-5 rounded-lg bg-white text-center">
-              <p className="text-xl">Loading your roadmap...</p>
+            <div className="flex items-center justify-center h-80">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
             </div>
           )}
           
-
           {roadmapData && !isLoading && (
-            
-            <RoadmapGeminiApi
-              data={roadmapData} 
-              jobRole={jobRole} 
-              onReset={resetForm} 
-            />
+            <div className="mb-8">
+              {roadmapData.jsonData ? (
+                <Roadmap 
+                  jobGoal={getRoadmapTitle()} 
+                  JsonRoadmapData={roadmapData.jsonData} 
+                />
+              ) : (
+                <div>{roadmapData.html}</div>
+              )}
+              <div className="mt-4 text-center">
+                
+                <button className="py-2 px-5 bg-gray-100 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-200"
+                onClick={resetForm}>
+                Cancel
+                </button>
+                <Link to={'/RoadmapDetails'}>
+                <button className="py-2 px-5 bg-gray-100 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-200">
+                  Save
+                </button></Link>
+              </div>
+            </div>
           )}
         </div>
       )}
