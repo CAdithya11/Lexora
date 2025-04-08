@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Briefcase, ChevronDown, Globe, ArrowLeft, TrendingUp, Filter } from 'lucide-react';
 import SidebarSub from '../../../component/template/SidebarSub';
 import TopHeader from '../../../component/template/TopHeader';
-import LineChart from '../../../component/IndustryInsights/LineChart';
-import BubbleChart from '../../../component/IndustryInsights/BubbleChart';
 import JobDashboard from '../../../component/IndustryInsights/JobDashboard';
-import FocusChart from '../../../component/IndustryInsights/charts/FocusChart';
-import PieChartOne from '../../../component/IndustryInsights/charts/PieChartOne';
 
 // Categories for the filter dropdown
 const categories = [
@@ -38,10 +34,8 @@ export default function TrendingJobsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [chartTitle, setChartTitle] = useState('Software Engineering Trends');
 
-  // Available years for the filter
   const years = ['2023', '2024', '2025', '2026'];
 
-  // Simulate loading data
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -49,43 +43,40 @@ export default function TrendingJobsPage() {
     return () => clearTimeout(timer);
   }, [selectedCategory, selectedYear, selectedCountry]);
 
-  // Update chart title when category changes
   useEffect(() => {
-    // Extract first part of category for the title
     const titlePrefix = selectedCategory.split(' & ')[0];
     setChartTitle(`${titlePrefix} Trends`);
   }, [selectedCategory]);
 
-  // Handle dropdown toggle without propagating events
   const toggleDropdown = (setter, currentState, e) => {
     e.stopPropagation();
     setter(!currentState);
   };
 
-  // Handle category selection
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
   };
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
-      {/* Fixed Sidebar */}
       <SidebarSub />
 
       {/* Main Content Area with Independent Scrolling */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Fixed Header */}
-        <TopHeader />
+        <TopHeader HeaderMessage={'Job Trends'} />
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto p-6 bg-white">
-          {/* Chart Content */}
-          <div className="p-2">
-            <JobDashboard />
+          <div className="m-5">
+            <div className="mb-6 ">
+              <div className="flex flex-row object-center items-center mb-2">
+                <h2 className="text-lg font-medium mr-2">Worlwide Trending Jobs </h2>
+              </div>
+            </div>
           </div>
-
           {/* Quick Stats Section - Dynamic based on selected category */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 m-6 mb-0">
             <div className="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
               <h4 className="text-sm font-medium text-gray-500 mb-1">Highest Demand</h4>
               <p className="text-xl font-semibold text-gray-800">
@@ -147,6 +138,39 @@ export default function TrendingJobsPage() {
                 <Filter size={14} className="mr-1" />
                 <span>View openings by location</span>
               </div>
+            </div>
+          </div>
+          {/* Chart Content */}
+          <div className="p-2">
+            <JobDashboard Datatype={"Jobs"} />
+          </div>
+          {/* Job Categories Section */}
+
+          <div className="m-5">
+            <div className="mb-6 ">
+              <div className="flex flex-row object-center items-center mb-2">
+                <h2 className="text-lg font-medium mr-2">Available Job Categories </h2>
+              </div>
+              <p className="text-gray-500 text-sm">
+                Select the job category that u want to see further more detailed insights
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {categories.map((category, index) => (
+                <div
+                  key={index}
+                  className={`p-4 rounded-lg cursor-pointer transition-all duration-200 transform hover:scale-102 bg-white-50 border border-gray-200 '
+                  }`}
+                  onClick={() => handleCategorySelect(category)}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <span className={`ml-3 font-medium text-gray-700`}>{category}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

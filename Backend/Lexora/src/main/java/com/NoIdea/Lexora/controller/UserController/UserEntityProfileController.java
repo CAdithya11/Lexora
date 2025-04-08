@@ -1,5 +1,6 @@
 package com.NoIdea.Lexora.controller.UserController;
 
+import com.NoIdea.Lexora.dto.UserProfile.UserProfileResponseDTO;
 import com.NoIdea.Lexora.model.User.UserEntity;
 import com.NoIdea.Lexora.service.User.UserEntityService;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class UserEntityProfileController {
         userEntity.setProfile_image(profileImage.getBytes());
         try {
             userEntityService.updateProfileImage(userEntity);
-            return new ResponseEntity<>("Profile uploaded successfully!", HttpStatus.OK);
+            return new ResponseEntity<>("Profile image uploaded successfully!", HttpStatus.OK);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update the profile image");
         }
@@ -47,9 +48,15 @@ public class UserEntityProfileController {
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
+    @GetMapping("/getProfile/{id}")
+    public ResponseEntity<UserProfileResponseDTO> findUserProfileById(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(userEntityService.findUserProfileById(id));
+    }
+
     // Update User Profile
     @PostMapping("/{id}")
     public ResponseEntity<UserEntity> updateUserProfile(@RequestBody UserEntity userEntity,@PathVariable Long id){
+        System.out.println(userEntity);
         UserEntity updateUser = findUserById(id).getBody();
         updateUser.setRole(userEntity.getRole());
         updateUser.setEmail(userEntity.getEmail());
@@ -58,6 +65,7 @@ public class UserEntityProfileController {
         updateUser.setF_name(userEntity.getF_name());
         updateUser.setL_name(userEntity.getL_name());
         updateUser.setUsername(userEntity.getUsername());
+
         try {
             userEntityService.updateUserProfile(updateUser);
             return ResponseEntity.status(HttpStatus.OK).body(updateUser);

@@ -1,4 +1,4 @@
-package com.NoIdea.Lexora.dto;
+package com.NoIdea.Lexora.dto.UserProfile;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

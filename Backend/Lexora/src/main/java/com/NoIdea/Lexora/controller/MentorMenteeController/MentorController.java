@@ -32,7 +32,7 @@ public class MentorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Mentor>> viewAllMentors(@RequestBody Mentor mentor){
+    public ResponseEntity<List<Mentor>> viewAllMentors(){
         List<Mentor> mentors = mentorService.viewAllMentors();
         return ResponseEntity.status(HttpStatus.OK).body(mentors);
     }

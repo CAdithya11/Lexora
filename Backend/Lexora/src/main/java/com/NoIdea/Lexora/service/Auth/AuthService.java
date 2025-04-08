@@ -1,10 +1,10 @@
 package com.NoIdea.Lexora.service.Auth;
 
 
-import com.NoIdea.Lexora.dto.LoginRequestDTO;
-import com.NoIdea.Lexora.dto.LoginResponseDTO;
-import com.NoIdea.Lexora.dto.RegistrationRequestDTO;
-import com.NoIdea.Lexora.dto.RegistrationResponseDTO;
+import com.NoIdea.Lexora.dto.UserProfile.LoginRequestDTO;
+import com.NoIdea.Lexora.dto.UserProfile.LoginResponseDTO;
+import com.NoIdea.Lexora.dto.UserProfile.RegistrationRequestDTO;
+import com.NoIdea.Lexora.dto.UserProfile.RegistrationResponseDTO;
 import com.NoIdea.Lexora.model.User.UserEntity;
 import com.NoIdea.Lexora.repository.User.UserEntityRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -54,13 +54,19 @@ public class AuthService {
         }catch (Exception e){
             return new LoginResponseDTO(null,null,"User Not Found","error");
         }
+
+        UserEntity userEmailWithData = userRepository.findByEmail(loginDetails.getEmail()).orElse(null);
         Map<String,Object> claims = new HashMap<String,Object>();
         claims.put("role","user");
         claims.put("username",loginDetails.getEmail());
 
+        // Set User_id to jwtToken
+        if(userEmailWithData != null){
+            claims.put("user_id",String.valueOf(userEmailWithData.getUser_id()));
+        }
         String token = jwtService.getJWTToken(loginDetails.getEmail(),claims);
-
-        return new LoginResponseDTO(token, LocalDateTime.now(),null,"Success");
+        Long user_id = Long.valueOf((String) jwtService.getFieldFromToken(token,"user_id"));
+        return new LoginResponseDTO(token, LocalDateTime.now(),null,"Success",user_id);
     }
 
     public RegistrationResponseDTO register(RegistrationRequestDTO registrationDetails){

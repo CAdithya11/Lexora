@@ -1,6 +1,8 @@
 package com.NoIdea.Lexora.service.User;
 
+import com.NoIdea.Lexora.dto.UserProfile.UserProfileResponseDTO;
 import com.NoIdea.Lexora.model.User.UserEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,9 +15,11 @@ public interface UserEntityService {
     public UserEntity updateProfileImage(UserEntity userEntity);
     public UserEntity updateUserProfile(UserEntity userEntity);
 
-    public String changePassword(String currentPassword,String newPassword,Long id);
+    public ResponseEntity<String> changePassword(String currentPassword, String newPassword, Long id);
 
     public String updateProfessionalDetails(UserEntity userEntity,Long id);
 
     public String createVerificationRequest(Long id, MultipartFile certificate) throws IOException;
+
+    public UserProfileResponseDTO findUserProfileById(Long id);
 }
