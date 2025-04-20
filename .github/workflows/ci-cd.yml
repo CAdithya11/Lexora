@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - dev   # Triggers on pushes to dev branch
+      - main   # Triggers on pushes to main branch
   pull_request:
 
 jobs:
