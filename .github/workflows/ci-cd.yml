@@ -21,6 +21,9 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Verify Java Version
+        run: java -version
+
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
