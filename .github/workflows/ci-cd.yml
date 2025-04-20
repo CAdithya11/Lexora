@@ -30,8 +30,9 @@ jobs:
       - name: Build Backend
         run: |
           cd backend
-          chmod +x mvnw
+          chmod +x mvnw       
           ./mvnw clean install
+
 
       ### 📦 Install & Test Frontend (React with Vite)
       - name: Build Frontend
