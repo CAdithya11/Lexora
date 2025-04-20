@@ -1,0 +1,48 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - dev   # Triggers on pushes to dev branch
+  pull_request:
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      ### 🔧 Set up Java & Node
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      ### 📦 Install & Test Backend (Spring Boot)
+      - name: Build Backend
+        run: |
+          cd backend
+          ./mvnw clean install
+
+      ### 📦 Install & Test Frontend (React with Vite)
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      ### 🚀 Deploy (Optional - if needed)
+      - name: Deploy to Test Environment
+        if: success()
+        run: |
+          echo "Deploying to test server..."
+          # Replace below with real deploy command, Docker, SCP, Vercel CLI, etc.
+          ssh ${{ secrets.TEST_SERVER_SSH }} 'cd /var/www/myapp && git pull && ./restart.sh'
