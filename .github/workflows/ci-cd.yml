@@ -21,9 +21,14 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      # Verify the Java version being used
       - name: Verify Java Version
-        run: java -version
+        run: java -version  # This will print the current Java version
 
+      # Ensure JAVA_HOME is set correctly
+      - name: Set JAVA_HOME
+        run: |
+          echo "JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))" >> $GITHUB_ENV
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -36,7 +41,6 @@ jobs:
           cd backend
           chmod +x mvnw       
           ./mvnw clean install
-
 
       ### 📦 Install & Test Frontend (React with Vite)
       - name: Build Frontend
