@@ -112,8 +112,9 @@ const SearchRoadmap = () => {
       }
       Cover all essential skills needed for this career path. Include 5-20 main_text categories, each with 5-20 sub_categories, and each sub_category with 10-20 step-by-step detailed tasks flow that describe exactly what the user needs to do to improve in that specific area. These sub_steps should be practical, actionable items in a logical progression that build on each other. Make each step specific and measurable so users know when they've completed it.`;
     }
-
+    console.log(createDynamicPrompt);
     return "";
+    
   };
 
   const fetchAIResponse = async (option) => {
@@ -186,6 +187,8 @@ const SearchRoadmap = () => {
     }
     return `${jobRole} Roadmap`;
   };
+
+ 
 
   return (
     <div className="flex flex-col justify-center items-center min-h-[85vh] text-center">
