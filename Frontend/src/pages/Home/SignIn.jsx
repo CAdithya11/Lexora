@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { authService } from '../../services/AuthService';
 import Alert from '../../component/template/alert/Alert';
 import { Link, useNavigate } from 'react-router-dom';
+import signIn from '../../assets/images/Signin.jpg';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -19,7 +20,8 @@ export default function SignIn() {
       console.log('Hello');
       const response = await authService.login(email, password);
       console.log(response);
-      navigate('/jobtrendings');
+      navigate('/jobTrends');
+      window.location.reload();
     } catch (err) {
       console.log('Hello', JSON.stringify(err.error));
       setError(err.error || 'Login failed');
@@ -98,7 +100,7 @@ export default function SignIn() {
                   <div>
                     <button
                       type="submit"
-                      id='loginButton'
+                      id="loginButton"
                       onClick={(e) => handleLogin(e)}
                       className="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700"
                     >
@@ -110,21 +112,9 @@ export default function SignIn() {
             </div>
           </div>
 
-          <div className="flex items-center justify-center px-4 py-10 sm:py-16 lg:py-24 bg-gray-50 sm:px-6 lg:px-8">
+          <div className=" bg-gray-50 sm:px-6 lg:px-8">
             <div>
-              <img
-                className="w-full mx-auto"
-                src="https://cdn.rareblocks.xyz/collection/celebration/images/signup/1/cards.png"
-                alt=""
-              />
-
-              <div className="w-full max-w-md mx-auto xl:max-w-xl">
-                <h3 className="text-2xl font-bold text-center text-black">Design your own card</h3>
-                <p className="leading-relaxed text-center text-gray-500 mt-2.5">
-                  Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat
-                  duis.
-                </p>
-              </div>
+              <img className="w-auto mx-auto" src={signIn} alt="" />
             </div>
           </div>
         </div>

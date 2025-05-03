@@ -11,7 +11,6 @@ const useUserAuth = () => {
   const [token, setToken] = useState('');
   const [user_id, setUserId] = useState('');
 
-
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user != null) {
@@ -23,7 +22,6 @@ const useUserAuth = () => {
 
   return { token, user_id };
 };
-
 
 class ProfileSettings {
   constructor() {
@@ -43,14 +41,15 @@ class ProfileSettings {
   }
 
   findUserProfileById(id) {
-    return axios.get(profileControllerAPI + 'getProfile/' + id);
+    return axios.get(profileControllerAPI + 'getProfile/' + this.user_id);
   }
 
-  changePassword(changePassword, id) {
-    return axios.post(resetPasswordAPI + id, changePassword);
+  changePassword(changePassword) {
+    return axios.post(resetPasswordAPI + this.user_id, changePassword);
   }
 
   uploadProfileImage(profileImage) {
+    console.log('Token ID ' + this.token);
     const formData = new FormData();
     formData.append('profileImage', profileImage);
     return axios.post(profileControllerAPI + 'profileImage/' + this.user_id, formData, {
@@ -70,7 +69,6 @@ class ProfileSettings {
   }
   requestVerifyAccount(degree_certificate) {
     return axios.post(`${professionalDetailsControllerAPI}verify/${this.user_id}`, degree_certificate);
-
   }
 }
 
