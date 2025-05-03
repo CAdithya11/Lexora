@@ -2,6 +2,7 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
 export default function PieChartT({ Datatype, DataSet }) {
+  console.log('sdadasdadasd sadsd' + DataSet);
   const COLOR_SCALE = ['#93C5FD', '#60A5FA', '#3B82F6', '#2563EB', '#1D4ED8'];
   const getColorShade = (value, max) => {
     const index = Math.floor((value / max) * (COLOR_SCALE.length - 1));

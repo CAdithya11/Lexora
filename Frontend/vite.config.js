@@ -4,5 +4,14 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(),tailwindcss(),],
+  base: '/Lexora/', 
+  plugins: [react(), tailwindcss()],
+  optimizeDeps: {
+    exclude: ['pdfjs-dist'], // Exclude pdfjs-dist from dependency optimization
+  },
+  build: {
+    rollupOptions: {
+      external: ['pdfjs-dist'], // Mark pdfjs-dist as external if not bundling
+    },
+  },
 })

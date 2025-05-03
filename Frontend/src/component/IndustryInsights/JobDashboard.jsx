@@ -68,15 +68,15 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
   
   Format the response as a pure JSON array of objects WITHOUT any markdown formatting, code blocks, or backticks. The output should be directly parseable by JSON.parse(). Each object should have the following structure:
   {
-    "year": "${year}",
+    "year": "${year}year,  month and date",
     "role": "Main Job Title",
     "subRole": "Specific Job Title",
     "jobRole": "Specific Job Function",
     "count": number of available jobs,
     "growthRate": year-over-year percentage growth rate,
-    "avgSalary": average annual salary in USD,
-    "minSalary": minimum typical salary in USD,
-    "maxSalary": maximum typical salary in USD
+    "avgSalary": Currency average annual salary in USD,
+    "minSalary": Currency minimum typical salary in USD,
+    "maxSalary": Currency maximum typical salary in USD
   }
   
   Include at least 15 different IT job roles across these categories:
@@ -88,45 +88,31 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
   - AI & Machine Learning (ML Engineer, AI Researcher, Computer Vision Engineer, etc.)
   - Blockchain & Web3 (Blockchain Developer, Smart Contract Engineer, etc.)
   
-  IMPORTANT: Return ONLY the valid JSON array with NO additional text, formatting, or code blocks. The response should start with "[" and end with "]".`;
+  IMPORTANT: Return ONLY the valid JSON array with NO additional text, formatting, or code blocks. The response should start with "[" and end with "]". Do not have dplicate job roels. Order the data according to it's year date and month `;
   };
 
   // Function to fetch data from Google's Gemini API
   // Modify the fetchJobData function to clean the JSON response
-  const fetchJobData = async (year = selectedYear, countryObj = selectedCountry, category = selectedCategory) => {
+  const fetchJobData = async (year, countryObj, category) => {
     setIsLoading(true);
     try {
-      // Import GoogleGenerativeAI dynamically
       const { GoogleGenerativeAI } = await import('@google/generative-ai');
       const genAI = new GoogleGenerativeAI(API_KEY);
-
       const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
       const prompt = createJobDataPrompt(year, countryObj, category);
       const result = await model.generateContent(prompt);
-      const text = result.response.text();
+      let text = result.response
+        .text()
+        .replace(/```json|```/g, '')
+        .trim();
 
-      try {
-        // Clean the response - remove markdown code blocks and any other non-JSON content
-        let cleanedText = text;
+      const parsedData = JSON.parse(text);
+      const deduped = Array.from(new Map(parsedData.map((item) => [item.role, item])).values());
 
-        // Remove markdown code blocks (```json and ```)
-        cleanedText = cleanedText.replace(/```json|```/g, '');
-
-        // Trim whitespace
-        cleanedText = cleanedText.trim();
-
-        // Parse the cleaned JSON
-        const parsedData = JSON.parse(cleanedText);
-        setJobData(parsedData);
-        console.log('Fetched job data:', parsedData);
-      } catch (jsonError) {
-        console.error('Error parsing JSON response:', jsonError);
-        console.error('Raw response:', text);
-        // If parsing fails, keep the previous data or set a default
-        setJobData([]);
-      }
-    } catch (error) {
-      console.error('Error fetching data from Google API:', error);
+      setJobData(deduped);
+    } catch (err) {
+      console.error('Failed to fetch job data:', err);
+      setJobData([]);
     } finally {
       setIsLoading(false);
     }

@@ -12,34 +12,9 @@ const categories = [
   'Healthcare & Medicine',
 ];
 
-// Countries for the country selector
-const countries = [
-  { name: 'Sri Lanka', code: 'LK' },
-  { name: 'United States', code: 'US' },
-  { name: 'India', code: 'IN' },
-  { name: 'United Kingdom', code: 'GB' },
-  { name: 'Australia', code: 'AU' },
-  { name: 'Canada', code: 'CA' },
-  { name: 'Singapore', code: 'SG' },
-];
-
 export default function TopHeader({ HeaderMessage }) {
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
-  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [showYearDropdown, setShowYearDropdown] = useState(false);
   const [profileDetails, setProfileDetails] = useState('');
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [selectedCategory, selectedYear, selectedCountry]);
 
   useEffect(() => {
     userProfileHandleService.findUserProfileById(1).then((response) => {
@@ -51,7 +26,6 @@ export default function TopHeader({ HeaderMessage }) {
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = () => {
-      setShowYearDropdown(false);
       setShowCountryDropdown(false);
       setShowProfileDropdown(false);
     };

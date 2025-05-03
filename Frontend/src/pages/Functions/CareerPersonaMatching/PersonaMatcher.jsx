@@ -1,21 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload, X, FileText, AlertTriangle } from 'lucide-react';
-import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom";
-import SidebarSub from '../../../component/template/SidebarSub';
-import * as pdfjs from "pdfjs-dist/build/pdf";
-pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import * as pdfjsLib from 'pdfjs-dist';
+import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.js?url';
 
-
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 export default function PersonaMatcherPage() {
+  const [jobs, setJobs] = useState([
+    { id: 1, title: 'Frontend Developer', skill: 'React, JavaScript, HTML/CSS', progress: 75 },
+    { id: 2, title: 'Backend Developer', skill: 'Node.js, Express, MongoDB', progress: 60 },
+    { id: 3, title: 'UX Designer', skill: 'Figma, User Research, Wireframing', progress: 85 },
+    { id: 4, title: 'DevOps Engineer', skill: 'Docker, Kubernetes, CI/CD', progress: 10 },
+  ]);
 
-    const [jobs, setJobs] = useState([
-      { id: 1, title: 'Frontend Developer', skill: 'React, JavaScript, HTML/CSS', progress: 75 },
-      { id: 2, title: 'Backend Developer', skill: 'Node.js, Express, MongoDB', progress: 60 },
-      { id: 3, title: 'UX Designer', skill: 'Figma, User Research, Wireframing', progress: 85 },
-      { id: 4, title: 'DevOps Engineer', skill: 'Docker, Kubernetes, CI/CD', progress: 10 },
-    ]);
-  
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [matchedPersonas, setMatchedPersonas] = useState([]);
@@ -23,21 +21,23 @@ export default function PersonaMatcherPage() {
   const [pdfPreviewError, setPdfPreviewError] = useState(null);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
-  
-  const [text, setText] = useState("");
-  const hnadlenavigate=()=>{navigate("/Personas",{state :{msg:text}})}
+
+  const [text, setText] = useState('');
+  const hnadlenavigate = () => {
+    navigate('/Personas', { state: { msg: text } });
+  };
   const extractText = async (file) => {
     const reader = new FileReader();
     reader.readAsArrayBuffer(file);
     reader.onload = async () => {
       const typedarray = new Uint8Array(reader.result);
       const pdf = await pdfjs.getDocument({ data: typedarray }).promise;
-      let extractedText = "";
+      let extractedText = '';
 
       for (let i = 1; i <= pdf.numPages; i++) {
         const page = await pdf.getPage(i);
         const textContent = await page.getTextContent();
-        extractedText += textContent.items.map((item) => item.str).join(" ") + " ";
+        extractedText += textContent.items.map((item) => item.str).join(' ') + ' ';
       }
 
       setText(extractedText);
@@ -129,8 +129,6 @@ export default function PersonaMatcherPage() {
           <div>
             <h1 className="text-xl font-semibold text-gray-800">Persona Matcher</h1>
             <p className="text-sm text-gray-500">My Persona's</p>
-            
-            
           </div>
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
@@ -186,17 +184,19 @@ export default function PersonaMatcherPage() {
                     {uploadedFiles.map((fileObj, index) => (
                       <div
                         key={fileObj.id}
-                        className={`relative border rounded-lg overflow-hidden ${fileObj.type === 'application/pdf' ? 'p-4' : ''}`}
+                        className={`relative border rounded-lg overflow-hidden ${
+                          fileObj.type === 'application/pdf' ? 'p-4' : ''
+                        }`}
                       >
                         {uploadedFiles[selectedPdfIndex].type === 'application/pdf' ? (
-  <PDFPreview url={uploadedFiles[selectedPdfIndex].preview} />
-) : (
-  <img
-    src={uploadedFiles[selectedPdfIndex].preview}
-    alt="Preview"
-    className="w-full h-56 object-cover"
-  />
-)}
+                          <PDFPreview url={uploadedFiles[selectedPdfIndex].preview} />
+                        ) : (
+                          <img
+                            src={uploadedFiles[selectedPdfIndex].preview}
+                            alt="Preview"
+                            className="w-full h-56 object-cover"
+                          />
+                        )}
 
                         <button
                           onClick={(e) => {
@@ -217,13 +217,11 @@ export default function PersonaMatcherPage() {
                       <span className="text-gray-600">Add More</span>
                     </div>
                   </div>
-
-                  
                 </div>
               )}
             </div>
           </div>
-              <p>{text}</p>
+          <p>{text}</p>
           <div className="fixed bottom-4 left-0 right-0 flex justify-center">
             <button
               className="bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition"

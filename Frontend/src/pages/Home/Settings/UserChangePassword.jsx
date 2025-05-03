@@ -35,7 +35,7 @@ export default function UserChangePassword() {
     setAlertMessage(''); // Clear previous alerts
 
     userProfileHandleService
-      .changePassword(formData, 1)
+      .changePassword(formData)
       .then((response) => {
         if (response.status === 200) {
           setAlertMessage(response.data);
