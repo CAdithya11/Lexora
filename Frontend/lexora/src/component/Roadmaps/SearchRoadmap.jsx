@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Roadmap from './Roadmap';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const SearchRoadmap = () => {
   const [searchInput, setSearchInput] = useState('');
@@ -11,6 +12,9 @@ const SearchRoadmap = () => {
   const [jobRole, setJobRole] = useState("");
   const [roadmapData, setRoadmapData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  
+  const navigate = useNavigate();
 
   const API_KEY = "AIzaSyDk93DVnzDnYhuJyHCLIsjMjHd47uODLvs";
 
@@ -114,7 +118,6 @@ const SearchRoadmap = () => {
     }
     console.log(createDynamicPrompt);
     return "";
-    
   };
 
   const fetchAIResponse = async (option) => {
@@ -183,12 +186,53 @@ const SearchRoadmap = () => {
   // Create a dynamic title based on job role and skill
   const getRoadmapTitle = () => {
     if (selectedOption === 1 && skill) {
-      return `${jobRole} Roadmap( ${skill} ) `;
+      return `${jobRole} Roadmap (${skill})`;
     }
     return `${jobRole} Roadmap`;
   };
 
- 
+  // Save roadmap data to backend
+  const saveRoadmapToBackend = async () => {
+    if (!roadmapData || !roadmapData.jsonData) {
+      alert("No roadmap data to save!");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      // Prepare data for saving
+      const roadmapToSave = {
+        jobTitle: jobRole,
+        skillFocus: selectedOption === 1 ? skill : "General",
+        progress: 0, // Initial progress
+        roadmapData: roadmapData.jsonData
+      };
+
+      // Send data to the backend
+      const response = await axios.post(
+        "http://localhost:8080/api/roadmaps",
+        roadmapToSave,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+
+      if (response.status === 201 || response.status === 200) {
+        console.log("Roadmap saved successfully:", response.data);
+        // Navigate to the RoadmapDetails page with the saved roadmap ID
+        navigate('/RoadmapDetails', { state: { savedRoadmapId: response.data.id } });
+      } else {
+        throw new Error("Failed to save roadmap");
+      }
+    } catch (error) {
+      console.error("Error saving roadmap:", error);
+      alert(`Failed to save roadmap: ${error.message}`);
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center min-h-[85vh] text-center">
@@ -287,16 +331,20 @@ const SearchRoadmap = () => {
               ) : (
                 <div>{roadmapData.html}</div>
               )}
-              <div className="mt-4 text-center">
-                
-                <button className="py-2 px-5 bg-gray-100 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-200"
-                onClick={resetForm}>
-                Cancel
+              <div className="mt-4 text-center space-x-4">
+                <button 
+                  className="py-2 px-5 bg-gray-100 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-200"
+                  onClick={resetForm}
+                >
+                  Cancel
                 </button>
-                <Link to={'/RoadmapDetails'}>
-                <button className="py-2 px-5 bg-gray-100 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-200">
-                  Save
-                </button></Link>
+                <button 
+                  className="py-2 px-5 bg-blue-600 hover:bg-blue-700 text-white rounded-md cursor-pointer"
+                  onClick={saveRoadmapToBackend}
+                  disabled={isSaving}
+                >
+                  {isSaving ? 'Saving...' : 'Save'}
+                </button>
               </div>
             </div>
           )}
