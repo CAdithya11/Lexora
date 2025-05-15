@@ -7,15 +7,16 @@ import userProfileHandleService from '../../services/userProfileHandleService';
 export default function UserProfileSettings() {
   const [activeTab, setActiveTab] = useState('Profile');
   const tabs = ['Profile', 'Password'];
-  const [userData,setUserData] = useState("");
+  const [userData, setUserData] = useState('');
+  const user = JSON.parse(localStorage.getItem('user'));
 
-  useEffect(()=>{
-    userProfileHandleService.findUserById(2).then((response)=>{
+  useEffect(() => {
+    console.log('USERRRRRRRRRRRRR', user);
+    userProfileHandleService.findUserProfileById(user.user_id).then((response) => {
       setUserData(response.data);
       console.log(response.data);
-    })
-    
-  },[ ])
+    });
+  }, []);
 
   return (
     <>
@@ -55,7 +56,6 @@ export default function UserProfileSettings() {
             <div className="max-w-3xl">
               <div className="mb-6">
                 <h2 className="text-lg font-medium mb-2">Profile</h2>
-                <p className="text-gray-500 text-sm">Lorem ipsum dolor sit amet, consectetur adipis.</p>
               </div>
 
               {/* Profile Photo */}
