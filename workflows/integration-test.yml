@@ -16,8 +16,8 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_DATABASE: testdb
-          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: lexoraDB
+          MYSQL_ROOT_PASSWORD: 
         ports:
           - 3306:3306
       # MongoDB service (for integration tests requiring MongoDB):contentReference[oaicite:2]{index=2}
