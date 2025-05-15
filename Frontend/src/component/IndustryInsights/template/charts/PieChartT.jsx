@@ -1,36 +1,101 @@
-import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import React, { useMemo } from 'react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 export default function PieChartT({ Datatype, DataSet }) {
-  console.log('sdadasdadasd sadsd' + DataSet);
   const COLOR_SCALE = ['#93C5FD', '#60A5FA', '#3B82F6', '#2563EB', '#1D4ED8'];
+
   const getColorShade = (value, max) => {
     const index = Math.floor((value / max) * (COLOR_SCALE.length - 1));
     return COLOR_SCALE[Math.min(index, COLOR_SCALE.length - 1)];
   };
 
-  const maxCount = Math.max(...DataSet.map((job) => job.count));
+  // Step 1: Preprocess and aggregate data depending on Datatype
+  const chartData = useMemo(() => {
+    if (Datatype === 'Skills') {
+      const skillMap = {};
 
-  const totalJobs = DataSet.reduce((sum, job) => sum + job.count, 0);
+      DataSet.forEach((role) => {
+        role.skills.forEach((skill) => {
+          if (!skillMap[skill.name]) {
+            skillMap[skill.name] = {
+              skill: skill.name,
+              maxCount: 0,
+              totalCount: 0,
+              roles: 0,
+            };
+          }
+          skillMap[skill.name].totalCount += skill.count;
+          skillMap[skill.name].roles += 1;
+          if (skill.count > skillMap[skill.name].maxCount) {
+            skillMap[skill.name].maxCount = skill.count;
+          }
+        });
+      });
 
-  const top10Jobs = [...DataSet]
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 25)
-    .map((job) => ({
-      ...job,
-      percentage: ((job.count / totalJobs) * 100).toFixed(1),
+      const skillArray = Object.values(skillMap);
+      const maxCount = Math.max(...skillArray.map((s) => s.totalCount));
 
-      color: getColorShade(job.count, maxCount),
-    }));
+      return skillArray
+        .sort((a, b) => b.totalCount - a.totalCount)
+        .slice(0, 25)
+        .map((skill) => ({
+          name: skill.skill,
+          value: skill.totalCount,
+          maxCount: skill.maxCount,
+          roles: skill.roles,
+          color: getColorShade(skill.totalCount, maxCount),
+        }));
+    }
+
+    if (Datatype === 'Jobs' || Datatype === 'Salary') {
+      const maxCount = Math.max(...DataSet.map((job) => job.count));
+      const totalJobs = DataSet.reduce((sum, job) => sum + job.count, 0);
+
+      return [...DataSet]
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 25)
+        .map((job) => ({
+          ...job,
+          percentage: ((job.count / totalJobs) * 100).toFixed(1),
+          color: getColorShade(job.count, maxCount),
+          name: job.role,
+          value: Datatype === 'Jobs' ? job.count : Datatype === 'Salary' ? job.maxSalary : job.count,
+        }));
+    }
+
+    return [];
+  }, [Datatype, DataSet]);
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
 
-      return Datatype == 'Salary' ? (
-        <>
+      if (Datatype === 'Skills') {
+        return (
           <div className="bg-white p-4 border border-gray-200 shadow-lg rounded">
-            <p className="font-bold text-gray-800 mb-2">{`${data.role}`}</p>
+            <p className="font-bold text-gray-800 mb-2">{data.name}</p>
+            <div className="flex flex-col space-y-2">
+              <p className="text-sm">
+                <span className="font-medium">Total Demand: </span>
+                <span className="text-gray-700">{data.value.toLocaleString()}</span>
+              </p>
+              <p className="text-sm">
+                <span className="font-medium">Used In Roles: </span>
+                <span className="text-gray-700">{data.roles}</span>
+              </p>
+              <p className="text-sm">
+                <span className="font-medium">Max Count In Role: </span>
+                <span className="text-gray-700">{data.maxCount}</span>
+              </p>
+            </div>
+          </div>
+        );
+      }
+
+      if (Datatype === 'Salary') {
+        return (
+          <div className="bg-white p-4 border border-gray-200 shadow-lg rounded">
+            <p className="font-bold text-gray-800 mb-2">{data.name}</p>
             <div className="flex flex-col space-y-2">
               <p className="text-sm">
                 <span className="font-medium">Min Salary: </span>
@@ -50,32 +115,34 @@ export default function PieChartT({ Datatype, DataSet }) {
               </p>
             </div>
           </div>
-        </>
-      ) : Datatype == 'Jobs' ? (
-        <div className="bg-white p-4 border border-gray-200 shadow-lg rounded">
-          <p className="font-bold text-gray-800 mb-2">{`${data.role}`}</p>
-          <div className="flex flex-col space-y-2">
-            <p className="text-sm">
-              <span className="font-medium">Count: </span>
-              <span className="text-gray-700">{data.count.toLocaleString()} jobs</span>
-            </p>
-            <p className="text-sm">
-              <span className="font-medium">Market Share: </span>
-              <span className="text-gray-700">{data.percentage}%</span>
-            </p>
-            <p className="text-sm">
-              <span className="font-medium">Growth Rate: </span>
-              <span className="text-gray-700">{data.growthRate}%</span>
-            </p>
-            <p className="text-sm">
-              <span className="font-medium">Avg Salary: </span>
-              <span className="text-gray-700">${data.avgSalary.toLocaleString()}</span>
-            </p>
+        );
+      }
+
+      if (Datatype === 'Jobs') {
+        return (
+          <div className="bg-white p-4 border border-gray-200 shadow-lg rounded">
+            <p className="font-bold text-gray-800 mb-2">{data.name}</p>
+            <div className="flex flex-col space-y-2">
+              <p className="text-sm">
+                <span className="font-medium">Count: </span>
+                <span className="text-gray-700">{data.count.toLocaleString()} jobs</span>
+              </p>
+              <p className="text-sm">
+                <span className="font-medium">Market Share: </span>
+                <span className="text-gray-700">{data.percentage}%</span>
+              </p>
+              <p className="text-sm">
+                <span className="font-medium">Growth Rate: </span>
+                <span className="text-gray-700">{data.growthRate}%</span>
+              </p>
+              <p className="text-sm">
+                <span className="font-medium">Avg Salary: </span>
+                <span className="text-gray-700">${data.avgSalary.toLocaleString()}</span>
+              </p>
+            </div>
           </div>
-        </div>
-      ) : (
-        {}
-      );
+        );
+      }
     }
     return null;
   };
@@ -86,17 +153,9 @@ export default function PieChartT({ Datatype, DataSet }) {
         <ResponsiveContainer width="100%" height="100%">
           <PieChart margin={{ top: 30, right: 30, bottom: 30, left: 30 }}>
             <Pie
-              data={top10Jobs}
-              dataKey={
-                Datatype == 'Jobs'
-                  ? 'count'
-                  : Datatype == 'Salary'
-                  ? 'maxSalary'
-                  : Datatype == 'Skills'
-                  ? 'maxCount'
-                  : ''
-              }
-              nameKey="role"
+              data={chartData}
+              dataKey="value"
+              nameKey="name"
               cx="50%"
               cy="50%"
               outerRadius={200}
@@ -105,7 +164,7 @@ export default function PieChartT({ Datatype, DataSet }) {
               labelLine={true}
               label={({ name }) => `${name}`}
             >
-              {top10Jobs.map((entry, index) => (
+              {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} stroke="#ffffff" strokeWidth={2} />
               ))}
             </Pie>

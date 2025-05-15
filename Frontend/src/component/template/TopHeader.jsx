@@ -17,10 +17,13 @@ export default function TopHeader({ HeaderMessage }) {
   const [profileDetails, setProfileDetails] = useState('');
 
   useEffect(() => {
-    userProfileHandleService.findUserProfileById(1).then((response) => {
-      setProfileDetails(response.data);
-      console.log(response.data);
-    });
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user.user_id && user.token) {
+      userProfileHandleService.findUserProfileById(user.user_id).then((response) => {
+        setProfileDetails(response.data);
+        console.log(response.data);
+      });
+    }
   }, []);
 
   // Close dropdowns when clicking outside

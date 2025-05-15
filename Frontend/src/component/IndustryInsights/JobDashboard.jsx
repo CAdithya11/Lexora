@@ -18,7 +18,7 @@ import RadarChartT from './template/charts/RadarChartT';
 import PieChartT from './template/charts/PieChartT';
 import DollarChart from './template/charts/DollarChart';
 
-const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
+const JobDashboard = ({ Datatype, jobRole, country, year, dateTime, jobCategory, month, week }) => {
   const [dataType, setDataType] = useState(Datatype);
   const [jobData, setJobData] = useState([]);
   const [selectedYear, setSelectedYear] = useState('2025');
@@ -30,21 +30,7 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
   const [chartTitle, setChartTitle] = useState('Software Engineering Trends');
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const filterRef = useRef(null);
-  const API_KEY = 'AIzaSyDk93DVnzDnYhuJyHCLIsjMjHd47uODLvs'; // Use the same API key from GoogleAIStudio
-
-  const countries = [
-    { name: 'United States', code: 'US' },
-    { name: 'Canada', code: 'CA' },
-    { name: 'United Kingdom', code: 'UK' },
-    { name: 'Australia', code: 'AU' },
-    { name: 'Germany', code: 'DE' },
-    { name: 'France', code: 'FR' },
-    { name: 'Japan', code: 'JP' },
-    { name: 'India', code: 'IN' },
-  ];
-
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
-  const years = ['2023', '2024', '2025', '2026'];
+  const API_KEY = 'AIzaSyCp2m0PArqJgaPSGyg6gJQKOigp_SZ7Uis'; // Use the same API key from GoogleAIStudio
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -68,17 +54,32 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
   
   Format the response as a pure JSON array of objects WITHOUT any markdown formatting, code blocks, or backticks. The output should be directly parseable by JSON.parse(). Each object should have the following structure:
   {
-    "year": "${year}year,  month and date",
+    "country":"${country.name}",
+    "year": "${
+      year != null
+        ? year + ' to all 12 months in the year'
+        : month != null
+        ? month + ' To all weeks within the month'
+        : week + ' To all days within the week'
+    }",
     "role": "Main Job Title",
-    "subRole": "Specific Job Title",
+    "subRole": "${jobCategory}",
     "jobRole": "Specific Job Function",
     "count": number of available jobs,
     "growthRate": year-over-year percentage growth rate,
-    "avgSalary": Currency average annual salary in USD,
-    "minSalary": Currency minimum typical salary in USD,
-    "maxSalary": Currency maximum typical salary in USD
+    "avgSalary" average annual salary in  ${country.name + 'Currency of the country and with it"s sign'},
+    "minSalary"  minimum typical salary in  ${country.name + 'Currency of the country and with it"s sign'},
+    "maxSalary"  maximum typical salary in  ${country.name + 'Currency of the country and with it"s sign'},
+    "skills": [
+      {
+        "name": "Skill name",
+        "count": number of times this skill appears in this specific job role,
+        "overallCount": number of times this skill appears across all job roles
+      },
+      ... x All the skills that are using in this Job role ${jobCategory}
+    ]
   }
-  
+
   Include at least 15 different IT job roles across these categories:
   - Software Development & Engineering (roles like Software Engineer, Full-Stack Developer, Mobile App Developer, etc.)
   - Data Science & Analytics (Data Scientist, Data Engineer, Business Intelligence Analyst, etc.)
@@ -87,8 +88,8 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
   - IT Support & Infrastructure (System Administrator, Network Engineer, IT Support Specialist, etc.)
   - AI & Machine Learning (ML Engineer, AI Researcher, Computer Vision Engineer, etc.)
   - Blockchain & Web3 (Blockchain Developer, Smart Contract Engineer, etc.)
-  
-  IMPORTANT: Return ONLY the valid JSON array with NO additional text, formatting, or code blocks. The response should start with "[" and end with "]". Do not have dplicate job roels. Order the data according to it's year date and month `;
+  - Year value is important. Plase be carefull with the months, weeks and dates
+  IMPORTANT: Return ONLY the valid JSON array with NO additional text, formatting, or code blocks. The response should start with "[" and end with "]". Do not have duplicate job roles. Order the data according to its year, date, and month.`;
   };
 
   // Function to fetch data from Google's Gemini API
@@ -108,7 +109,7 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
 
       const parsedData = JSON.parse(text);
       const deduped = Array.from(new Map(parsedData.map((item) => [item.role, item])).values());
-
+      console.log('This is the Result how looks like', deduped);
       setJobData(deduped);
     } catch (err) {
       console.error('Failed to fetch job data:', err);
@@ -128,10 +129,8 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
     fetchJobData(yearToUse, countryToUse, categoryToUse);
 
     // Update local state to match props if they exist
-    if (dateTime) setSelectedYear(dateTime);
-    if (country) setSelectedCountry(country);
     if (jobCategory) setSelectedCategory(jobCategory);
-  }, [dateTime, country, jobCategory, selectedYear, selectedCountry, selectedCategory]);
+  }, [dateTime, country, jobCategory, year, month, week]);
 
   const toggleDropdown = (setter, state, event) => {
     event.stopPropagation();
@@ -171,7 +170,7 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
           <div className="mb-6">
             <div className="flex flex-row object-center items-center mb-2">
               <h2 className="ml-6 text-lg font-medium mr-2">
-                {selectedYear} {selectedCountry.name} Trending Jobs View
+                {year} {country.name} Trending Jobs View
               </h2>
             </div>
           </div>
@@ -316,8 +315,8 @@ const JobDashboard = ({ Datatype, role, country, dateTime, jobCategory }) => {
             {activeChart === 'bar' && <BarChart Datatype={Datatype} DataSet={jobData} />}
             {activeChart === 'pie' && <PieChartT Datatype={Datatype} DataSet={jobData} />}
             {activeChart === 'radar' && <RadarChartT Datatype={Datatype} DataSet={jobData} />}
-            {activeChart === 'salary' && <DollarChart DataType={dataType} DataSet={jobData} />}
-            {activeChart === 'line' && <DollarChart DataType={dataType} DataSet={jobData} />}
+            {activeChart === 'salary' && <DollarChart DataType={Datatype} DataSet={jobData} />}
+            {activeChart === 'line' && <DollarChart DataType={Datatype} DataSet={jobData} />}
           </>
         )}
       </div>
