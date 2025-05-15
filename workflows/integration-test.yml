@@ -1,0 +1,55 @@
+# .github/workflows/integration-test.yml
+name: Integration Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      # MySQL service (for integration tests requiring MySQL):contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1}
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_DATABASE: testdb
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
+      # MongoDB service (for integration tests requiring MongoDB):contentReference[oaicite:2]{index=2}
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        # Checkout the repository to the GitHub runner:contentReference[oaicite:3]{index=3}
+
+      - name: Set up Java 21 (Temurin)
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+        # Install JDK 21 (required by Spring Boot 3.4+) and enable Maven cache:contentReference[oaicite:4]{index=4}:contentReference[oaicite:5]{index=5}
+
+      - name: Install Google Chrome browser
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install google-chrome-stable
+        # Install Chrome (for headless Selenium tests):contentReference[oaicite:6]{index=6}
+
+      - name: Install ChromeDriver
+        run: |
+          sudo apt-get -y install chromium-chromedriver
+        # Install ChromeDriver for Selenium tests:contentReference[oaicite:7]{index=7}
+
+      - name: Run integration tests
+        run: mvn test -B
+        # Run Maven tests (JUnit and Selenium):contentReference[oaicite:8]{index=8}
