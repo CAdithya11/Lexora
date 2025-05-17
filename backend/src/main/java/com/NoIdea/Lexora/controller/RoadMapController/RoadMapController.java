@@ -21,6 +21,7 @@ public class RoadMapController {
 
     @PostMapping
     public ResponseEntity<?> createRoadMap(@RequestBody Roadmap roadMapModel) {
+        System.out.println("\n\n\n\n"+roadMapModel.toString()  + " \n\n\n\n");
         try {
             Roadmap createdRoadMap = roadMapService.createRoadMap(roadMapModel);
             return new ResponseEntity<>(createdRoadMap, HttpStatus.CREATED);
