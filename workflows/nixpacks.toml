@@ -1,0 +1,9 @@
+[phases.setup]
+# Specify Java version
+nixpkgsArchive = "https://github.com/NixOS/nixpkgs/archive/refs/tags/23.11.tar.gz"
+
+[phases.build]
+cmds = ["cd backend && ./mvnw clean install -DskipTests"]
+
+[phases.start]
+cmd = "cd backend && ./mvnw spring-boot:run"
