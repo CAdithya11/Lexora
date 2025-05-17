@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Roadmap from './Roadmap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import RoadmapServices from '../../services/RoadmapService';
 
 const SearchRoadmap = () => {
   const [searchInput, setSearchInput] = useState('');
@@ -13,10 +14,26 @@ const SearchRoadmap = () => {
   const [roadmapData, setRoadmapData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+  const userDetails = localStorage.getItem("user");
+  if (userDetails) {
+    try {
+      const parsedUser = JSON.parse(userDetails);
+      setUser(parsedUser);
+      console.log("User details:", parsedUser);
+    } catch (e) {
+      setUser(userDetails);
+      console.log("User details:", userDetails);
+    }
+  }
+}, []);
+
   const navigate = useNavigate();
 
   const API_KEY = "AIzaSyDk93DVnzDnYhuJyHCLIsjMjHd47uODLvs";
+  const [r_id,setR_id] = useState(2);
 
   const handleInitialSubmit = () => {
     if (searchInput.trim() === '') {
@@ -58,20 +75,20 @@ const SearchRoadmap = () => {
       The response should be ONLY valid JSON data with no markdown formatting, no code blocks, no backticks.
       Format the response as a valid JSON object with the following structure:
       {
-        "r_Id": 1,
+        "r_Id": "${r_id}",
         "job_name": "${jobGoal} with focus on ${skillInput}",
         "main_text": [
           {
-            "main_text_id": "1.1",
+            "main_text_id": "${r_id+'.1'}",
             "main_text_name": "Main Category Name",
             "sub_category": [
               {
-                "sub_id": "1.1.1",
+                "sub_id": "${r_id+'.1.1'}",
                 "sub_name": "Sub Category Name",
                 "sub_description": "Detailed description of this skill/concept",
                 "sub_steps": [
                     {
-                    "steps_id": "1.1.1.1",
+                    "steps_id": "${r_id+'.1.1.1'}",
                     "steps_description": " Step-by-step indetail explain tasks that improve this specific skill"
                   },
                  
@@ -90,20 +107,20 @@ const SearchRoadmap = () => {
       IMPORTANT: The response should be ONLY valid JSON data with no markdown formatting, no code blocks, no backticks.
       Format the response as a valid JSON object with the following structure:
       {
-        "r_Id": 1,
+        "r_Id": "${r_id}",
         "job_name": "${jobGoal}",
         "main_text": [
           {
-            "main_text_id": "1.1",
+            "main_text_id": "${r_id+'.1'}",
             "main_text_name": "Main Category Name",
             "sub_category": [
               {
-                "sub_id": "1.1.1",
+                "sub_id": "${r_id+'.1.1'}",
                 "sub_name": "Sub Category Name",
                 "sub_description": "Detailed description of this skill/concept",
                 "sub_steps": [
                   {
-                    "steps_id": "1.1.1.1",
+                    "steps_id": "${r_id+'.1.1.1'}",
                     "steps_description": " Step-by-step indetail explain tasks that improve this specific skill"
                   },
                   }
@@ -149,6 +166,9 @@ const SearchRoadmap = () => {
           }
         }
         
+        // Initialize progress tracking
+        initializeProgress(parsedJson);
+        
         setRoadmapData({ jsonData: parsedJson });
       } catch (jsonError) {
         console.error("Error parsing JSON:", jsonError);
@@ -172,6 +192,36 @@ const SearchRoadmap = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Initialize progress tracking for all steps
+  const initializeProgress = (roadmapJson) => {
+    if (!roadmapJson || !roadmapJson.main_text) return;
+    
+    // Create a progress object to track completion status of each step
+    const progress = {};
+    
+    roadmapJson.main_text.forEach(mainItem => {
+      if (mainItem.sub_category) {
+        mainItem.sub_category.forEach(subItem => {
+          if (subItem.sub_steps) {
+            subItem.sub_steps.forEach(step => {
+              // Use the step ID as the key
+              progress[step.steps_id] = {
+                status: "NOT_STARTED",
+                notes: ""
+              };
+            });
+          }
+        });
+      }
+    });
+    
+    // Add progress tracking to the roadmap data
+    roadmapJson.progress = progress;
+    roadmapJson.userId = user ? (user.id || user._id || "") : "";
+    
+    console.log("Initialized progress tracking:", roadmapJson);
   };
 
   const resetForm = () => {
@@ -199,18 +249,41 @@ const SearchRoadmap = () => {
     }
 
     setIsSaving(true);
+    
     try {
-      // Prepare data for saving
+      // Make sure we have the correct data structure that matches our backend model
+      const roadmapData_json = roadmapData.jsonData;
+      
+      // Add user ID to the roadmap if available
+      const userId = user ? (user.id || user._id || "") : "";
+      
+      // Create the roadmap object matching the exact structure of the backend model
       const roadmapToSave = {
-        jobTitle: jobRole,
-        skillFocus: selectedOption === 1 ? skill : "General",
-        progress: 0, // Initial progress
-        roadmapData: roadmapData.jsonData
+        rId: roadmapData_json.r_Id,
+        jobName: roadmapData_json.job_name,
+        userId: userId,
+        mainText: roadmapData_json.main_text.map(mainItem => ({
+          mainTextId: mainItem.main_text_id,
+          mainTextName: mainItem.main_text_name,
+          subCategory: mainItem.sub_category.map(subItem => ({
+            subId: subItem.sub_id,
+            subName: subItem.sub_name,
+            subDescription: subItem.sub_description,
+            subSteps: subItem.sub_steps.map(step => ({
+              stepsId: step.steps_id,
+              stepsDescription: step.steps_description
+            }))
+          }))
+        })),
+        // Include the progress data
+        progress: roadmapData_json.progress || {}
       };
-
-      // Send data to the backend
+      
+      console.log("Sending roadmap data to backend:", roadmapToSave);
+      
+      // Send data to the backend with the correct structure
       const response = await axios.post(
-        "http://localhost:8080/api/roadmaps",
+        "http://localhost:8080/api/roadmaps", 
         roadmapToSave,
         {
           headers: {
