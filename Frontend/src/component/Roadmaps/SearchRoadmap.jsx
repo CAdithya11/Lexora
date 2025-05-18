@@ -15,6 +15,7 @@ const SearchRoadmap = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [user, setUser] = useState(null);
+  const [Rid, setRid] = useState(1);
 
   useEffect(() => {
     const userDetails = localStorage.getItem('user');
@@ -25,7 +26,7 @@ const SearchRoadmap = () => {
         console.log('User details:', parsedUser);
       } catch (e) {
         setUser(userDetails);
-        console.log('User details:', userDetails);
+        console.log('User details THAT IS FETCHED:', userDetails);
       }
     }
   }, []);
@@ -121,19 +122,19 @@ const SearchRoadmap = () => {
       {
         "r_Id": ${r_id},
         "job_name": "${jobGoal}",
-        "userId": ${user.userId},
+        "userId": ${user.id || user._id},
         "main_text": [
           {
-            "main_text_id": "${r_id}.1",
+            "main_text_id": "${r_id}_1",
             "main_text_name": "Main Category Name",
             "sub_category": [
               {
-                "sub_id": "${r_id}.1.1",
+                "sub_id": "${r_id}_1_1",
                 "sub_name": "Sub Category Name",
                 "sub_description": "Detailed description of this skill/concept",
                 "sub_steps": [
                   {
-                    "steps_id": "${r_id}.1.1.1",
+                    "steps_id": "${r_id}_1_1_1",
                     "steps_description": "Step-by-step detailed task that improves this specific skill"
                   }
                 ]
@@ -281,12 +282,12 @@ const SearchRoadmap = () => {
 
       // Add user ID to the roadmap if available
       const userId = user ? user.id || user._id || '' : '';
-
+      setRid(Rid + 1)
       // Create the roadmap object matching the exact structure of the backend model
       const roadmapToSave = {
-        rId: roadmapData_json.r_Id,
-        jobName: roadmapData_json.job_name,
-        userId: userId,
+        r_Id: Rid,
+        job_name: roadmapData_json.job_name,
+        userId: user.user_id,
         mainText: roadmapData_json.main_text.map((mainItem) => ({
           mainTextId: mainItem.main_text_id,
           mainTextName: mainItem.main_text_name,
@@ -303,8 +304,6 @@ const SearchRoadmap = () => {
         // Include the progress data
         progress: roadmapData_json.progress || {},
       };
-
-      console.log('Sending roadmap data to backend:', roadmapToSave);
 
       // Send data to the backend with the correct structure
       const response = await axios.post('http://localhost:8080/api/roadmaps', roadmapToSave, {
@@ -326,6 +325,8 @@ const SearchRoadmap = () => {
     } finally {
       setIsSaving(false);
     }
+    console.log("Payload to backend:", payload);
+
   };
 
   return (
@@ -374,7 +375,8 @@ const SearchRoadmap = () => {
               </div>
               <button
                 onClick={resetForm}
-                className="mt-5 py-2 px-5 bg-gray-100 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-200"
+                className="mt-5 py-2 px-5 bg-blue-600 border text-white border-gray-300 rounded-md cursor-pointer hover:bg-blue-700 "
+               
               >
                 Go Back
               </button>

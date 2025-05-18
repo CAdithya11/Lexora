@@ -1,45 +1,62 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
 const RoadmapDetails = () => {
   const [roadmaps, setRoadmaps] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [sampleData,setSampleData] = useState([])
 
   // Simulating data for demonstration
   useEffect(() => {
     // In a real application, you would use axios to fetch data
     // This is just for demonstration purposes
-    const fetchData = () => {
-      setIsLoading(true);
-      try {
-        // Sample data that would come from your API
-        const sampleData = [
-          { r_Id: "1", job_name: "Frontend Developer" },
-          { r_Id: "2", job_name: "Backend Developer (Node.js)" },
-          { r_Id: "3", job_name: "Full Stack Developer (JavaScript focus)" },
-          { r_Id: "4", job_name: "UI/UX Designer" }
-        ];
-        
-        setRoadmaps(sampleData);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching roadmaps:', err);
-        setError('Failed to load roadmaps. Please try again later.');
-      } finally {
-        setIsLoading(false);
-      }
+    const fetchData = async () => {
+    setIsLoading(true);
+    fetchRoadmapDetails();
     };
-
     // Simulate API call delay
     setTimeout(fetchData, 1000);
   }, []);
 
+  const fetchRoadmapDetails = (async()=>{
+    try {
+      const response = await axios.get(`http://localhost:8080/api/roadmaps/user/2`);
+      const dataList = response.data; // Make sure the backend returns an array
+      console.log("MAPPED DATA", dataList)
+      const mappedData = dataList.map(data => ({
+        r_Id: data.r_Id,
+        job_name: data.job_name,
+      }));
+      
+
+      setSampleData(mappedData);
+      setRoadmaps(mappedData);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching roadmaps:', err);
+      setError('Failed to load roadmaps. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
+  })
+
   const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this roadmap?')) {
+    /* if (window.confirm('Are you sure you want to delete this roadmap?')) {
       // In a real app, you would make an API call to delete
       // For now, we'll just filter the state
       setRoadmaps(roadmaps.filter(roadmap => roadmap.r_Id !== id));
       alert('Roadmap deleted successfully');
+  }
+ */
+    try {
+      const response = axios.delete(`http://localhost:8080/api/roadmaps/rid/${id}`);
+      console.log(response.data);
+      alert('Roadmap deleted successfully');
+      fetchRoadmapDetails();
+    } catch (error) {
+      console.log(error);
+      window.alert("Network error. Failed to connect to network. Plaease check your internet connection");
     }
   };
 
@@ -130,14 +147,6 @@ const RoadmapDetails = () => {
         </div>
       )}
       
-      <div className="mt-6 text-center">
-        <button 
-          className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          onClick={() => alert('Navigate to create roadmap page')}
-        >
-          Create New Roadmap
-        </button>
-      </div>
     </div>
   );
 };
