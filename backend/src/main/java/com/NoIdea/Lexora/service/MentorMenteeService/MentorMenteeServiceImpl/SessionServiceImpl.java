@@ -27,6 +27,7 @@ public class SessionServiceImpl implements SessionService{
 
     @Override
     public Session createSession(Session session) {
+
         Mentor mentor = mentorRepository.findById(session.getMentor().getMentorId())
                                     .orElseThrow(() -> new RuntimeException("Mentor not found"));
         Mentee mentee = menteeRepository.findById(session.getMentee().getMenteeId())
@@ -41,85 +42,38 @@ public class SessionServiceImpl implements SessionService{
     @Override
     public Session viewSessionById(Long sessionId){
         return sessionRepository.findById(sessionId)
-            .orElseThrow(() -> new SessionNotFoundException("Session is not found by ID: " + sessionId));
+            .orElseThrow(()->new SessionNotFoundException("Session is not found by "+sessionId));
     }
 
-    @Override
-    public List<Session> getAllSessions() {
-        return sessionRepository.findAll();
-    }
-    
     @Override
     public Long takeTotalSessions(){
-        return sessionRepository.count();
-    }
-
-    @Override
-    public Long takeTotalSessionsCountById(Long mentorId){
-        // Use the custom repository method to count sessions by mentor ID
-        return sessionRepository.countSessionsByMentorId(mentorId);
+        Long totalSessions = sessionRepository.count();
+        return totalSessions;
     }
 
     @Override
     public String deleteSession(long sessionId){
-        // Check if session exists first
-        if(!sessionRepository.existsById(sessionId)){
-            throw new SessionNotFoundException("Session is not found by ID: " + sessionId);
+        if(sessionRepository.findById(sessionId) == null){
+            throw new SessionNotFoundException("Session is not found by "+sessionId);
+        }else{
+            sessionRepository.deleteById(sessionId);
+            return "Session deleted successfully";
         }
-        sessionRepository.deleteById(sessionId);
-        return "Session deleted successfully";
     }
 
     @Override
     public List<Session> viewAllSessions(){
-        return sessionRepository.findAll();
+        List<Session> sessions = sessionRepository.findAll();
+        return sessions;
     }
 
     @Override
-    public Session updateSession(Long sessionId, Session updatedSession){
+    public Session updateSession(Long sessionId, Session session){
         Session existingSession = sessionRepository.findById(sessionId)
-            .orElseThrow(() -> new SessionNotFoundException("Session is not found by ID: " + sessionId));
+            .orElseThrow(()->new SessionNotFoundException("Session is not found by "+sessionId));
 
-        // Update all relevant fields from the input session
-        if(updatedSession.getSessionDate() != null) {
-            existingSession.setSessionDate(updatedSession.getSessionDate());
-        }
-        
-        if(updatedSession.getSessionTime() != null) {
-            existingSession.setSessionTime(updatedSession.getSessionTime());
-        }
-        
-        if(updatedSession.getSessionLink() != null) {
-            existingSession.setSessionLink(updatedSession.getSessionLink());
-        }
-        
-        if(updatedSession.getSessionStatus() != null) {
-            existingSession.setSessionStatus(updatedSession.getSessionStatus());
-        }
-        
-        // If mentor or mentee is being updated, verify they exist
-        if(updatedSession.getMentor() != null && updatedSession.getMentor().getMentorId() != null) {
-            Mentor mentor = mentorRepository.findById(updatedSession.getMentor().getMentorId())
-                .orElseThrow(() -> new RuntimeException("Mentor not found"));
-            existingSession.setMentor(mentor);
-        }
-        
-        if(updatedSession.getMentee() != null && updatedSession.getMentee().getMenteeId() != null) {
-            Mentee mentee = menteeRepository.findById(updatedSession.getMentee().getMenteeId())
-                .orElseThrow(() -> new RuntimeException("Mentee not found"));
-            existingSession.setMentee(mentee);
-        }
+        existingSession.setSessionStatus(session.getSessionStatus());
 
-        return sessionRepository.save(existingSession);
-    }
-
-    @Override
-    public List<Session> findByMentorId(Long mentorId) {
-        return sessionRepository.findByMentorId(mentorId);
-    }
-    
-    @Override
-    public List<Session> findByMenteeId(Long menteeId) {
-        return sessionRepository.findByMenteeId(menteeId);
+        return existingSession;
     }
 }

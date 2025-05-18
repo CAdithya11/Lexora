@@ -1,9 +1,7 @@
 package com.NoIdea.Lexora.enums.MentorMentee;
 
 public enum SessionStatus {
-    SCHEDULED,
-    ONGOING,
+    UPCOMING,
     COMPLETED,
-    CANCELLED,
-    RESCHEDULED
+    NOT_ACCEPTED
 }
