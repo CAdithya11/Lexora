@@ -134,7 +134,7 @@ const NavBar = ({ activeNavMenu }) => {
             {/* Auth Buttons */}
             <div className="flex-shrink-0 ml-22 mr-3">
               <Link to={'/signIn'}>
-                <div className="  block w-full px-5 py-2 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100 rounded-md flex items-center justify-center transition-colors duration-150">
+                <div id="singInButton" className="  block w-full px-5 py-2 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100 rounded-md flex items-center justify-center transition-colors duration-150">
                   <LogIn size={18} className="mr-1" />
                   Sign In
                 </div>

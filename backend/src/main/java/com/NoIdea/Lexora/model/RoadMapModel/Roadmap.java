@@ -1,5 +1,7 @@
 package com.NoIdea.Lexora.model.RoadMapModel;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -64,6 +66,7 @@ public class Roadmap {
     private String id;
 
     @Field("r_Id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("r_Id")
     private String rId;
 
