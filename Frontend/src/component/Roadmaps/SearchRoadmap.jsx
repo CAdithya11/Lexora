@@ -283,6 +283,7 @@ const SearchRoadmap = () => {
       // Add user ID to the roadmap if available
       const userId = user ? user.id || user._id || '' : '';
       setRid(Rid + 1)
+      
       // Create the roadmap object matching the exact structure of the backend model
       const roadmapToSave = {
         r_Id: Rid,
@@ -304,6 +305,8 @@ const SearchRoadmap = () => {
         // Include the progress data
         progress: roadmapData_json.progress || {},
       };
+
+      console.log('User roadmapToSave', roadmapToSave);
 
       // Send data to the backend with the correct structure
       const response = await axios.post('http://localhost:8080/api/roadmaps', roadmapToSave, {
