@@ -33,7 +33,7 @@ const SearchRoadmap = () => {
 
   const navigate = useNavigate();
 
-  const API_KEY = 'AIzaSyDk93DVnzDnYhuJyHCLIsjMjHd47uODLvs';
+  const API_KEY = 'AIzaSyByT6KBGcqhOdxRtoFS5THhh70B9Z9QKi0';
   const [r_id, setR_id] = useState(2);
 
   const handleInitialSubmit = () => {

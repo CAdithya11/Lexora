@@ -36,12 +36,8 @@ export default function MenteeDashboard() {
   useEffect(() => {
     const fetchMentors = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:8080/api/mentor", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const token = localStorage.getItem("user");
+        const response = await axios.get("http://localhost:8080/api/mentor");
         setMentors(response.data);
       } catch (err: any) {
         console.error("Error fetching mentors:", err);
@@ -124,7 +120,7 @@ export default function MenteeDashboard() {
             mentors.map((mentor) => (
               <div key={mentor.id} className="bg-white p-4 shadow-lg ring-2 ring-gray-50 text-center">
                 <img
-                  src={mentor.image || "https://randomuser.me/api/portraits/lego/1.jpg"}
+                  src={mentor.image || "https://randomuser.me/api/portraits/men/77.jpg"}
                   alt={mentor.name}
                   className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
                 />
