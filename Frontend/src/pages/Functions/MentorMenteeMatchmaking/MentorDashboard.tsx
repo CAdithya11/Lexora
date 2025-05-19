@@ -27,18 +27,17 @@ export default function MentorDashboard() {
   const [stats, setStats] = useState<Stats>({
     total: 0, pending: 0, completed: 0, rejected: 0, upcoming: 0
   });
+  const [statics,setStatics] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchSessions = async () => {
       try{
-        const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:8080/api/sessions", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const token = localStorage.getItem("user");
+        const response = await axios.get("http://localhost:8080/api/sessions/count");
+        console.log("count response",response.data.completed);
+        setStatics(response.data);
         setSessions(response.data);
       }catch (err: any){
         console.error("Full error object:", err);
@@ -50,29 +49,6 @@ export default function MentorDashboard() {
     fetchSessions();
   }, []);
 
-  // useEffect(() => {
-  // const storedUser = localStorage.getItem("user");
-  //   if (storedUser) {
-  //     const parsedUser = JSON.parse(storedUser);
-  //     setMentorId(parsedUser.userId);  // <-- Corrected line
-  //   } else {
-  //     setError("Mentor ID not found in localStorage.");
-  //   }
-  // }, []);
-
-
-  // useEffect(() => {
-  //   if (mentorId !== null) {
-  //     loadSessions();
-  //     loadStats();
-  //   }
-  // }, [mentorId]);
-
-  // const config = {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`
-  //   }
-  // }
   async function updateSessionStatus(sessionId: number, newStatus: string) {
     try {
       await axios.put(`http://localhost:8080/api/sessions/${sessionId}/status?status=${newStatus}`);

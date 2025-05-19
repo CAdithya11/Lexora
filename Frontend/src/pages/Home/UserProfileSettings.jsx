@@ -11,7 +11,6 @@ export default function UserProfileSettings() {
   const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
-    console.log('USERRRRRRRRRRRRR', user);
     userProfileHandleService.findUserProfileById(user.user_id).then((response) => {
       setUserData(response.data);
       console.log(response.data);

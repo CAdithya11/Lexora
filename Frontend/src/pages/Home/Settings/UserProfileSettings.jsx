@@ -7,6 +7,7 @@ import Alert from '../../../component/template/alert/Alert';
 
 export default function UserProfileSettings() {
   const [activeTab, setActiveTab] = useState('Profile');
+  const userDetails = JSON.parse(localStorage.getItem('user'));
   const tabs = {
     Profile: '/settings/profile',
     Password: '/settings/password',
@@ -28,7 +29,7 @@ export default function UserProfileSettings() {
   const [alertType, setAlertType] = useState('');
 
   useEffect(() => {
-    userProfileHandleService.findUserProfileById(1).then((response) => {
+    userProfileHandleService.findUserProfileById(userDetails.user_id).then((response) => {
       const userData = response.data || {};
       setProfileDetails({
         f_name: userData.f_name || '',
@@ -41,6 +42,7 @@ export default function UserProfileSettings() {
       console.log(response.data);
     });
   }, []);
+
 
   const handleImage = (e) => {
     const file = e.target.files[0];
@@ -55,7 +57,7 @@ export default function UserProfileSettings() {
     setAlertMessage('');
 
     try {
-      await userProfileHandleService.uploadProfileImage(profileImage).then((response) => {
+      await userProfileHandleService.uploadProfileImage(profileImage,userDetails.token,userDetails.user_id).then((response) => {
         console.log(response);
         if (response.status == 200) {
           setAlertMessage(response.data);
@@ -92,7 +94,7 @@ export default function UserProfileSettings() {
     const confirmed = confirm('Are you sure you want to update the profile ?');
     if (confirmed) {
       try {
-        const response = await userProfileHandleService.updateProfileDetails(updatedDetails);
+        const response = await userProfileHandleService.updateProfileDetails(updatedDetails,userDetails.user_id);
         if (response.status === 200) {
           setAlertMessage('Profile updated successfully');
           setAlertType('success');

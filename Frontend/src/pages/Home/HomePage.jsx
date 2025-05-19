@@ -4,6 +4,9 @@ import Footer from './Footer';
 import FeatureExplain from '../../component/template/FeatureExplain';
 import HomeMain from '../../assets/images/Home1.webp'
 import HomeRealTime from '../../assets/images/HomeRealTime.jpg'
+//import { Link } from 'lucide-react';
+import { Link } from "react-router-dom";
+
 
 export default function HomePage() {
   return (
@@ -26,8 +29,8 @@ export default function HomePage() {
                   Overcome skill gaps, career misalignment, and professional uncertainty.
                 </p>
 
-                <a
-                  href="/signIn"
+                <Link to={"/signUp"}
+                  
                   className="inline-flex items-center px-4 py-3 mt-6 font-semibold text-white transition-all duration-200 bg-blue-600 rounded-full sm:px-6 sm:py-4 sm:mt-8 lg:mt-16 hover:bg-blue-700 focus:bg-blue-700"
                 >
                   <span className="text-sm sm:text-base">Start Your Journey</span>
@@ -45,14 +48,20 @@ export default function HomePage() {
                       d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                </a>
+                </Link>
 
+                
                 <p className="mt-4 text-sm sm:text-base text-gray-600">
                   Already have an account?{' '}
-                  <a href="#" title="" className="text-blue-600 transition-all duration-200 hover:underline">
+                  <Link
+                    to={"/signIn"}
+                    title="Log in"
+                    className="text-blue-600 transition-all duration-200 hover:underline"
+                  >
                     Log in
-                  </a>
+                  </Link>
                 </p>
+
               </div>
 
               <div className="w-full mt-10 lg:mt-0">
@@ -81,14 +90,13 @@ export default function HomePage() {
               </p>
 
               <div className="flex flex-col items-center justify-center mt-6 space-y-3 sm:space-y-0 sm:space-x-4 sm:flex-row lg:mt-12">
-                <a
-                  href="#"
+                <Link to={"/signUp"}
                   title=""
                   className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-semibold text-blue-600 transition-all duration-200 bg-white border border-transparent rounded-md sm:w-auto sm:text-base sm:px-8 sm:py-4 hover:bg-gray-100 focus:bg-gray-100"
                   role="button"
                 >
                   Register Now
-                </a>
+                </Link>
               </div>
 
               <p className="mt-5 text-sm sm:text-base text-white">
