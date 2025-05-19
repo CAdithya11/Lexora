@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SidebarSub from "../../../component/template/SidebarSub";
-import TopHeaderMentor from "../../../component/MentorMentee/TopHeaderMentor";
+import TopHeader from "../../../component/template/TopHeader";
 
 type Session = {
   id: number;
@@ -59,6 +59,7 @@ export default function MentorDashboard() {
   //     setError("Mentor ID not found in localStorage.");
   //   }
   // }, []);
+
 
   // useEffect(() => {
   //   if (mentorId !== null) {
@@ -117,11 +118,12 @@ export default function MentorDashboard() {
     <div className="flex h-screen bg-white">
       <SidebarSub />
       <div className="flex-1 p-6 overflow-y-auto">
-        <TopHeaderMentor />
+        <TopHeader HeaderMessage={'Mentor'} />
 
         <h1 className="text-2xl font-bold mt-6 mb-6 border-b pb-2 border-gray-300">
           Mentor Dashboard
         </h1>
+
 
         {/* Stats cards */}
         <div className="grid grid-cols-4 gap-4 mb-8">

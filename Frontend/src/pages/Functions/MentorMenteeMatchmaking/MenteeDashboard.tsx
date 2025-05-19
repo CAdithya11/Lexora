@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import SidebarSub from "../../../component/template/SidebarSub";
-import TopHeaderMentor from "../../../component/mentorMentee/TopHeaderMentor";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import TopHeader from "../../../component/template/TopHeader";
+
 
 type Mentor = {
   id: number;
@@ -11,6 +13,7 @@ type Mentor = {
   description: string;
   image: string;
 };
+
 
 export default function MenteeDashboard() {
   const [mentors, setMentors] = useState<Mentor[]>([]);
@@ -51,6 +54,20 @@ export default function MenteeDashboard() {
   }, []);
 
   const handleMatchmaking = async () => {
+
+    // Simulate matching logic
+  const matchedMentor = {
+    name: "Jessica Gutierrez",
+    degree: "BSc (Hons) in Software Engineering",
+    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+  };
+
+  // Save to localStorage or context temporarily
+  localStorage.setItem("matchedMentor", JSON.stringify(matchedMentor));
+
+  // Navigate to matchmaking progress page
+  navigate("/menteeMatchmaking");
+
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
@@ -79,12 +96,13 @@ export default function MenteeDashboard() {
 
   if (loading) return <p className="p-8">Loading mentors...</p>;
   if (error) return <p className="p-8 text-red-500">{error}</p>;
-
   return (
     <div className="flex h-screen bg-white">
       <SidebarSub />
       <div className="flex-1 p-6">
-        <TopHeaderMentor />
+
+        <TopHeader HeaderMessage={'Mentee Dashboard'} />
+
 
         <div className="bg-white pb-4">
           <h1 className="text-2xl font-bold pb-2 border-b border-gray-300 mt-6 mb-4">
