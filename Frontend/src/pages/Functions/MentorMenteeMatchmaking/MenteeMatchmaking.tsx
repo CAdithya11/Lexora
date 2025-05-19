@@ -1,14 +1,18 @@
 import React from "react";
 import SidebarSub from "../../../component/template/SidebarSub";
-import TopHeaderMentor from "../../../component/MentorMentee/TopHeaderMentor";
+import TopHeader from "../../../component/template/TopHeader";
+
 
 export default function MenteeMatchmaking() {
     return (
       <div className="h-screen flex min-h-screen bg-white">
         <SidebarSub />
         <div className="flex-1 p-6">
-            <TopHeaderMentor />
-        <h1 className="text-2xl font-semibold text-gray-800 mb-8">Matchmaking</h1>
+          <TopHeader HeaderMessage={'Mentee Dashboard'} />
+          <h1 className="text-2xl font-bold mt-6 mb-6 border-b pb-2 border-gray-300">
+            Matchmaking
+          </h1>
+
   
         {/* Main Content */}
         <div className="flex justify-center items-center gap-16">

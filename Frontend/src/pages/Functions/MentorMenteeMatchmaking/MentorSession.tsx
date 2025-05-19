@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Bell, ChevronDown } from "lucide-react";
 import SidebarSub from "../../../component/template/SidebarSub";
-import TopHeaderMentor from "../../../component/MentorMentee/TopHeaderMentor";
+
 import { useNavigate } from "react-router-dom";
+import TopHeader from "../../../component/template/TopHeader";
+
 
 const sessions = [
   {
@@ -41,8 +43,7 @@ export default function MentorSessions() {
 
       {/* Main Content */}
       <div className="flex-1 p-6">
-        <TopHeaderMentor />
-        {/* Header */}
+        <TopHeader HeaderMessage={'Mentor'}/>
         <div className="bg-white pb-4">
           <h1 className="text-2xl font-bold pb-2 border-b border-gray-300 mt-6 mb-4">My Sessions</h1>
         </div>
