@@ -10,12 +10,13 @@ import RoadmapPage from './pages/Functions/Roadmap/RoadmapPage';
 import ContactUsPage from './pages/Home/ContactUsPage';
 import TeamPage from './pages/Home/TeamPage';
 import RoadmapDetailsPage from './pages/Functions/Roadmap/RoadmapDetailsPage';
-// import Persona from './pages/Functions/Roadmap/Persona';
+import Persona from './pages/Functions/CareerPersonaMatching/PersonaMatcher';
+import Persona1 from './pages/Functions/CareerPersonaMatching/MatchedPersona';
 import RoadmapGeminiApi from './component/Roadmaps/RoadmapGeminiApi';
 import HomePage from '../src/pages/Home/HomePage';
 
 // import CareerPersosna from './pages/Functions/CareerPersonaMatching/PersonaMatcher';
-// import MatchedPersosna from './pages/Functions/CareerPersonaMatching/MatchedPersona';
+// import MatchedPersosna from './pages/Functions/CareerPersonaMatching/PersonaMatcher';
 import Skill from './pages/Functions/SkillGapAnalyzer/SkillGapAnalyzer';
 import Skill1 from './pages/Functions/SkillGapAnalyzer/SkillQuiz';
 import Skill2 from './pages/Functions/SkillGapAnalyzer/Results';
@@ -64,6 +65,7 @@ function App() {
           <Route path="/sk1" element={<Skill1 />} />
           <Route path="/sk2" element={<Skill2 />} />
           <Route path="/sk3" element={<Skill3 />} />
+          
 
           <Route element={<ProtectedRoute />}>
             {/* User profiles based*/}
@@ -76,6 +78,8 @@ function App() {
             <Route path="/jobTrends" element={<JobTrendsPage />} />
             <Route path="/salaryTrends" element={<SalaryTrendsPage />} />
             <Route path="/skillTrends" element={<SkillTrendsPage />} />
+            <Route path="/personas" element={<Persona />} />
+             <Route path="/persona" element={<Persona1 />} />
             
 
             {/* Personolized Roadmap Generator  */}
