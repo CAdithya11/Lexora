@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import TrendingJobsPage from './pages/Functions/Industry Insights/TrendingJobsPage';
 import SignIn from './pages/Home/SignIn';
 import SignUpPage from './pages/Home/SignUpPage';
-
+//Roadmap Generator
 import SearchRoadmapPage from './pages/Functions/Roadmap/SearchRoadmapPage';
 import RoadmapPage from './pages/Functions/Roadmap/RoadmapPage';
 
@@ -72,14 +72,11 @@ function App() {
             <Route path="/salaryTrends" element={<SalaryTrendsPage />} />
             <Route path="/skillTrends" element={<SkillTrendsPage />} />
             
-
             {/* Personolized Roadmap Generator  */}
             <Route path="/roadmap" element={<RoadmapPage />} />
             <Route path="/searchRoadmap" element={<SearchRoadmapPage />} />
             <Route path="/RoadmapDetails" element={<RoadmapDetailsPage />} />
-
             <Route path="/rgapi" element={<RoadmapGeminiApi />} />
-            {/* <Route path="/ro" element={<RoadmapOption />} /> */}
 
             {/* Mentor Mentee matchmaking */}
             <Route path="/mentorDashboard" element={<MentorDashboard />} />

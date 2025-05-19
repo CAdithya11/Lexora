@@ -126,12 +126,12 @@ const RoadmapDetails = () => {
                   <td className="py-4 px-6 text-sm text-gray-900">{roadmap.job_name}</td>
                   <td className="py-4 px-6 text-sm font-medium text-center">
                     <div className="flex justify-center space-x-2">
-                      <button 
+                      {/* <button 
                         onClick={() => handleEdit(roadmap.r_Id)}
                         className="text-blue-600 hover:text-blue-900 px-3 py-1 bg-blue-100 rounded"
                       >
                         Edit
-                      </button>
+                      </button> */}
                       <button
                         onClick={() => handleDelete(roadmap.r_Id)}
                         className="text-red-600 hover:text-red-900 px-3 py-1 bg-red-100 rounded"

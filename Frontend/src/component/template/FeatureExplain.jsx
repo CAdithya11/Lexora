@@ -19,13 +19,13 @@ export default function FeatureExplain() {
           <div className="pr-12 sm:pr-0">
             <div className="relative max-w-xs mb-12">
               <img
-                className="object-bottom rounded-md shadow-lg"
+                className="object-bottom rounded-md shadow-lg scale-130"
                 src={HomeRealTime}
                 alt="Dashboard showing industry trends"
               />
 
               <img
-                className="absolute origin-bottom-right scale-75 rounded-md shadow-lg -bottom-12 -right-12"
+                className="absolute origin-bottom-right scale-90 rounded-md shadow-lg -bottom-20 -right-42"
                 src={HomeRealTime2}
                 alt="Career growth chart"
               />
@@ -178,13 +178,13 @@ export default function FeatureExplain() {
           <div className="pr-12 sm:pr-0">
             <div className="relative max-w-xs mb-12">
               <img
-                className="object-bottom rounded-md shadow-lg"
+                className="object-bottom rounded-md shadow-lg scale-130"
                 src={HomeSkill}
                 alt="Student analyzing skill gaps"
               />
 
               <img
-                className="absolute origin-bottom-right scale-75 rounded-md shadow-lg -bottom-12 -right-28"
+                className="absolute origin-bottom-right scale-75 rounded-md shadow-lg -bottom-20 -right-35"
                 src={HomeSkill2}
                 alt="Skill assessment results"
               />
@@ -335,13 +335,13 @@ export default function FeatureExplain() {
           <div className="pr-12 sm:pr-0">
             <div className="relative max-w-xs mb-12">
               <img
-                className="object-bottom rounded-md shadow-lg"
+                className="object-bottom rounded-md shadow-lg scale-130"
                 src={HomeMentoring}
                 alt="Mentor and mentee discussing career"
               />
 
               <img
-                className="absolute origin-bottom-right scale-75 rounded-md shadow-lg -bottom-12 -right-12"
+                className="absolute origin-bottom-right scale-75 rounded-md shadow-lg -bottom-20 -right-32"
                 src={HomeMentoring2}
                 alt="Virtual mentoring session"
               />
