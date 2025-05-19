@@ -17,6 +17,8 @@ import static com.NoIdea.Lexora.enums.User.Role.STUDENT;
 public class UserEntityProfileController {
     private final UserEntityService userEntityService;
 
+    
+
     public UserEntityProfileController(UserEntityService userEntityService) {
         this.userEntityService = userEntityService;
     }
@@ -52,6 +54,7 @@ public class UserEntityProfileController {
     public ResponseEntity<UserProfileResponseDTO> findUserProfileById(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(userEntityService.findUserProfileById(id));
     }
+
 
     // Update User Profile
     @PostMapping("/{id}")
