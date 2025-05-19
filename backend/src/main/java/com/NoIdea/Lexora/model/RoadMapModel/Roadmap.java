@@ -1,10 +1,14 @@
 // package com.NoIdea.Lexora.model.RoadMapModel;
 
-// import lombok.Data;
-// import org.springframework.data.annotation.Id;
-// import org.springframework.data.mongodb.core.mapping.Document;
-// import org.springframework.data.mongodb.core.mapping.Field;
-// import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 // import java.util.List;
 // import java.util.Map;
@@ -63,9 +67,11 @@
 //     @Id
 //     private String id;
 
-//     @Field("r_Id")
-//     @JsonProperty("r_Id")
-//     private String rId;
+
+    @Field("r_Id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("r_Id")
+    private String rId;
 
 //     @Field("job_name")
 //     @JsonProperty("job_name")

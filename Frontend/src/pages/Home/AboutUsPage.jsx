@@ -1,6 +1,12 @@
 import React from 'react';
 import NavBar from '../../component/template/NavBar';
 import Footer from '../Home/Footer';
+import AboutUs from '../../assets/images/AboutUs.jpg';
+import Adithya from '../../assets/images/Adithya.jpg';
+import Anjali from '../../assets/images/Anjali.jpg';
+import Bishar from '../../assets/images/Bishar.jpg';
+import Ayesha from '../../assets/images/Ayesha.jpg';
+import Nishan from '../../assets/images/Nishan.jpg';
 
 export default function AboutUsPage() {
   return (
@@ -23,7 +29,7 @@ export default function AboutUsPage() {
                   <div className="relative h-64 md:h-full">
                     <div className="h-64 md:h-full w-full rounded-lg overflow-hidden">
                       <img 
-                        src="/api/placeholder/600/400" 
+                        src={AboutUs} 
                         alt="About Our Company" 
                         className="w-full h-full object-cover"
                       />
@@ -65,39 +71,65 @@ export default function AboutUsPage() {
                   <div className="text-center">
                     <div className="relative mx-auto h-40 w-40 rounded-full overflow-hidden mb-4">
                       <img 
-                        src="/api/placeholder/150/150" 
+                        src={Adithya}
                         alt="Team Member" 
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <h4 className="text-xl font-medium text-gray-900">Jane Doe</h4>
-                    <p className="text-sm text-gray-500">Founder & CEO</p>
+                    <h4 className="text-xl font-medium text-gray-900">H. M. G. C. A. Herath</h4>
+                    <p className="text-sm text-gray-500">Leader</p>
                   </div>
                   
                   {/* Team Member 2 */}
                   <div className="text-center">
                     <div className="relative mx-auto h-40 w-40 rounded-full overflow-hidden mb-4">
                       <img 
-                        src="/api/placeholder/150/150" 
+                        src={Anjali}
                         alt="Team Member" 
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <h4 className="text-xl font-medium text-gray-900">John Smith</h4>
-                    <p className="text-sm text-gray-500">CTO</p>
+                    <h4 className="text-xl font-medium text-gray-900">G. M. A. S. Aponsu</h4>
+                    <p className="text-sm text-gray-500">Ungergraduate</p>
                   </div>
                   
                   {/* Team Member 3 */}
                   <div className="text-center">
                     <div className="relative mx-auto h-40 w-40 rounded-full overflow-hidden mb-4">
                       <img 
-                        src="/api/placeholder/150/150" 
+                        src={Nishan} 
                         alt="Team Member" 
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <h4 className="text-xl font-medium text-gray-900">Sarah Johnson</h4>
-                    <p className="text-sm text-gray-500">Head of Design</p>
+                    <h4 className="text-xl font-medium text-gray-900">R. D. N. P. Kumara</h4>
+                    <p className="text-sm text-gray-500">Ungergraduate</p>
+                  </div>
+
+                  {/* Team Member 4 */}
+                  <div className="text-center">
+                    <div className="relative mx-auto h-40 w-40 rounded-full overflow-hidden mb-4">
+                      <img 
+                        src={Ayesha}
+                        alt="Team Member" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <h4 className="text-xl font-medium text-gray-900">N. H. A. Haizoom</h4>
+                    <p className="text-sm text-gray-500">Ungergraduate</p>
+                  </div>
+
+                  {/* Team Member 5 */}
+                  <div className="text-center">
+                    <div className="relative mx-auto h-40 w-40 rounded-full overflow-hidden mb-4">
+                      <img 
+                        src={Bishar}
+                        alt="Team Member" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <h4 className="text-xl font-medium text-gray-900">N. M. Bishar</h4>
+                    <p className="text-sm text-gray-500">Ungergraduate</p>
                   </div>
                 </div>
               </div>
