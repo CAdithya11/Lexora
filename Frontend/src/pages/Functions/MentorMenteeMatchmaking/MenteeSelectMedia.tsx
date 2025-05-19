@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Bell } from "lucide-react";
 import React from "react";
 import SidebarSub from "../../../component/template/SidebarSub";
-import TopHeaderMentor from "../../../component/MentorMentee/TopHeaderMentor";
 import TopHeader from "../../../component/template/TopHeader";
+
 
 const MenteeSelectMedia = () => {
   const sessions = [
@@ -19,6 +19,7 @@ const MenteeSelectMedia = () => {
   };
 
   const mediaOptions = [
+
   {
     name: "Zoom",
     description: "Include Zoom details in your Calendly events.",
@@ -50,6 +51,7 @@ const MenteeSelectMedia = () => {
         <TopHeader HeaderMessage={"Mentor"} />
         <div className="text-2xl font-bold mt-6 mb-6 border-b pb-2 border-gray-300">
           <h1 className="text-2xl font-bold">Creating Sessions</h1>
+
         </div>
 
         {/* My Sessions */}
@@ -58,6 +60,7 @@ const MenteeSelectMedia = () => {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-100 text-blue-400">
+
                 <th className="p-2 text-left">Student Name</th>
                 <th className="p-2 text-left">Meeting Date</th>
                 <th className="p-2 text-left">Meeting Time</th>
@@ -67,6 +70,7 @@ const MenteeSelectMedia = () => {
             <tbody>
               {sessions.map((session, index) => (
                 <tr key={index} className="ring-1 ring-gray-50">
+
                   <td className="p-2">{session.name}</td>
                   <td className="p-2">{session.date}</td>
                   <td className="p-2">{session.time}</td>
@@ -82,6 +86,7 @@ const MenteeSelectMedia = () => {
 
         {/* Creating Sessions */}
         <div>
+
           <h2 className="text-xl font-semibold mb-4">Select Media Option</h2>
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {mediaOptions.map((media, idx) => (
@@ -97,6 +102,7 @@ const MenteeSelectMedia = () => {
                 <p className="text-sm text-gray-500 mt-1">{media.description}</p>
               </a>
             ))}
+
 
           </div>
         </div>

@@ -60,6 +60,7 @@ export default function MentorDashboard() {
   //   }
   // }, []);
 
+
   // useEffect(() => {
   //   if (mentorId !== null) {
   //     loadSessions();
@@ -122,6 +123,7 @@ export default function MentorDashboard() {
         <h1 className="text-2xl font-bold mt-6 mb-6 border-b pb-2 border-gray-300">
           Mentor Dashboard
         </h1>
+
 
         {/* Stats cards */}
         <div className="grid grid-cols-4 gap-4 mb-8">

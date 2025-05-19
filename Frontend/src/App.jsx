@@ -33,9 +33,12 @@ import MentorDashboard from './pages/Functions/MentorMenteeMatchmaking/MentorDas
 import MenteeDashboard from './pages/Functions/MentorMenteeMatchmaking/MenteeDashboard';
 import MentorSessions from './pages/Functions/MentorMenteeMatchmaking/MentorSession';
 import SkillTrendsPage from './pages/Functions/Industry Insights/SkillTrendsPage';
+
 import MenteeSelectMedia from './pages/Functions/MentorMenteeMatchmaking/MenteeSelectMedia';
 import MenteeAddMatchingCriteria from './pages/Functions/MentorMenteeMatchmaking/MenteeAddMatchingCriteria';
 import MenteeMatchmaking from './pages/Functions/MentorMenteeMatchmaking/MenteeMatchmaking';
+import AboutUsPage from './pages/Home/AboutUsPage';
+
 
 function App() {
   return (
@@ -50,6 +53,7 @@ function App() {
           <Route path="/feedback" element={<FeedbackPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/" element={<HomePage />} />
+          <Route path="/aboutus" element={<AboutUsPage />} />
 
           {/* <Route path="/PersonaMatching" element={<CareerPersosna />} />
           <Route path="/Personas" element={<MatchedPersosna />} />

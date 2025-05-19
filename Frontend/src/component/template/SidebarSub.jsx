@@ -90,18 +90,21 @@ export default function SidebarSub() {
               <SidebarSubItem text="Suggested Mentors" active={isLocation == '/menteeDashboard'}/>
           </Link>
             <SidebarSubItem text="My Sessions" />
+
           </SidebarItem>
 
           <SidebarItem
             icon={<BarChart4Icon size={20} />}
             text="Industry Insights"
-            alwaysOpen={isLocation == '/jobTrends' || isLocation == '/salaryTrends' ? true : false}
+            alwaysOpen={
+              isLocation == '/jobTrends' || isLocation == '/salaryTrends' || isLocation == '/skillTrends' ? true : false
+            }
           >
             <Link to="/jobTrends">
               <SidebarSubItem text="Job Trends" active={isLocation == '/jobTrends' ? true : false} />
             </Link>
-            <Link to="/jobTrends">
-              <SidebarSubItem text="Skill Trends" />
+            <Link to="/skillTrends">
+              <SidebarSubItem text="Skill Trends" active={isLocation == '/skillTrends' ? true : false} />
             </Link>
             <Link to="/salaryTrends">
               <SidebarSubItem text="Salary Trends" active={isLocation == '/salaryTrends' ? true : false} />
@@ -123,12 +126,12 @@ export default function SidebarSub() {
           <SidebarItem icon={<Bell size={20} />} text="Notifications" alert />
 
           <SidebarItem icon={<User size={20} />} text="Mentor" alwaysOpen={isLocation}>
-          <Link to={'/mentorDashboard'}>
-              <SidebarSubItem text="Dashboard" active={isLocation == '/mentorDashboard'}/>
-          </Link>
-          <Link to={'/mentorSessions'}>
-              <SidebarSubItem text="Sessions" active={isLocation == '/mentorSessions'}/>
-          </Link>
+            <Link to={'/mentorDashboard'}>
+              <SidebarSubItem text="Dashboard" active={isLocation == '/mentorDashboard'} />
+            </Link>
+            <Link to={'/mentorSessions'}>
+              <SidebarSubItem text="Sessions" active={isLocation == '/mentorSessions'} />
+            </Link>
           </SidebarItem>
 
           <SidebarItem icon={<FileCog size={20} />} text="Admin">
