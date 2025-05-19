@@ -1,150 +1,94 @@
 import React, { useState, useEffect } from 'react';
-import { Briefcase, ChevronDown, Globe, ArrowLeft, TrendingUp, Filter } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+
+import axios from 'axios';
 import SidebarSub from '../../../component/template/SidebarSub';
 import TopHeader from '../../../component/template/SkillGapTop';
-import LineChart from '../../../component/IndustryInsights/LineChart';
-import BubbleChart from '../../../component/IndustryInsights/BubbleChart';
-import JobDashboard from '../../../component/IndustryInsights/JobDashboard';
-import FocusChart from '../../../component/IndustryInsights/charts/FocusChart';
-import PieChartOne from '../../../component/IndustryInsights/charts/PieChartOne';
 
-// Categories for the filter dropdown
-const categories = [
-  'Software Development & Engineering',
 
-  'Data Science & Analytics',
-  'Design & Creative',
-  'Marketing & Communications',
-  'Business & Management',
-  'Healthcare & Medicine',
-];
 
-// Countries data that was missing
-const countries = [
-  { name: 'United States', code: 'US' },
-  { name: 'Canada', code: 'CA' },
-  { name: 'United Kingdom', code: 'UK' },
-  { name: 'Australia', code: 'AU' },
-  { name: 'Germany', code: 'DE' },
-  { name: 'France', code: 'FR' },
-  { name: 'Japan', code: 'JP' },
-  { name: 'India', code: 'IN' },
-];
+
+
+
+
+
 
 export default function TrendingJobsPage() {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('Software Development & Engineering');
   const [selectedYear, setSelectedYear] = useState('2025');
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
-  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [chartTitle, setChartTitle] = useState('Software Engineering Trends');
 
-  // Available years for the filter
+  const [isLoading, setIsLoading] = useState(true);
+  const [jobRoles, setJobRoles] = useState([]);
+  const [error, setError] = useState(null);
+
   const years = ['2023', '2024', '2025', '2026'];
 
-  // Simulate loading data
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [selectedCategory, selectedYear, selectedCountry]);
+    const fetchJobRoles = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get('http://localhost:8080/api/v1/jobRole'); // Adjust if different port
+        setJobRoles(response.data);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching job roles:', err);
+        setError('Failed to load job roles. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  // Update chart title when category changes
-  useEffect(() => {
-    // Extract first part of category for the title
-    const titlePrefix = selectedCategory.split(' & ')[0];
-    setChartTitle(`${titlePrefix} Trends`);
-  }, [selectedCategory]);
-
-  // Handle dropdown toggle without propagating events
-  const toggleDropdown = (setter, currentState, e) => {
-    e.stopPropagation();
-    setter(!currentState);
-  };
-
-  // Handle category selection
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-  };
+    fetchJobRoles();
+  }, []);
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
-      {/* Fixed Sidebar */}
       <SidebarSub />
-
-      {/* Main Content Area with Independent Scrolling */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Fixed Header */}
         <TopHeader />
 
-        {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto p-6 bg-white">
-          {/* Chart Content */}
-          
-
-          {/* Quick Stats Section - Dynamic based on selected category */}
-          <div className=" w-full">
-            
-
-            
-            
-
-            <div className="border-b-2 border-solid border-gray-300">
-            <h1 className="text-2xl font-bold text-gray-800">Choose Your Career Path</h1><br/>
-            <p className="text-gray-500 text-sm">Select a role to begin your skill assessment journey</p>
-            </div>
-        
-            <div className="flex flex-row gap-x-4 gap-y-4 p-10 w-full justify-space-between items-start">
-  
-            <div className="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-                <div className="flex items-center justify-center w-16 h-16 bg-blue-50 rounded-lg mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-500">
-                    <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                    <rect x="9" y="9" width="6" height="6"></rect>
-                    <line x1="9" y1="1" x2="9" y2="4"></line>
-                    <line x1="15" y1="1" x2="15" y2="4"></line>
-                    <line x1="9" y1="20" x2="9" y2="23"></line>
-                    <line x1="15" y1="20" x2="15" y2="23"></line>
-                    <line x1="20" y1="9" x2="23" y2="9"></line>
-                    <line x1="20" y1="14" x2="23" y2="14"></line>
-                    <line x1="1" y1="9" x2="4" y2="9"></line>
-                    <line x1="1" y1="14" x2="4" y2="14"></line>
-                    </svg>
-                </div>
-      
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Frontend Developer</h3>
-                <p className="text-gray-500 text-sm mb-4">Create beautiful, responsive web interfaces</p>
-      
-                <div className="flex flex-wrap gap-2">
-                    <span className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full">HTML</span>
-                    <span className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full">CSS</span>
-                    <span className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full">JavaScript</span>
-                </div>
+          <div className="w-full">
+            <div className="border-b-2 border-solid border-gray-300 mb-4">
+              <h1 className="text-2xl font-bold text-gray-800">Choose Your Career Path</h1>
+              <p className="text-gray-500 text-sm">Select a role to begin your skill assessment journey</p>
             </div>
 
-            <div className="w-full max-w-xs bg-white border border-gray-200 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-                <div className="flex items-center justify-center w-16 h-16 bg-green-50 rounded-lg mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-500">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="3" y1="9" x2="21" y2="9"></line>
-                        <line x1="9" y1="21" x2="9" y2="9"></line>
-                        <path d="M14 15h4"></path>
-                        <path d="M14 12h4"></path>
-                    </svg>
-                </div>
-      
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Backend Developer</h3>
-                <p className="text-gray-500 text-sm mb-4">Build robust server- side applications</p>
-                
-                <div className="flex flex-wrap gap-2">
-                    <span className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full">Node.js</span>
-                    <span className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full">Python</span>
-                    <span className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full">Java</span>
-                </div>
-            </div>
-        </div>
-
+            {isLoading ? (
+              <div className="flex justify-center items-center p-10">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+              </div>
+            ) : error ? (
+              <div className="p-10 text-center text-red-500">
+                {error}
+                <button
+                  className="block mx-auto mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  onClick={() => window.location.reload()}
+                >
+                  Try Again
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-4 justify-start items-start">
+                {jobRoles.length > 0 ? (
+                  jobRoles.map((role) => (
+                    <div
+                      key={role.jobRoleId}
+                      onClick={() => navigate(`/skills/${role.jobRoleId}`)}
+                      className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 bg-white border border-gray-200 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+                    >
+                      <h3 className="text-lg font-semibold text-gray-800 mb-2">{role.jobRoleName}</h3>
+                    </div>
+                  ))
+                ) : (
+                  <div className="w-full text-center p-6">
+                    <p className="text-gray-500">No job roles available. Please check back later.</p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
