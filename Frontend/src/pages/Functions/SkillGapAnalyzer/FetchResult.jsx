@@ -6,19 +6,40 @@ import axios from 'axios';
 import SidebarSub from '../../../component/template/SidebarSub';
 import TopHeader from '../../../component/template/SkillGapTop';
 
+// Replace these placeholders when you add actual chart components
 
 
+const LineChart = () => null;
+const BubbleChart = () => null;
+const JobDashboard = () => null;
+const FocusChart = () => null;
+const PieChartOne = () => null;
 
+const categories = [
+  'Software Development & Engineering',
+  'Data Science & Analytics',
+  'Design & Creative',
+  'Marketing & Communications',
+  'Business & Management',
+  'Healthcare & Medicine',
+];
 
-
-
-
+const countries = [
+  { name: 'United States', code: 'US' },
+  { name: 'Canada', code: 'CA' },
+  { name: 'United Kingdom', code: 'UK' },
+  { name: 'Australia', code: 'AU' },
+  { name: 'Germany', code: 'DE' },
+  { name: 'France', code: 'FR' },
+  { name: 'Japan', code: 'JP' },
+  { name: 'India', code: 'IN' },
+];
 
 export default function TrendingJobsPage() {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('Software Development & Engineering');
   const [selectedYear, setSelectedYear] = useState('2025');
-
+  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [isLoading, setIsLoading] = useState(true);
   const [jobRoles, setJobRoles] = useState([]);
   const [error, setError] = useState(null);
@@ -26,22 +47,48 @@ export default function TrendingJobsPage() {
   const years = ['2023', '2024', '2025', '2026'];
 
   useEffect(() => {
-    const fetchJobRoles = async () => {
-      setIsLoading(true);
+    const fetchSkillScores = async () => {
+      setIsLoading(true); // ← fix: this was setLoading before
       try {
-        const response = await axios.get('http://localhost:8080/api/v1/jobRole'); // Adjust if different port
-        setJobRoles(response.data);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching job roles:', err);
-        setError('Failed to load job roles. Please try again later.');
+        const response = await axios.get('http://localhost:8080/api/v1/skillScores');
+        console.log('API Response:', response.data);
+  
+        const scores = response.data;
+  
+        if (scores && scores.length > 0) {
+          // ✅ Avoid duplicate jobRoleNames
+          const aggregatedData = scores.reduce((acc, curr) => {
+            const exists = acc.find(item => item.subject === curr.jobRoleName);
+            if (!exists) {
+              acc.push({
+                subject: curr.jobRoleName,              // job role name
+                skillName: curr.skillName,              // just keeping one skill per job role
+                score: (curr.predictedScore / curr.totalQuestions) * 100,
+                predictedScore: curr.predictedScore,
+                totalQuestions: curr.totalQuestions,
+                learningPath: curr.learningPath,
+                suggestion: curr.suggestion
+              });
+            }
+            return acc;
+          }, []);
+  
+          setJobRoles(aggregatedData);
+          console.log('Processed Chart Data:', aggregatedData);
+        } else {
+          setError('No skill score data found');
+        }
+      } catch (error) {
+        console.error('Error fetching skill scores:', error);
+        setError('Failed to load skill scores. Please try again later.');
       } finally {
-        setIsLoading(false);
+        setIsLoading(false); // ← fix: this was setLoading before
       }
     };
-
-    fetchJobRoles();
+  
+    fetchSkillScores();
   }, []);
+  
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
@@ -75,11 +122,11 @@ export default function TrendingJobsPage() {
                 {jobRoles.length > 0 ? (
                   jobRoles.map((role) => (
                     <div
-                      key={role.jobRoleId}
-                      onClick={() => navigate(`/skills/${role.jobRoleId}`)}
+                      key={role.subject}
+                      onClick={() => navigate(`/result/${role.subject}`)}
                       className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 bg-white border border-gray-200 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 cursor-pointer"
                     >
-                      <h3 className="text-lg font-semibold text-gray-800 mb-2">{role.jobRoleName}</h3>
+                      <h3 className="text-lg font-semibold text-gray-800 mb-2">{role.subject}</h3>
                     </div>
                   ))
                 ) : (
