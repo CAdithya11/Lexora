@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Briefcase, ChevronDown, Globe, ArrowLeft, TrendingUp, Filter } from 'lucide-react';
-import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom";
-import SidebarSub from '../../../component/template/SidebarSub';
-import TopHeader from '../../../component/template/AITopHeader';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+
 import LineChart from '../../../component/IndustryInsights/LineChart';
 import BubbleChart from '../../../component/IndustryInsights/BubbleChart';
 import JobDashboard from '../../../component/IndustryInsights/JobDashboard';
 import FocusChart from '../../../component/IndustryInsights/charts/FocusChart';
 import PieChartOne from '../../../component/IndustryInsights/charts/PieChartOne';
 import RoadmapDetails from '../../../component/AIPersonaMatcher/PersonaTable';
-
+import SidebarSub from '../../../component/template/SidebarSub';
+import TopHeader from '../../../component/template/TopHeader';
 
 const categories = [
   'Software Development & Engineering',
@@ -19,7 +19,6 @@ const categories = [
   'Business & Management',
   'Healthcare & Medicine',
 ];
-
 
 const countries = [
   { name: 'United States', code: 'US' },
@@ -32,7 +31,6 @@ const countries = [
   { name: 'India', code: 'IN' },
 ];
 
-
 export default function MatchedPersona() {
   const [selectedCategory, setSelectedCategory] = useState('Software Development & Engineering');
   const [selectedYear, setSelectedYear] = useState('2025');
@@ -40,8 +38,8 @@ export default function MatchedPersona() {
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [chartTitle, setChartTitle] = useState('Software Engineering Trends');
-  const loc=useLocation();
-  const jobs=loc.state?.msg;
+  const loc = useLocation();
+  const jobs = loc.state?.msg;
 
   // Available years for the filter
   const years = ['2023', '2024', '2025', '2026'];
@@ -80,22 +78,15 @@ export default function MatchedPersona() {
       {/* Main Content Area with Independent Scrolling */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Fixed Header */}
-        <TopHeader />
-
+        <TopHeader HeaderMessage={'Matched Career Personas'} />
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto p-6 bg-white">
           {/* Chart Content */}
-          <div className="p-2">
-            
-          </div>
+          <div className="p-2"></div>
 
           {/* Quick Stats Section - Dynamic based on selected category */}
           <div className>
-            
-        
-          <RoadmapDetails jobs={jobs} />
-          
-            
+            <RoadmapDetails jobs={jobs} />
           </div>
         </div>
       </div>

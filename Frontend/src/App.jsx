@@ -40,7 +40,6 @@ import MenteeAddMatchingCriteria from './pages/Functions/MentorMenteeMatchmaking
 import MenteeMatchmaking from './pages/Functions/MentorMenteeMatchmaking/MenteeMatchmaking';
 import AboutUsPage from './pages/Home/AboutUsPage';
 
-
 function App() {
   return (
     <>
@@ -65,7 +64,6 @@ function App() {
           <Route path="/sk1" element={<Skill1 />} />
           <Route path="/sk2" element={<Skill2 />} />
           <Route path="/sk3" element={<Skill3 />} />
-          
 
           <Route element={<ProtectedRoute />}>
             {/* User profiles based*/}
@@ -79,8 +77,9 @@ function App() {
             <Route path="/salaryTrends" element={<SalaryTrendsPage />} />
             <Route path="/skillTrends" element={<SkillTrendsPage />} />
             <Route path="/personas" element={<Persona />} />
-             <Route path="/persona" element={<Persona1 />} />
-            
+            <Route path="/persona" element={<Persona1 />} />
+
+
             {/* Personolized Roadmap Generator  */}
             <Route path="/roadmap" element={<RoadmapPage />} />
             <Route path="/searchRoadmap" element={<SearchRoadmapPage />} />
@@ -95,8 +94,6 @@ function App() {
             <Route path="/menteeAddMatchingCriteria" element={<MenteeAddMatchingCriteria />} />
             <Route path="/menteeMatchmaking" element={<MenteeMatchmaking />} />
             {/* <Route path="/bookSession" element={<BookSession />} /> */}
-
-            
           </Route>
         </Routes>
       </BrowserRouter>
