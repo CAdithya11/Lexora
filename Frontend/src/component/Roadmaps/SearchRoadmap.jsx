@@ -33,7 +33,7 @@ const SearchRoadmap = () => {
 
   const navigate = useNavigate();
 
-  const API_KEY = 'AIzaSyDk93DVnzDnYhuJyHCLIsjMjHd47uODLvs';
+  const API_KEY = 'AIzaSyByT6KBGcqhOdxRtoFS5THhh70B9Z9QKi0';
   const [r_id, setR_id] = useState(2);
 
   const handleInitialSubmit = () => {
@@ -61,6 +61,7 @@ const SearchRoadmap = () => {
       fetchAIResponse(option);
     }
   };
+
 
   const handleSkillSubmit = () => {
     if (!skill) {
@@ -308,7 +309,7 @@ const SearchRoadmap = () => {
 
       console.log('User roadmapToSave', roadmapToSave);
 
-      // Send data to the backend with the correct structure
+      // Send data to the backend 
       const response = await axios.post('http://localhost:8080/api/roadmaps', roadmapToSave, {
         headers: {
           'Content-Type': 'application/json',
@@ -335,6 +336,7 @@ const SearchRoadmap = () => {
   return (
     <div className="flex flex-col justify-center items-center min-h-[85vh] text-center">
       {!showRoadmap ? (
+        //Search roadmap page
         <div>
           <h1 className="text-2xl font-bold mb-5">GENERATE ROADMAP</h1>
           <div className="flex flex-row items-center mb-8">
@@ -356,6 +358,7 @@ const SearchRoadmap = () => {
       ) : (
         <div className="w-full max-w-4xl">
           {!optionStep ? (
+            //Options selecting page
             <div className="flex items-center justify-center h-80">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
             </div>
@@ -378,13 +381,12 @@ const SearchRoadmap = () => {
               </div>
               <button
                 onClick={resetForm}
-                className="mt-5 py-2 px-5 bg-blue-600 border text-white border-gray-300 rounded-md cursor-pointer hover:bg-blue-700 "
-               
-              >
+                className="mt-5 py-2 px-5 bg-blue-600 border text-white border-gray-300 rounded-md cursor-pointer hover:bg-blue-700 ">
                 Go Back
               </button>
             </div>
           ) : selectedOption === 1 ? (
+            //Skill releted page
             <div className="p-5 border border-gray-200 rounded-lg bg-white-50">
               <h3 className="text-xl font-bold mb-5">Which specific skill do you want to focus on?</h3>
               <div className="mb-5">
