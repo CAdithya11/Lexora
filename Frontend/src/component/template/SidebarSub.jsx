@@ -83,15 +83,16 @@ export default function SidebarSub() {
             </Link>
           </SidebarItem>
 
+          {/* mentoring sessions with suggested mentors and My sessions */}
           <SidebarItem
             icon={<Users size={20} />}
             text="Mentoring Sessions"
-            alwaysOpen={isLocation == '/mentorDashboard'}
+            alwaysOpen={isLocation == '/menteeDashboard'}
           >
-            {/* <Link to={''}> */}
-            <SidebarSubItem text="Members" active={isLocation == '/mentorDashboard'} />
-            {/* </Link> */}
-            <SidebarSubItem text="Permissions" />
+            <Link to={'/menteeDashboard'}>
+              <SidebarSubItem text="Suggested Mentors" active={isLocation == '/menteeDashboard'} />
+            </Link>
+            <SidebarSubItem text="My Sessions" />
           </SidebarItem>
 
           <SidebarItem
@@ -112,14 +113,42 @@ export default function SidebarSub() {
             </Link>
           </SidebarItem>
 
-          <SidebarItem icon={<AlignVerticalJustifyCenter size={20} />} text="Skill Gap Analyzer">
+          <SidebarItem
+            icon={
+              <AlignVerticalJustifyCenter
+                size={20}
+                alwaysOpen={
+                  isLocation == '/personas' || isLocation == '/salaryTrends' || isLocation == '/skillTrends'
+                    ? true
+                    : false
+                }
+              />
+            }
+            text="Skill Gap Analyzer"
+          >
             <SidebarSubItem text="Anlyzer" />
             <SidebarSubItem text="Completed" />
           </SidebarItem>
 
-          <SidebarItem icon={<UserSearch size={20} />} text="Persona Matcher">
-            <SidebarSubItem text="Anlyzer" />
-            <SidebarSubItem text="Completed" />
+          <SidebarItem
+            icon={
+              <UserSearch
+                size={20}
+                alwaysOpen={
+                  isLocation == '/persona' || isLocation == '/salaryTrends' || isLocation == '/MatchedPersonas'
+                    ? true
+                    : false
+                }
+              />
+            }
+            text="Persona Matcher"
+          >
+            <Link to="/persona">
+              <SidebarSubItem text="persona" active={isLocation == '/persona' ? true : false} />
+            </Link>
+            <Link to="/MatchedPersonas">
+              <SidebarSubItem text="Matched Personas" active={isLocation == '/MatchedPersonas' ? true : false} />
+            </Link>
           </SidebarItem>
 
           <hr className="my-3 border-gray-200" />

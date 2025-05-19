@@ -2,6 +2,11 @@ import React from 'react';
 import NavBar from '../../component/template/NavBar';
 import Footer from './Footer';
 import FeatureExplain from '../../component/template/FeatureExplain';
+import HomeMain from '../../assets/images/Home1.webp'
+import HomeRealTime from '../../assets/images/HomeRealTime.jpg'
+//import { Link } from 'lucide-react';
+import { Link } from "react-router-dom";
+
 
 export default function HomePage() {
   return (
@@ -24,8 +29,8 @@ export default function HomePage() {
                   Overcome skill gaps, career misalignment, and professional uncertainty.
                 </p>
 
-                <a
-                  href="/signIn"
+                <Link to={"/signUp"}
+                  
                   className="inline-flex items-center px-4 py-3 mt-6 font-semibold text-white transition-all duration-200 bg-blue-600 rounded-full sm:px-6 sm:py-4 sm:mt-8 lg:mt-16 hover:bg-blue-700 focus:bg-blue-700"
                 >
                   <span className="text-sm sm:text-base">Start Your Journey</span>
@@ -43,20 +48,26 @@ export default function HomePage() {
                       d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                </a>
+                </Link>
 
+                
                 <p className="mt-4 text-sm sm:text-base text-gray-600">
                   Already have an account?{' '}
-                  <a href="#" title="" className="text-blue-600 transition-all duration-200 hover:underline">
+                  <Link
+                    to={"/signIn"}
+                    title="Log in"
+                    className="text-blue-600 transition-all duration-200 hover:underline"
+                  >
                     Log in
-                  </a>
+                  </Link>
                 </p>
+
               </div>
 
               <div className="w-full mt-10 lg:mt-0">
                 <img
                   className="w-full max-w-md mx-auto lg:max-w-full"
-                  src="/api/placeholder/600/500"
+                  src={HomeMain}
                   alt="Student using Lexora for career planning"
                 />
               </div>
@@ -79,37 +90,13 @@ export default function HomePage() {
               </p>
 
               <div className="flex flex-col items-center justify-center mt-6 space-y-3 sm:space-y-0 sm:space-x-4 sm:flex-row lg:mt-12">
-                <a
-                  href="#"
+                <Link to={"/signUp"}
                   title=""
                   className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-semibold text-blue-600 transition-all duration-200 bg-white border border-transparent rounded-md sm:w-auto sm:text-base sm:px-8 sm:py-4 hover:bg-gray-100 focus:bg-gray-100"
                   role="button"
                 >
                   Register Now
-                </a>
-
-                <a
-                  href="#"
-                  title=""
-                  className="inline-flex items-center justify-center w-full px-6 py-3 text-sm font-semibold text-white transition-all duration-200 bg-transparent border border-white rounded-md sm:w-auto sm:text-base sm:px-8 sm:py-4 hover:bg-white hover:text-blue-600 focus:bg-white focus:text-blue-600"
-                  role="button"
-                >
-                  <svg
-                    className="w-4 h-4 mr-2 -ml-1 sm:w-5 sm:h-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                    />
-                  </svg>
-                  Contact Support
-                </a>
+                </Link>
               </div>
 
               <p className="mt-5 text-sm sm:text-base text-white">
