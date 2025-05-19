@@ -37,7 +37,7 @@ export default function MenteeDashboard() {
     const fetchMentors = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:8080/api/mentor", {
+        const response = await axios.get("http://localhost:8080/api/mentor/", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
