@@ -36,7 +36,6 @@ export default function MenteeDashboard() {
   useEffect(() => {
     const fetchMentors = async () => {
       try {
-        const token = localStorage.getItem("user");
         const response = await axios.get("http://localhost:8080/api/mentor");
         setMentors(response.data);
       } catch (err: any) {

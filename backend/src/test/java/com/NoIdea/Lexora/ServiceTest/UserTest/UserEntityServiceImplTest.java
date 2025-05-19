@@ -1,4 +1,4 @@
-package com.NoIdea.Lexora.ServiceTest.User;
+package com.NoIdea.Lexora.ServiceTest.UserTest;
 
 import com.NoIdea.Lexora.dto.UserProfile.UserProfileResponseDTO;
 import com.NoIdea.Lexora.model.User.UserEntity;
