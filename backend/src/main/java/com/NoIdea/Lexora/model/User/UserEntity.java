@@ -3,10 +3,13 @@ package com.NoIdea.Lexora.model.User;
 import com.NoIdea.Lexora.enums.MentorMentee.VerificationStatus;
 
 import com.NoIdea.Lexora.enums.User.Role;
+import com.NoIdea.Lexora.model.PersonaMatchingModel.PersonaMatchingModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -37,4 +40,7 @@ public class UserEntity {
     @Lob
     private byte[] degree_certificate;
 
+    @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL,orphanRemoval = true)
+
+    private List<PersonaMatchingModel> personaMatchingModels;
 }
