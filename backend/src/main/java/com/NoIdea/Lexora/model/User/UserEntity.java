@@ -4,6 +4,7 @@ import com.NoIdea.Lexora.enums.MentorMentee.VerificationStatus;
 
 import com.NoIdea.Lexora.enums.User.Role;
 import com.NoIdea.Lexora.model.PersonaMatchingModel.PersonaMatchingModel;
+import com.NoIdea.Lexora.model.SkillGapModel.SkillScore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,4 +44,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL,orphanRemoval = true)
 
     private List<PersonaMatchingModel> personaMatchingModels;
+
+    @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<SkillScore> skillScores;
 }

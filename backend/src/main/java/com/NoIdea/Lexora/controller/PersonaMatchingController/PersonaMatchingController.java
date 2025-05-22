@@ -1,6 +1,7 @@
 package com.NoIdea.Lexora.controller.PersonaMatchingController;
 
-import com.NoIdea.Lexora.dto.PersonaWithUserDTO;
+
+import com.NoIdea.Lexora.dto.UserProfile.PersonaWithUserDTO;
 import com.NoIdea.Lexora.model.PersonaMatchingModel.PersonaMatchingModel;
 import com.NoIdea.Lexora.repository.PersonaMatchingRepo.PersonaMatchingRepo;
 import com.NoIdea.Lexora.service.PersonaMatchingService.PersonaMatchingService;
@@ -47,7 +48,7 @@ public class PersonaMatchingController {
     }
 
     @PostMapping("/user/{id}")
-    public List<PersonaWithUserDTO> savePersonas(@PathVariable Long id,@RequestBody List<PersonaWithUserDTO> personas){
+    public List<PersonaWithUserDTO> savePersonas(@PathVariable Long id, @RequestBody List<PersonaWithUserDTO> personas){
         return personaMatchingService.savePersonaWithUser(id,personas);
     }
     @DeleteMapping("/user/{id}")

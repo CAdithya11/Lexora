@@ -1,6 +1,7 @@
 package com.NoIdea.Lexora.service.PersonaMatchingService;
 
-import com.NoIdea.Lexora.dto.PersonaWithUserDTO;
+
+import com.NoIdea.Lexora.dto.UserProfile.PersonaWithUserDTO;
 import com.NoIdea.Lexora.model.PersonaMatchingModel.PersonaMatchingModel;
 
 import java.util.List;
