@@ -3,23 +3,27 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import TrendingJobsPage from './pages/Functions/Industry Insights/TrendingJobsPage';
 import SignIn from './pages/Home/SignIn';
 import SignUpPage from './pages/Home/SignUpPage';
-
+//Roadmap Generator
 import SearchRoadmapPage from './pages/Functions/Roadmap/SearchRoadmapPage';
 import RoadmapPage from './pages/Functions/Roadmap/RoadmapPage';
 
 import ContactUsPage from './pages/Home/ContactUsPage';
 import TeamPage from './pages/Home/TeamPage';
 import RoadmapDetailsPage from './pages/Functions/Roadmap/RoadmapDetailsPage';
-// import Persona from './pages/Functions/Roadmap/Persona';
+import Persona from './pages/Functions/CareerPersonaMatching/PersonaMatcher';
+import Persona1 from './pages/Functions/CareerPersonaMatching/MatchedPersona';
 import RoadmapGeminiApi from './component/Roadmaps/RoadmapGeminiApi';
 import HomePage from '../src/pages/Home/HomePage';
 
 // import CareerPersosna from './pages/Functions/CareerPersonaMatching/PersonaMatcher';
-// import MatchedPersosna from './pages/Functions/CareerPersonaMatching/MatchedPersona';
+// import MatchedPersosna from './pages/Functions/CareerPersonaMatching/PersonaMatcher';
 import Skill from './pages/Functions/SkillGapAnalyzer/SkillGapAnalyzer';
 import Skill1 from './pages/Functions/SkillGapAnalyzer/SkillQuiz';
 import Skill2 from './pages/Functions/SkillGapAnalyzer/Results';
 import Skill3 from './pages/Functions/SkillGapAnalyzer/Resultvisualize';
+import Skill4 from './pages/Functions/SkillGapAnalyzer/SkillList';
+import Skill5 from './pages/Functions/SkillGapAnalyzer/FetchResult';
+import Skill6 from './pages/Functions/SkillGapAnalyzer/SkillResultVizulize';
 
 import FeedbackPage from './pages/Home/FeedbackPage';
 import { ProtectedRoute } from './component/template/protectedRoute/ProtectedRoute';
@@ -38,7 +42,6 @@ import MenteeSelectMedia from './pages/Functions/MentorMenteeMatchmaking/MenteeS
 import MenteeAddMatchingCriteria from './pages/Functions/MentorMenteeMatchmaking/MenteeAddMatchingCriteria';
 import MenteeMatchmaking from './pages/Functions/MentorMenteeMatchmaking/MenteeMatchmaking';
 import AboutUsPage from './pages/Home/AboutUsPage';
-
 
 function App() {
   return (
@@ -61,9 +64,14 @@ function App() {
           <Route path="/rgapi" element={<RoadmapGeminiApi />} />
           {/* <Route path="/ro" element={<RoadmapOption />} /> */}
           <Route path="/sk" element={<Skill />} />
-          <Route path="/sk1" element={<Skill1 />} />
+          <Route path="/sk1/:jobRoleId" element={<Skill1 />} />
           <Route path="/sk2" element={<Skill2 />} />
           <Route path="/sk3" element={<Skill3 />} />
+          <Route path="/sk4" element={<Skill5 />} />
+          
+            <Route path="/skills/:jobRoleId" element={<Skill4/>} />
+          <Route path="/result/:jobRole" element={<Skill6/>} />
+
 
           <Route element={<ProtectedRoute />}>
             {/* User profiles based*/}
@@ -76,15 +84,15 @@ function App() {
             <Route path="/jobTrends" element={<JobTrendsPage />} />
             <Route path="/salaryTrends" element={<SalaryTrendsPage />} />
             <Route path="/skillTrends" element={<SkillTrendsPage />} />
-            
+            <Route path="/personas" element={<Persona />} />
+            <Route path="/persona" element={<Persona1 />} />
+
 
             {/* Personolized Roadmap Generator  */}
             <Route path="/roadmap" element={<RoadmapPage />} />
             <Route path="/searchRoadmap" element={<SearchRoadmapPage />} />
             <Route path="/RoadmapDetails" element={<RoadmapDetailsPage />} />
-
             <Route path="/rgapi" element={<RoadmapGeminiApi />} />
-            {/* <Route path="/ro" element={<RoadmapOption />} /> */}
 
             {/* Mentor Mentee matchmaking */}
             <Route path="/mentorDashboard" element={<MentorDashboard />} />
@@ -94,8 +102,6 @@ function App() {
             <Route path="/menteeAddMatchingCriteria" element={<MenteeAddMatchingCriteria />} />
             <Route path="/menteeMatchmaking" element={<MenteeMatchmaking />} />
             {/* <Route path="/bookSession" element={<BookSession />} /> */}
-
-            
           </Route>
         </Routes>
       </BrowserRouter>

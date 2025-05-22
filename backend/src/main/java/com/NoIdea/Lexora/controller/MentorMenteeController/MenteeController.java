@@ -1,7 +1,6 @@
 package com.NoIdea.Lexora.controller.MentorMenteeController;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +11,6 @@ import com.NoIdea.Lexora.service.MentorMenteeService.MenteeService;
 
 @RestController
 @RequestMapping("api/mentee")
-@CrossOrigin("*")
 public class MenteeController {
     @Autowired
     private MenteeService menteeService;

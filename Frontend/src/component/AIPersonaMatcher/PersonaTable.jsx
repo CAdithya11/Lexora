@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import * as pdfjsLib from 'pdfjs-dist';
-import pdfjsWorker from 'pdfjs-dist/build/pdf.worker?worker';
+import axios from 'axios';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+import React, { useState, useEffect, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import * as pdfjs from 'pdfjs-dist/build/pdf';
+import { Pencil, X, Eye } from 'lucide-react';
 
 const MentorAIChat = ({ jobs }) => {
   const [messages, setMessages] = useState([
@@ -16,8 +17,15 @@ const MentorAIChat = ({ jobs }) => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [currentSuggestion, setCurrentSuggestion] = useState('');
+  const [currentPersona, setCurrentPersona] = useState('');
   const messagesEndRef = useRef(null);
   const chatSessionRef = useRef(null);
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate('/savedPersonas');
+  };
 
   useEffect(() => {
     const initializeChat = async () => {
@@ -27,7 +35,7 @@ const MentorAIChat = ({ jobs }) => {
         const model = genAI.getGenerativeModel({
           model: 'gemini-2.0-flash-exp-image-generation',
           systemInstruction:
-            'You are the career guidance AI. Your job is career persona matching. Respond with a table having 4 columns: No., Career Persona, Matching %, and Suggestions to Improve.',
+            'You are the career guidance AI. Your job is career persona matching. Respond with a table having 4 columns: No., Career Persona, Matching %, and Suggestions to Improve.importante',
         });
         chatSessionRef.current = model.startChat({
           generationConfig: { temperature: 0.7, topP: 0.9, maxOutputTokens: 1024 },
@@ -83,8 +91,34 @@ const MentorAIChat = ({ jobs }) => {
     if (jobs) handleSendMessage(jobs);
   }, [jobs]);
 
+  const sendDataToBackend = async () => {
+    try {
+      const formattedData = tableData
+        .filter((row) => row.CareerPersona != null)
+        .map((row, index) => ({
+          no: index,
+          persona: row.CareerPersona,
+          matchPrecentage: row.MatchingPercentage,
+          suggestion: row.Suggestions,
+        }));
+
+      await axios.post('http://localhost:8080/api/v1/persona', formattedData);
+
+      alert('Data sent successfully!');
+    } catch (error) {
+      console.error('Error sending data:', error);
+      alert('Failed to send data');
+    }
+  };
+
+  const handleViewSuggestion = (suggestion, persona) => {
+    setCurrentSuggestion(suggestion);
+    setCurrentPersona(persona);
+    setShowPopup(true);
+  };
+
   return (
-    <div className="container mx-auto px-4 py-4">
+    <div className="container mx-auto px-4 py-4 relative">
       <div className="overflow-x-auto bg-white rounded-lg shadow-lg border border-blue-100">
         <table className="min-w-full divide-y divide-blue-200">
           <thead className="bg-blue-50">
@@ -128,7 +162,14 @@ const MentorAIChat = ({ jobs }) => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-800">
                       {row.MatchingPercentage}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">{row.Suggestions}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">
+                      <button
+                        onClick={() => handleViewSuggestion(row.Suggestions, row.CareerPersona)}
+                        className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded flex items-center gap-1"
+                      >
+                        <Eye size={16} /> View
+                      </button>
+                    </td>
                   </tr>
                 ))
             ) : (
@@ -141,6 +182,31 @@ const MentorAIChat = ({ jobs }) => {
           </tbody>
         </table>
       </div>
+
+      {/* Popup for suggestions */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl w-full mx-4 max-h-screen overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold text-blue-800">{currentPersona} - Suggestions</h3>
+              <button onClick={() => setShowPopup(false)} className="text-gray-500 hover:text-gray-700">
+                <X size={24} />
+              </button>
+            </div>
+            <div className="prose prose-blue">
+              <p className="text-gray-700 whitespace-pre-line">{currentSuggestion}</p>
+            </div>
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={() => setShowPopup(false)}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <form
         onSubmit={(e) => {
@@ -164,6 +230,16 @@ const MentorAIChat = ({ jobs }) => {
           {isLoading ? 'Loading...' : 'See Result'}
         </button>
       </form>
+
+      <button
+        className="py-2 px-5 bg-blue-600 hover:bg-blue-700 text-white rounded-md cursor-pointer"
+        onClick={() => {
+          sendDataToBackend();
+          handleNavigate();
+        }}
+      >
+        Save
+      </button>
     </div>
   );
 };

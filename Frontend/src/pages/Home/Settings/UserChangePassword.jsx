@@ -11,6 +11,7 @@ export default function UserChangePassword() {
   const [passwordCorrect, setPasswordCorrent] = useState(true);
   const [currentPasswordValid, setCurrentPasswordValid] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState('');
+  
   const tabs = {
     Profile: '/settings/profile',
     Password: '/settings/password',
@@ -35,7 +36,7 @@ export default function UserChangePassword() {
     setAlertMessage(''); // Clear previous alerts
 
     userProfileHandleService
-      .changePassword(formData)
+      .changePassword(formData,1)
       .then((response) => {
         if (response.status === 200) {
           setAlertMessage(response.data);

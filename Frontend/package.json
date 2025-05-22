@@ -16,6 +16,7 @@
     "type": "module"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@google/generative-ai": "^0.24.0",
     "@react-pdf-viewer/core": "^3.12.0",
     "@react-pdf-viewer/default-layout": "^3.12.0",
@@ -25,9 +26,10 @@
     "jwt-decode": "^4.0.0",
     "lexora": "file:",
     "lucide-react": "^0.479.0",
-    "pdfjs-dist": "^3.11.174",
+    "pdfjs-dist": "^3.0.279",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-pdf": "^9.2.1",
     "react-router": "^7.4.0",
     "react-router-dom": "^7.5.3",
     "recharts": "^2.15.1",
