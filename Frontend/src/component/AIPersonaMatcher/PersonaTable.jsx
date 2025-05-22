@@ -1,8 +1,12 @@
 import axios from 'axios';
 import React, { useState, useEffect, useRef } from 'react';
+
 import { useNavigate } from "react-router-dom";
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { X, Eye } from "lucide-react";
+
+
+
 
 const MentorAIChat = ({ jobs }) => {
   const [messages, setMessages] = useState([
@@ -22,18 +26,26 @@ const MentorAIChat = ({ jobs }) => {
   const chatSessionRef = useRef(null);
   const navigate = useNavigate();
 
+
   const userDetails = JSON.parse(localStorage.getItem('user'));
   const userId = userDetails?.user_id;
+
+  
+
 
   useEffect(() => {
     const initializeChat = async () => {
       try {
-        const apiKey = "AIzaSyCQUQ9sYtjSjasfpps4bK00hUkqdMwSDV0";
+        const apiKey = 'AIzaSyCQUQ9sYtjSjasfpps4bK00hUkqdMwSDV0';
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({
+
           model: "gemini-2.0-flash-exp-image-generation",
           systemInstruction:
             "You are the career guidance AI. Your job is career persona matching. Respond with a table having 4 columns: No., Career Persona, Matching %, and Suggestions to Improve.importante",
+
+
+
         });
 
         chatSessionRef.current = model.startChat({
@@ -53,8 +65,9 @@ const MentorAIChat = ({ jobs }) => {
   }, [messages]);
 
   const parseTableResponse = (response) => {
-    const rows = response.split("\n").filter(row => row.trim() !== "");
+    const rows = response.split('\n').filter((row) => row.trim() !== '');
     if (rows.length < 3) return [];
+
     return rows.slice(2).map(row => {
       const cells = row.split("|").map(cell => cell.trim()).filter(cell => cell !== "");
       return {
@@ -63,13 +76,16 @@ const MentorAIChat = ({ jobs }) => {
         MatchingPercentage: cells[2],
         Suggestions: cells[3],
       };
+
+    
+
     });
   };
 
   const handleSendMessage = async (message) => {
     if (!message.trim()) return;
     const userMessage = { role: 'user', content: message.trim() };
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInputMessage('');
     setIsLoading(true);
 
@@ -79,7 +95,7 @@ const MentorAIChat = ({ jobs }) => {
         const aiResponse = await result.response.text();
         const parsedTableData = parseTableResponse(aiResponse);
         setTableData(parsedTableData);
-        setMessages(prev => [...prev, { role: 'assistant', content: aiResponse }]);
+        setMessages((prev) => [...prev, { role: 'assistant', content: aiResponse }]);
       }
     } catch (error) {
       console.error('Error sending message:', error);
@@ -108,6 +124,7 @@ const MentorAIChat = ({ jobs }) => {
     }
 
     try {
+
       // Delete existing personas for the user
       await axios.delete(`http://localhost:8080/api/v1/persona/user/${userId}`);
 
@@ -115,6 +132,9 @@ const MentorAIChat = ({ jobs }) => {
       await axios.post(`http://localhost:8080/api/v1/persona/user/${userId}`, formattedData, {
         headers: { 'Content-Type': 'application/json' },
       });
+
+     
+
 
       alert('Data sent successfully!');
       navigate("/savedPersonas");
@@ -137,12 +157,19 @@ const MentorAIChat = ({ jobs }) => {
           <thead className="bg-blue-50">
             <tr>
               <th className="px-6 py-4 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider">No.</th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider">Career Persona</th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider">Matching %</th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider">Suggestions</th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider">
+                Career Persona
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider">
+                Matching %
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider">
+                Suggestions
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-blue-100">
+
             {tableData.length > 0 ? tableData
               .filter(row => row.CareerPersona !== "---" && parseFloat(row.MatchingPercentage) <= 1000)
               .map((row, index) => (
@@ -154,16 +181,34 @@ const MentorAIChat = ({ jobs }) => {
                     <button
                       onClick={() => handleViewSuggestion(row.Suggestions, row.CareerPersona)}
                       className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded flex items-center gap-1"
+
+          
+                      
+
                     >
-                      <Eye size={16} /> View
-                    </button>
-                  </td>
-                </tr>
-              )) : (
-                <tr>
-                  <td colSpan="4" className="px-6 py-4 text-center text-blue-800 font-medium">No career personas found.</td>
-                </tr>
-              )}
+                      {index + 1}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{row.CareerPersona}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-800">
+                      {row.MatchingPercentage}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">
+                      <button
+                        onClick={() => handleViewSuggestion(row.Suggestions, row.CareerPersona)}
+                        className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded flex items-center gap-1"
+                      >
+                        <Eye size={16} /> View
+                      </button>
+                    </td>
+                  </tr>
+                ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="px-6 py-4 text-center text-blue-800 font-medium">
+                  No career personas found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -192,9 +237,14 @@ const MentorAIChat = ({ jobs }) => {
         </div>
       )}
 
+
       <button
         className="mt-4 bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium shadow-md transition-colors"
         onClick={sendDataToBackend}
+
+      
+       
+
       >
         Save
       </button>

@@ -14,6 +14,7 @@ export default function UserProfessionalDetails() {
     'professional Details': '/settings/professionalDetails',
   };
 
+   const userDetails = JSON.parse(localStorage.getItem('user'));
   const [profileDetails, setProfileDetails] = useState({
     occupation: '',
     company: '',
@@ -91,7 +92,7 @@ export default function UserProfessionalDetails() {
 
     if (confirmed) {
       try {
-        const response = await userProfileHandleService.updateProfessionalDetails(updatedDetails);
+        const response = await userProfileHandleService.updateProfessionalDetails(updatedDetails,userDetails.user_id);
         if (response.status === 200) {
           setAlertMessage('Profile updated successfully');
           setAlertType('success');
