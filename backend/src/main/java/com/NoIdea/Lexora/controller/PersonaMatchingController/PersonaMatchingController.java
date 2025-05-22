@@ -1,9 +1,12 @@
 package com.NoIdea.Lexora.controller.PersonaMatchingController;
 
+
+import com.NoIdea.Lexora.dto.UserProfile.PersonaWithUserDTO;
 import com.NoIdea.Lexora.model.PersonaMatchingModel.PersonaMatchingModel;
 import com.NoIdea.Lexora.repository.PersonaMatchingRepo.PersonaMatchingRepo;
 import com.NoIdea.Lexora.service.PersonaMatchingService.PersonaMatchingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +41,20 @@ public class PersonaMatchingController {
     @DeleteMapping("")
     public void deletePersona(){
         personaMatchingService.deletePersona();
+    }
+    @GetMapping("/user/{id}")
+    public List<PersonaWithUserDTO> getAllPersonaWithUserDetails(@PathVariable Long id) {
+        return personaMatchingService.getAllPersonaWithUserDetails(id);
+    }
+
+    @PostMapping("/user/{id}")
+    public List<PersonaWithUserDTO> savePersonas(@PathVariable Long id, @RequestBody List<PersonaWithUserDTO> personas){
+        return personaMatchingService.savePersonaWithUser(id,personas);
+    }
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<String> deleteAllPersonasByUserId(@PathVariable Long id) {
+        personaMatchingService.deleteAllPersonasByUserId(id);
+        return ResponseEntity.ok("All personas deleted for user ID: " + id);
     }
 
 }

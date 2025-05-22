@@ -12,6 +12,7 @@ import TeamPage from './pages/Home/TeamPage';
 import RoadmapDetailsPage from './pages/Functions/Roadmap/RoadmapDetailsPage';
 import Persona from './pages/Functions/CareerPersonaMatching/PersonaMatcher';
 import Persona1 from './pages/Functions/CareerPersonaMatching/MatchedPersona';
+import FetchPersona from './pages/Functions/CareerPersonaMatching/person'
 import RoadmapGeminiApi from './component/Roadmaps/RoadmapGeminiApi';
 import HomePage from '../src/pages/Home/HomePage';
 
@@ -85,8 +86,12 @@ function App() {
             <Route path="/salaryTrends" element={<SalaryTrendsPage />} />
             <Route path="/skillTrends" element={<SkillTrendsPage />} />
             <Route path="/personas" element={<Persona />} />
-            <Route path="/persona" element={<Persona1 />} />
 
+             <Route path="/persona" element={<Persona1 />} />
+             <Route path="/savedPersonas" element={<FetchPersona />} />
+            
+
+     
 
             {/* Personolized Roadmap Generator  */}
             <Route path="/roadmap" element={<RoadmapPage />} />
