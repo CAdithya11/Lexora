@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin
 @RequestMapping("api/v1/skillScores")
 public class SkillScoreController {
 
@@ -68,4 +68,9 @@ public class SkillScoreController {
     public List<SkillScoreWithUserDTO> getUserSkillScores(@PathVariable Long id){
         return skillScoreService.getUserSkillScore(id);
     }
+    @PostMapping("/user/{id}")
+    public SkillScoreWithUserDTO saveUserScore(@PathVariable Long id,@RequestBody SkillScoreWithUserDTO score){
+        return skillScoreService.saveUserSkillScore(id,score);
+    }
+
 }

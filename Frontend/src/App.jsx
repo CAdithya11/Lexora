@@ -25,6 +25,8 @@ import Skill3 from './pages/Functions/SkillGapAnalyzer/Resultvisualize';
 import Skill4 from './pages/Functions/SkillGapAnalyzer/SkillList';
 import Skill5 from './pages/Functions/SkillGapAnalyzer/FetchResult';
 import Skill6 from './pages/Functions/SkillGapAnalyzer/SkillResultVizulize';
+import Skill7 from './pages/Functions/SkillGapAnalyzer/ResultFetch';
+import Skill8 from './pages/Functions/SkillGapAnalyzer/adminquestionpost';
 
 import FeedbackPage from './pages/Home/FeedbackPage';
 import { ProtectedRoute } from './component/template/protectedRoute/ProtectedRoute';
@@ -72,6 +74,8 @@ function App() {
           
             <Route path="/skills/:jobRoleId" element={<Skill4/>} />
           <Route path="/result/:jobRole" element={<Skill6/>} />
+          <Route path="/fetch" element={<Skill7/>} />
+          <Route path="/f" element={<Skill8/>} />
 
 
           <Route element={<ProtectedRoute />}>
