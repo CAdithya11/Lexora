@@ -62,10 +62,13 @@ export default function SidebarSub() {
     <>
       <div className="h-screen flex-shrink-0">
         <Sidebar>
-          <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" />
+          <Link to={"/dashboard"}>
+            <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" />
+          </Link>
 
           <hr className="my-3 border-gray-200" />
-
+          
+          {/*Roadmap */}
           <SidebarItem
             icon={<Route size={20} />}
             text="Roadmaps"

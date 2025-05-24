@@ -138,7 +138,7 @@ const RoadmapDetails = () => {
                       >
                         Delete
                       </button>
-                    </div>
+                    </div>  
                   </td>
                 </tr>
               ))}

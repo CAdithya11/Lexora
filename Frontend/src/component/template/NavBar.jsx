@@ -111,6 +111,18 @@ const NavBar = ({ activeNavMenu }) => {
                   activeNavMenu === 'home' ? 'border-indigo-600' : 'border-transparent hover:border-indigo-600'
                 } `}>Home</div>
               </Link>
+
+              <Link to={"/app"}>
+                <div className={`text-gray-900 hover:text-indigo-600 px-3 py-2 font-medium transition-colors duration-200 flex items-center border-b-2 ${
+                  activeNavMenu === 'contactUs' ? 'border-indigo-600' : 'border-transparent hover:border-indigo-600'
+                } `}>Apps</div>
+              </Link>
+              
+              <Link to={"/aboutus"}>
+                <div className={`text-gray-900 hover:text-indigo-600 px-3 py-2 font-medium transition-colors duration-200 flex items-center border-b-2 ${
+                  activeNavMenu === 'aboutUs' ? 'border-indigo-600' : 'border-transparent hover:border-indigo-600'
+                } `}>About Us</div>
+              </Link>
               
               <Link to={"/contactUs"}>
                 <div className={`text-gray-900 hover:text-indigo-600 px-3 py-2 font-medium transition-colors duration-200 flex items-center border-b-2 ${
@@ -118,10 +130,10 @@ const NavBar = ({ activeNavMenu }) => {
                 } `}>Contact Us</div>
               </Link>
               
-              <Link to={"/aboutus"}>
+              <Link to={"/feedback"}>
                 <div className={`text-gray-900 hover:text-indigo-600 px-3 py-2 font-medium transition-colors duration-200 flex items-center border-b-2 ${
-                  activeNavMenu === 'aboutUs' ? 'border-indigo-600' : 'border-transparent hover:border-indigo-600'
-                } `}>About Us</div>
+                  activeNavMenu === 'contactUs' ? 'border-indigo-600' : 'border-transparent hover:border-indigo-600'
+                } `}>Feedback</div>
               </Link>
               
             </div>
