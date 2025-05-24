@@ -39,6 +39,9 @@ import MenteeSelectMedia from './pages/Functions/MentorMenteeMatchmaking/MenteeS
 import MenteeAddMatchingCriteria from './pages/Functions/MentorMenteeMatchmaking/MenteeAddMatchingCriteria';
 import MenteeMatchmaking from './pages/Functions/MentorMenteeMatchmaking/MenteeMatchmaking';
 import AboutUsPage from './pages/Home/AboutUsPage';
+import AppsPage from './pages/Home/AppsPage';
+import JobDashboard from './component/IndustryInsights/JobDashboard';
+import Dashboard from './pages/Dashboard';
 
 
 function App() {
@@ -55,6 +58,9 @@ function App() {
           <Route path="/team" element={<TeamPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/aboutus" element={<AboutUsPage />} />
+          <Route path="/app" element={<AppsPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          
 
           {/* <Route path="/PersonaMatching" element={<CareerPersosna />} />
           <Route path="/Personas" element={<MatchedPersosna />} />
