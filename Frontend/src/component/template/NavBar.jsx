@@ -149,7 +149,7 @@ const NavBar = ({ activeNavMenu }) => {
             </div>
             <div className="flex-shrink-0">
               <Link to={'/signUp'}>
-                <div className="block w-full px-5 py-2 text-center font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md flex items-center justify-center transition-colors duration-150 shadow-md">
+                <div id="signupButton" className="block w-full px-5 py-2 text-center font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md flex items-center justify-center transition-colors duration-150 shadow-md">
                   <UserPlus size={18} className="mr-1" />
                   Sign Up
                 </div>

@@ -76,10 +76,10 @@ export default function SidebarSub() {
               isLocation == '/roadmap' || isLocation == '/RoadmapDetails' || isLocation == '/searchRoadmap'
                 ? true
                 : false
-            }
+            } 
           >
             <Link to="/searchRoadmap">
-              <SidebarSubItem text="Roadmaps Generator" active={isLocation == '/searchRoadmap'} />
+              <SidebarSubItem id='searchRoadmap' text="Roadmaps Generator" active={isLocation == '/searchRoadmap'} />
             </Link>
             <Link to="/RoadmapDetails">
               <SidebarSubItem text="Roadmap Details" active={isLocation == '/RoadmapDetails'} />
@@ -100,19 +100,19 @@ export default function SidebarSub() {
 
           <SidebarItem
             icon={<BarChart4Icon size={20} />}
-            text="Industry Insights"
+            text="IndustryInsights"
             alwaysOpen={
               isLocation == '/jobTrends' || isLocation == '/salaryTrends' || isLocation == '/skillTrends' ? true : false
             }
           >
             <Link to="/jobTrends">
-              <SidebarSubItem text="Job Trends" active={isLocation == '/jobTrends' ? true : false} />
+              <SidebarSubItem text="JobTrends" active={isLocation == '/jobTrends' ? true : false} />
             </Link>
             <Link to="/skillTrends">
-              <SidebarSubItem text="Skill Trends" active={isLocation == '/skillTrends' ? true : false} />
+              <SidebarSubItem text="SkillTrends" active={isLocation == '/skillTrends' ? true : false} />
             </Link>
             <Link to="/salaryTrends">
-              <SidebarSubItem text="Salary Trends" active={isLocation == '/salaryTrends' ? true : false} />
+              <SidebarSubItem text="SalaryTrends" active={isLocation == '/salaryTrends' ? true : false} />
             </Link>
           </SidebarItem>
 
