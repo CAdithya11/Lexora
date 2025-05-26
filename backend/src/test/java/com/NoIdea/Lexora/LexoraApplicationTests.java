@@ -19,7 +19,7 @@ class LexoraApplicationTests {
 		driver.get("http://localhost:5173/Lexora/");
 
 		// Click the singIn button
-		WebElement singInButton = driver.findElement(By.id("singInButton")); // or By.cssSelector() / By.xpath()
+		WebElement singInButton = driver.findElement(By.id("singInButton"));
 		singInButton.click();
 
 		// Find and fill email and password
@@ -30,11 +30,11 @@ class LexoraApplicationTests {
 		password.sendKeys("12345678");
 
 		//Click the Login button
-		WebElement loginButton = driver.findElement(By.id("loginButton")); // or By.cssSelector() / By.xpath()
+		WebElement loginButton = driver.findElement(By.id("loginButton"));
 		loginButton.click();
 
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(30000);
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();

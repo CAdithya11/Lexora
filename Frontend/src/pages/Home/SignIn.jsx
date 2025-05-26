@@ -20,7 +20,7 @@ export default function SignIn() {
       console.log('Hello');
       const response = await authService.login(email, password);
       console.log(response);
-      navigate('/jobTrends');
+      navigate('/dashboard');
       window.location.reload();
     } catch (err) {
       console.log('Hello', JSON.stringify(err.error));

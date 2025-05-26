@@ -12,6 +12,7 @@ import TeamPage from './pages/Home/TeamPage';
 import RoadmapDetailsPage from './pages/Functions/Roadmap/RoadmapDetailsPage';
 import Persona from './pages/Functions/CareerPersonaMatching/PersonaMatcher';
 import Persona1 from './pages/Functions/CareerPersonaMatching/MatchedPersona';
+import FetchPersona from './pages/Functions/CareerPersonaMatching/person'
 import RoadmapGeminiApi from './component/Roadmaps/RoadmapGeminiApi';
 import HomePage from '../src/pages/Home/HomePage';
 
@@ -42,7 +43,11 @@ import MenteeSelectMedia from './pages/Functions/MentorMenteeMatchmaking/MenteeS
 import MenteeAddMatchingCriteria from './pages/Functions/MentorMenteeMatchmaking/MenteeAddMatchingCriteria';
 import MenteeMatchmaking from './pages/Functions/MentorMenteeMatchmaking/MenteeMatchmaking';
 import AboutUsPage from './pages/Home/AboutUsPage';
+
 import AdminMentorRequests from './pages/Home/Admin/AdminMentorRequests';
+import AppsPage from './pages/Home/AppsPage';
+import JobDashboard from './component/IndustryInsights/JobDashboard';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -58,6 +63,9 @@ function App() {
           <Route path="/team" element={<TeamPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/aboutus" element={<AboutUsPage />} />
+          <Route path="/app" element={<AppsPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          
 
           {/* <Route path="/PersonaMatching" element={<CareerPersosna />} />
           <Route path="/Personas" element={<MatchedPersosna />} />
@@ -80,7 +88,10 @@ function App() {
             <Route path="/salaryTrends" element={<SalaryTrendsPage />} />
             <Route path="/skillTrends" element={<SkillTrendsPage />} />
             <Route path="/personas" element={<Persona />} />
-            <Route path="/persona" element={<Persona1 />} />
+
+
+             <Route path="/persona" element={<Persona1 />} />
+             <Route path="/savedPersonas" element={<FetchPersona />} />
 
             {/* Personolized Roadmap Generator  */}
             <Route path="/roadmap" element={<RoadmapPage />} />

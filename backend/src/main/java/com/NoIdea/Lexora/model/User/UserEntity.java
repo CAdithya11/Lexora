@@ -6,6 +6,10 @@ import com.NoIdea.Lexora.enums.User.Role;
 import com.NoIdea.Lexora.model.MentorMenteeModel.BecomeMentorRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import com.NoIdea.Lexora.model.PersonaMatchingModel.PersonaMatchingModel;
+import com.NoIdea.Lexora.model.SkillGapModel.SkillScore;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,5 +50,10 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<BecomeMentorRequest> becomeMentorRequest;
+    @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL,orphanRemoval = true)
 
+    private List<PersonaMatchingModel> personaMatchingModels;
+
+    @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<SkillScore> skillScores;
 }

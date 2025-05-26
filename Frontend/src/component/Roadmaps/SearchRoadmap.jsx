@@ -17,6 +17,19 @@ const SearchRoadmap = () => {
   const [user, setUser] = useState(null);
   const [Rid, setRid] = useState(1);
 
+  const [progressData, setProgressData] = useState({
+    overall: 0,
+    completedItems: { mainNodes: [], subCategories: [], steps: [] },
+    totalItems: { mainNodes: 0, subCategories: 0, steps: 0 }
+  });
+
+  const handleProgressChange = (newProgress) => {
+    // newProgress.overall is a number 0–100
+    // newProgress.completedItems / totalItems gives you whatever you need
+    console.log('Progress updated:', newProgress);
+    setProgressData(newProgress);
+  };
+
   useEffect(() => {
     const userDetails = localStorage.getItem('user');
     if (userDetails) {
@@ -61,6 +74,15 @@ const SearchRoadmap = () => {
       fetchAIResponse(option);
     }
   };
+
+  // Handle Roadmap Progress 
+  const [roadmapProgress, setRoadmapProgress] = useState({});
+
+const handleProgressUpdate = (updatedProgress) => {
+  setRoadmapProgress(updatedProgress);
+  console.log("THIS IS THE PROGRESS RESPONSE",updatedProgress);
+};
+
 
 
   const handleSkillSubmit = () => {
@@ -425,7 +447,7 @@ const SearchRoadmap = () => {
           {roadmapData && !isLoading && (
             <div className="mb-8">
               {roadmapData.jsonData ? (
-                <Roadmap jobGoal={getRoadmapTitle()} JsonRoadmapData={roadmapData.jsonData} />
+                <Roadmap jobGoal={getRoadmapTitle()} onProgressChange={handleProgressChange} JsonRoadmapData={roadmapData.jsonData} />
               ) : (
                 <div>{roadmapData.html}</div>
               )}
