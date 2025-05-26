@@ -3,12 +3,18 @@ package com.NoIdea.Lexora.model.User;
 import com.NoIdea.Lexora.enums.MentorMentee.VerificationStatus;
 
 import com.NoIdea.Lexora.enums.User.Role;
+import com.NoIdea.Lexora.model.MentorMenteeModel.BecomeMentorRequest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "user")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,5 +42,9 @@ public class UserEntity {
     private byte[] profile_image;
     @Lob
     private byte[] degree_certificate;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<BecomeMentorRequest> becomeMentorRequest;
 
 }
