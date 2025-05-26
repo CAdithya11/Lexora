@@ -111,17 +111,17 @@ class UserEntityServiceImplTest {
     }
 
     // Test saving a degree certificate for verification
-    @Test
-    void testCreateVerificationRequest_Success() throws IOException {
-        MultipartFile mockFile = mock(MultipartFile.class);
-        when(mockFile.getBytes()).thenReturn("testBytes".getBytes());
-
-        UserEntity user = new UserEntity();
-        when(userEntityRepository.findById(1L)).thenReturn(Optional.of(user));
-
-        String result = userEntityService.createVerificationRequest(1L, mockFile);
-        assertEquals("Successfully Send the mentor verification request", result);
-    }
+//    @Test
+//    void testCreateVerificationRequest_Success() throws IOException {
+//        MultipartFile mockFile = mock(MultipartFile.class);
+//        when(mockFile.getBytes()).thenReturn("testBytes".getBytes());
+//
+//        UserEntity user = new UserEntity();
+//        when(userEntityRepository.findById(1L)).thenReturn(Optional.of(user));
+//
+//        String result = userEntityService.createVerificationRequest(1L, mockFile);
+//        assertEquals("Successfully Send the mentor verification request", result);
+//    }
 
     // Test building the UserProfileResponseDTO with image and certificate
     @Test

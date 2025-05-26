@@ -129,8 +129,12 @@ export default function SidebarSub() {
             }
             text="Skill Gap Analyzer"
           >
-            <SidebarSubItem text="Anlyzer" />
-            <SidebarSubItem text="Completed" />
+            <Link to="/sk">
+              <SidebarSubItem text="Analyzer" active={isLocation == '/sk' ? true : false} />
+            </Link>
+            <Link to="/sk4">
+              <SidebarSubItem text=" Complted" active={isLocation == '/sk4' ? true : false} />
+            </Link>
           </SidebarItem>
 
           <SidebarItem
@@ -150,7 +154,10 @@ export default function SidebarSub() {
               <SidebarSubItem text="persona" active={isLocation == '/persona' ? true : false} />
             </Link>
             <Link to="/MatchedPersonas">
-              <SidebarSubItem text="Matched Personas" active={isLocation == '/MatchedPersonas' ? true : false} />
+              <SidebarSubItem
+                text="Matched Personas"
+                active={isLocation == '/MatchedPersonas' || isLocation ? true : false}
+              />
             </Link>
           </SidebarItem>
 
@@ -158,7 +165,11 @@ export default function SidebarSub() {
 
           <SidebarItem icon={<Bell size={20} />} text="Notifications" alert />
 
-          <SidebarItem icon={<User size={20} />} text="Mentor" alwaysOpen={isLocation}>
+          <SidebarItem
+            icon={<User size={20} />}
+            text="Mentor"
+            alwaysOpen={isLocation == '/mentorDashboard' ? true : false}
+          >
             <Link to={'/mentorDashboard'}>
               <SidebarSubItem text="Dashboard" active={isLocation == '/mentorDashboard'} />
             </Link>
@@ -167,10 +178,21 @@ export default function SidebarSub() {
             </Link>
           </SidebarItem>
 
-          <SidebarItem icon={<FileCog size={20} />} text="Admin">
-            <SidebarSubItem text="Mentor Varification" />
-            <SidebarSubItem text="Feedback" />
-          </SidebarItem>
+          <Link to={'/Admin/MentorRequests'}>
+            <SidebarItem
+              icon={<FileCog size={20} />}
+              text="Admin"
+              alwaysOpen={isLocation == '/Admin/MentorRequests' || isLocation == '/Admin/Feedback' ? true : false}
+            >
+              <Link to={'/Admin/MentorRequests'}>
+                <SidebarSubItem text="Mentor Varification" active={isLocation == '/Admin/MentorRequests'} />
+              </Link>
+              <Link to={'/Admin/Feedback'}>
+                <SidebarSubItem text="Feedback" active={isLocation == '/Admin/Feedback'} />
+              </Link>
+            </SidebarItem>
+          </Link>
+
           <Link to={'/settings/profile'}>
             <SidebarItem icon={<Settings size={20} />} text="Settings" alwaysOpen={true}>
               <Link to={'/settings/profile'}>
