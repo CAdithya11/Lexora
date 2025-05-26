@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/persona")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PersonaMatchingController {
 
     @Autowired
