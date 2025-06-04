@@ -144,7 +144,6 @@ export default function UserProfileSettings() {
             <div className="max-w-3xl">
               <div className="mb-6">
                 <h2 className="text-lg font-medium mb-2">Profile</h2>
-                <p className="text-gray-500 text-sm">Lorem ipsum dolor sit amet, consectetur adipis.</p>
               </div>
               <form onSubmit={uploadProfileImage} enctype="multipart/form-data">
                 {/* Profile Photo */}

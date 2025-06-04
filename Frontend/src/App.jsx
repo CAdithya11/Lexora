@@ -44,7 +44,6 @@ import MenteeAddMatchingCriteria from './pages/Functions/MentorMenteeMatchmaking
 import MenteeMatchmaking from './pages/Functions/MentorMenteeMatchmaking/MenteeMatchmaking';
 import AboutUsPage from './pages/Home/AboutUsPage';
 import AppsPage from './pages/Home/AppsPage';
-import JobDashboard from './component/IndustryInsights/JobDashboard';
 import Dashboard from './pages/Dashboard';
 
 function App() {
@@ -96,8 +95,6 @@ function App() {
              <Route path="/persona" element={<Persona1 />} />
              <Route path="/savedPersonas" element={<FetchPersona />} />
             
-
-     
 
             {/* Personolized Roadmap Generator  */}
             <Route path="/roadmap" element={<RoadmapPage />} />

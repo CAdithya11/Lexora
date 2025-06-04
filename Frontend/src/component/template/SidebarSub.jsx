@@ -29,6 +29,7 @@ import {
   BarChart4Icon,
   UserSearch,
   User,
+  MessageCircle,
   LogOut,
 } from 'lucide-react';
 import Sidebar, { SidebarItem, SidebarSubItem } from '../template/Sidebar';
@@ -52,8 +53,6 @@ export default function SidebarSub() {
   const location = useLocation();
 
   const isLocation = location.pathname;
-
-  console.log(isLocation);
 
   // Available years for the filter
   const years = ['2023', '2024', '2025', '2026'];
@@ -157,6 +156,14 @@ export default function SidebarSub() {
           <hr className="my-3 border-gray-200" />
 
           <SidebarItem icon={<Bell size={20} />} text="Notifications" alert />
+          <div>
+            <Link to="/feedback">
+            <SidebarItem icon={<MessageCircle size={20} />} text="Feedback"></SidebarItem>
+            </Link>
+          </div>
+          
+
+          <hr className="my-3 border-gray-200" />
 
           <SidebarItem icon={<User size={20} />} text="Mentor" alwaysOpen={isLocation}>
             <Link to={'/mentorDashboard'}>

@@ -21,7 +21,6 @@ export default function TopHeader({ HeaderMessage }) {
     if (user.user_id && user.token) {
       userProfileHandleService.findUserProfileById(user.user_id).then((response) => {
         setProfileDetails(response.data);
-        console.log(response.data);
       });
     }
   }, []);
