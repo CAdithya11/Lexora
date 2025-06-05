@@ -1,70 +1,144 @@
 # LEXORA
 
-*Empower Your Career Journey with Personalized Insights*
+**Empower Your Career Journey with Personalized Insights**
 
-![GitHub last commit](https://img.shields.io/github/last-commit/Cadith99an1/lexora)
-![repo size](https://img.shields.io/github/repo-size/Cadith99an1/lexora)
-![languages](https://img.shields.io/github/languages/count/Cadith99an1/lexora)
+[![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)](https://www.java.com/)
+[![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)](https://maven.apache.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
-_Built with the tools and technologies:_
+## 🚀 Overview
 
-![JSON](https://img.shields.io/badge/JSON-000000?logo=json&logoColor=white)
-![Markdown](https://img.shields.io/badge/Markdown-000000?logo=markdown&logoColor=white)
-![HTML](https://img.shields.io/badge/HTML-E34F26?logo=html5&logoColor=white)
-![CSS](https://img.shields.io/badge/CSS-1572B6?logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
-![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
-![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
-![Express](https://img.shields.io/badge/Express-000000?logo=express&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)
-![Java](https://img.shields.io/badge/Java-ED8B00?logo=java&logoColor=white)
+Lexora is a powerful development tool designed to streamline career guidance and mentorship through an interactive platform. This project empowers developers to create engaging applications that bridge the gap between education and industry needs.
 
----
+### ✨ Key Features
 
-## Table of Contents
+- **🔒 Security Policy**: Establishes a clear framework for version support and vulnerability reporting, ensuring code integrity
+- **⚙️ Frontend Configuration**: Utilizes modern tools like React and Vite, enhancing development efficiency with features like Hot Module Replacement (HMR)
+- **🎨 Dynamic Components**: Offers interactive elements for front-end development and skill gap analysis, simplifying user interface creation
+- **📊 Data Visualization**: Integrates various chart types for job market trends, making complex data easily digestible
+- **👥 User Management**: Simplifies authentication and profile management, reducing overhead for secure user data handling
+- **🧪 Testing Framework**: Includes comprehensive testing setups for both frontend and backend, ensuring reliability and maintainability
 
-- [Overview](#overview)
-- [Getting Started](#getting-started)
+## 📋 Table of Contents
+
+- [Overview](#-overview)
+- [Getting Started](#-getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-  - [Usage](#usage)
-  - [Testing](#testing)
+- [Usage](#-usage)
+- [Testing](#-testing)
+- [Contributing](#-contributing)
+- [License](#-license)
 
----
-
-## Overview
-
-Lexora is a powerful developer tool designed to streamline career guidance and mentorship through an interactive platform.
-
-### Why Lexora?
-
-This project empowers developers to create engaging applications that bridge the gap between education and industry needs. The core features include:
-
-- 🛡️ **Security Policy**: Establishes a clear framework for version support and vulnerability reporting, ensuring code integrity.
-- ⚙️ **Frontend Configuration**: Utilizes modern tools like React and Vite, enhancing development efficiency with features like Hot Module Replacement (HMR).
-- 🧩 **Dynamic Components**: Offers interactive elements for mentorship and skill gap analysis, simplifying user interface creation.
-- 📊 **Data Visualization**: Integrates various chart types for job market trends, making complex data easily digestible.
-- 👤 **User Management**: Simplifies authentication and profile management, reducing overhead for secure user data handling.
-- 🧪 **Testing Framework**: Includes comprehensive testing setups for both frontend and backend, ensuring reliability and maintainability.
-
----
-
-## Getting Started
+## 🏁 Getting Started
 
 ### Prerequisites
 
-This project requires the following dependencies:
+Before you begin, ensure you have the following installed:
 
 - **Programming Language**: Java
-- **Package Manager**: Npm, Maven
-
----
+- **Package Manager**: npm, Maven
 
 ### Installation
 
-Build Lexora from the source and install dependencies:
-
-1. **Clone the repository**:
+1. **Clone the repository**
    ```bash
-   git clone https://github.com/Cadith99an1/lexora
+   git clone https://github.com/yourusername/lexora.git
+   ```
+
+2. **Navigate to the project directory**
+   ```bash
+   cd lexora
+   ```
+
+3. **Install the dependencies**
+
+   Using **npm**:
+   ```bash
+   npm install
+   ```
+
+   Using **Maven**:
+   ```bash
+   mvn install
+   ```
+
+## 🎯 Usage
+
+### Run the project with:
+
+Using **npm**:
+```bash
+npm start
+```
+
+Using **Maven**:
+```bash
+mvn exec:java
+```
+
+## 🧪 Testing
+
+Lexora uses the **Jest Framework** test framework. Run the test suite with:
+
+Using **npm**:
+```bash
+npm test
+```
+
+Using **Maven**:
+```bash
+mvn test
+```
+
+## 🤝 Contributing
+
+We welcome contributions to Lexora! Here's how you can help:
+
+1. **Fork the repository**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. **Commit your changes**
+   ```bash
+   git commit -m 'Add some amazing feature'
+   ```
+4. **Push to the branch**
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. **Open a Pull Request**
+
+Please read our [Contributing Guidelines](CONTRIBUTING.md) for more details.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🛠️ Built With
+
+- **Java** - Primary programming language
+- **Maven** - Dependency management and build automation
+- **npm** - Package management for frontend dependencies
+- **Jest** - Testing framework
+- **React** - Frontend library (inferred from configuration)
+- **Vite** - Build tool and development server
+
+## 📞 Support
+
+If you have any questions or need help with Lexora, please:
+
+- Open an issue on GitHub
+- Check our [documentation](docs/)
+- Contact the maintainers
+
+## 🌟 Acknowledgments
+
+- Thanks to all contributors who have helped shape Lexora
+- Special thanks to the open-source community for the tools and libraries that make this project possible
+
+---
+
+**Made with ❤️ by the Lexora Team**
