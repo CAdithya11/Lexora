@@ -12,7 +12,7 @@ const categories = [
   'Healthcare & Medicine',
 ];
 
-export default function TopHeader({ HeaderMessage }) {
+export default function TopHeader({ HeaderMessage, handleGetUserDetails }) {
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [profileDetails, setProfileDetails] = useState('');
 
@@ -21,6 +21,7 @@ export default function TopHeader({ HeaderMessage }) {
     if (user.user_id && user.token) {
       userProfileHandleService.findUserProfileById(user.user_id).then((response) => {
         setProfileDetails(response.data);
+        handleGetUserDetails(response.data);
         console.log(response.data);
       });
     }
@@ -107,6 +108,6 @@ export default function TopHeader({ HeaderMessage }) {
           </div>
         </div>
       </header>
-     </>
+    </>
   );
 }

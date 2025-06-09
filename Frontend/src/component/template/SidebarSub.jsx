@@ -45,10 +45,6 @@ const categories = [
 ];
 
 export default function SidebarSub() {
-  const [selectedCategory, setSelectedCategory] = useState('Software Development & Engineering');
-  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
-  const [selectedYear, setSelectedYear] = useState('2025');
-  const [showYearDropdown, setShowYearDropdown] = useState(false);
   const location = useLocation();
 
   const isLocation = location.pathname;
@@ -62,12 +58,12 @@ export default function SidebarSub() {
     <>
       <div className="h-screen flex-shrink-0">
         <Sidebar>
-          <Link to={"/dashboard"}>
+          <Link to={'/dashboard'}>
             <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" />
           </Link>
 
           <hr className="my-3 border-gray-200" />
-          
+
           {/*Roadmap */}
           <SidebarItem
             icon={<Route size={20} />}
@@ -76,10 +72,10 @@ export default function SidebarSub() {
               isLocation == '/roadmap' || isLocation == '/RoadmapDetails' || isLocation == '/searchRoadmap'
                 ? true
                 : false
-            } 
+            }
           >
             <Link to="/searchRoadmap">
-              <SidebarSubItem id='searchRoadmap' text="Roadmaps Generator" active={isLocation == '/searchRoadmap'} />
+              <SidebarSubItem id="searchRoadmap" text="Roadmaps Generator" active={isLocation == '/searchRoadmap'} />
             </Link>
             <Link to="/RoadmapDetails">
               <SidebarSubItem text="Roadmap Details" active={isLocation == '/RoadmapDetails'} />
