@@ -3,8 +3,8 @@ package com.NoIdea.Lexora.dto.MentorMentee;
 import com.NoIdea.Lexora.enums.MentorMentee.VerificationStatus;
 import com.NoIdea.Lexora.enums.User.Role;
 import com.NoIdea.Lexora.model.MentorMenteeModel.BecomeMentorRequest;
-import com.NoIdea.Lexora.model.User.UserEntity;
 import jakarta.persistence.Lob;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Transactional
 public class BecomeMentorRequestDTO {
     private Long id;
     private LocalDateTime dateTime;
