@@ -58,10 +58,10 @@ const userId = userDetails?.user_id;
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className="flex overflow-hidden">
       <SidebarSub />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <TopHeader />
+        <TopHeader HeaderMessage={'Matched Career Persona'} />
         <div className="flex-1 overflow-y-auto p-6 bg-white">
           <div className="container mx-auto px-4 py-4">
             <div className="overflow-x-auto bg-white rounded-lg shadow-lg border border-blue-100">
