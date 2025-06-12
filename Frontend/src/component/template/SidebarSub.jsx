@@ -126,10 +126,14 @@ export default function SidebarSub() {
             text="Skill Gap Analyzer"
           >
             <Link to="/sk">
-              <SidebarSubItem text="Analyzer" active={isLocation == '/sk' ? true : false} />
+
+            <SidebarSubItem text="Anlyzer" active={isLocation == '/sk' ? true : false} />
             </Link>
             <Link to="/sk4">
-              <SidebarSubItem text=" Complted" active={isLocation == '/sk4' ? true : false} />
+            <SidebarSubItem text="Completed" active={isLocation == '/sk4' ? true : false}/>
+
+              
+
             </Link>
           </SidebarItem>
 

@@ -25,6 +25,8 @@ import Skill3 from './pages/Functions/SkillGapAnalyzer/Resultvisualize';
 import Skill4 from './pages/Functions/SkillGapAnalyzer/SkillList';
 import Skill5 from './pages/Functions/SkillGapAnalyzer/FetchResult';
 import Skill6 from './pages/Functions/SkillGapAnalyzer/SkillResultVizulize';
+import Skill7 from './pages/Functions/SkillGapAnalyzer/ResultFetch';
+import Skill8 from './pages/Functions/SkillGapAnalyzer/adminquestionpost';
 
 import FeedbackPage from './pages/Home/FeedbackPage';
 import { ProtectedRoute } from './component/template/protectedRoute/ProtectedRoute';
@@ -75,8 +77,19 @@ function App() {
           <Route path="/rgapi" element={<RoadmapGeminiApi />} />
           {/* <Route path="/ro" element={<RoadmapOption />} /> */}
 
-          <Route path="/skills/:jobRoleId" element={<Skill4 />} />
-          <Route path="/result/:jobRole" element={<Skill6 />} />
+          <Route path="/sk" element={<Skill />} />
+          <Route path="/sk1/:jobRoleId" element={<Skill1 />} />
+          <Route path="/sk2" element={<Skill2 />} />
+          <Route path="/sk3" element={<Skill3 />} />
+          <Route path="/sk4" element={<Skill5 />} />
+          
+            <Route path="/skills/:jobRoleId" element={<Skill4/>} />
+          <Route path="/result/:jobRole" element={<Skill6/>} />
+          <Route path="/fetch" element={<Skill7/>} />
+          <Route path="/f" element={<Skill8/>} />
+
+
+          
 
           {/* Mentor Mentee Matchmaking New */}
           <Route path="/mentorDashboardNew" element={<MentorDashboardNew />} />
@@ -86,6 +99,7 @@ function App() {
           <Route path="/edit-meeting/:meetingId" element={<CreateMeetingPage title={"Edit Meeting"} />} />
           <Route path="/meetingsList" element={<MeetingsListPage />} />
           <Route path="join-meeting/:meetingId" element={<JoinMeetingPage />} />
+
 
 
           <Route element={<ProtectedRoute />}>
