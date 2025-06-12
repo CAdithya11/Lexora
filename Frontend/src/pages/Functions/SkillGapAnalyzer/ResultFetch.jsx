@@ -39,6 +39,32 @@ const SkillDetailPage = () => {
   const correctAnswers = predictedScore;
   const wrongAnswers = totalQuestions - predictedScore;
 
+  // Helper function to parse learning path steps - same as in your first component
+  const parseLearningPathSteps = (learningPath) => {
+    if (!learningPath) return [];
+    if (typeof learningPath !== 'string') return Array.isArray(learningPath) ? learningPath : [];
+    
+    // Split by numbered points (1., 2., 3., etc.) or **bold** markers
+    const steps = learningPath
+      .split(/\d+\.\s*\*\*|\d+\.\s*/)
+      .filter(step => step.trim().length > 0)
+      .map(step => step.replace(/\*\*/g, '').trim())
+      .filter(step => step.length > 0); // Remove empty steps
+    
+    return steps;
+  };
+
+  // Parse the learning path into steps
+  const learningPathSteps = parseLearningPathSteps(learningPath);
+
+  // Helper function to truncate long text
+  const truncateText = (text, maxLength = 150) => {
+    if (!text) return '';
+    if (typeof text !== 'string') return String(text);
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+
   // Data for pie chart
   const pieData = [
     { name: 'Correct', value: correctAnswers, color: '#10b981' },
@@ -236,7 +262,7 @@ const SkillDetailPage = () => {
               </div>
             )}
 
-            {/* Learning Paths Tab */}
+            {/* Learning Paths Tab - FIXED */}
             {activeTab === 'learning' && (
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                 <div className="flex justify-between items-center mb-6">
@@ -249,17 +275,19 @@ const SkillDetailPage = () => {
                   </button>
                 </div>
                 
-                {learningPath && learningPath.length > 0 ? (
-                  <div className="grid gap-4">
-                    {learningPath.map((path, index) => (
+                {learningPathSteps && learningPathSteps.length > 0 ? (
+                  <div className="space-y-4">
+                    {learningPathSteps.map((step, index) => (
                       <div key={index} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
                         <div className="flex items-start">
                           <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-semibold mr-4">
                             {index + 1}
                           </div>
                           <div className="flex-1">
-                            <h4 className="font-medium text-gray-800 mb-2">{path}</h4>
-                            <div className="flex items-center text-sm text-gray-600">
+                            <p className="text-gray-800 leading-relaxed">
+                              {step}
+                            </p>
+                            <div className="flex items-center text-sm text-gray-600 mt-2">
                               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
@@ -269,6 +297,15 @@ const SkillDetailPage = () => {
                         </div>
                       </div>
                     ))}
+                  </div>
+                ) : learningPath && typeof learningPath === 'string' ? (
+                  // Fallback: Display raw learning path if parsing fails
+                  <div className="border border-gray-200 rounded-lg p-6">
+                    <div className="prose max-w-none">
+                      <div className="whitespace-pre-wrap text-gray-700">
+                        {learningPath}
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   <div className="text-center py-8">
@@ -298,7 +335,7 @@ const SkillDetailPage = () => {
                               </svg>
                             </div>
                             <div>
-                              <p className="font-medium text-gray-800 break-all">{link}</p>
+                              <p className="font-medium text-gray-800 break-all">{truncateText(link, 60)}</p>
                               <p className="text-sm text-gray-600">External learning resource</p>
                             </div>
                           </div>

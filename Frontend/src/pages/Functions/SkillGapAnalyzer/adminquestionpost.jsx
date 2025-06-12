@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 const JobRoleForm = () => {
   const [jobRoleName, setJobRoleName] = useState('');
   const [skillLists, setSkillLists] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [debugInfo, setDebugInfo] = useState('');
 
   const handleAddSkill = () => {
     setSkillLists([
@@ -61,86 +62,213 @@ const JobRoleForm = () => {
   };
 
   const handleSubmit = async () => {
+    if (!jobRoleName.trim()) {
+      alert('Please enter a job role name');
+      return;
+    }
+
+    if (skillLists.length === 0) {
+      alert('Please add at least one skill');
+      return;
+    }
+
+    // Validate that all skills have questions and answers
+    for (let i = 0; i < skillLists.length; i++) {
+      const skill = skillLists[i];
+      if (!skill.skillName.trim()) {
+        alert(`Please enter a name for skill ${i + 1}`);
+        return;
+      }
+      if (skill.skillQuestions.length === 0) {
+        alert(`Please add at least one question for skill: ${skill.skillName}`);
+        return;
+      }
+      
+      for (let j = 0; j < skill.skillQuestions.length; j++) {
+        const question = skill.skillQuestions[j];
+        if (!question.question.trim()) {
+          alert(`Please enter question text for question ${j + 1} in skill: ${skill.skillName}`);
+          return;
+        }
+        if (question.skillAnswers.length === 0) {
+          alert(`Please add at least one answer for question: ${question.question}`);
+          return;
+        }
+        
+        // Check if at least one answer is marked as correct
+        const hasCorrectAnswer = question.skillAnswers.some(answer => answer.status === true);
+        if (!hasCorrectAnswer) {
+          alert(`Please mark at least one answer as correct for question: ${question.question}`);
+          return;
+        }
+      }
+    }
+
     const jobRoleData = {
       jobRoleName,
-      jobRoleId: null, // if you're auto-generating ID, set to null
+      jobRoleId: null,
       skillLists
     };
 
+    setIsSubmitting(true);
+    setDebugInfo('Preparing to send data...');
+
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/jobRole', [jobRoleData]); // post as a list
+      // Log the data being sent
+      console.log('Sending job role data:', JSON.stringify(jobRoleData, null, 2));
+      setDebugInfo(`Sending data: ${JSON.stringify(jobRoleData, null, 2)}`);
+
+      // Use fetch instead of axios for better error handling
+      const response = await fetch('http://localhost:8080/api/v1/jobRole', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify([jobRoleData]) // Sending as array as per your requirement
+      });
+
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        setDebugInfo(`Error: ${response.status} - ${errorText}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      console.log('Success response:', responseData);
+      setDebugInfo(`Success: ${JSON.stringify(responseData, null, 2)}`);
+      
       alert('Job role saved successfully!');
-      console.log(response.data);
+      
+      // Reset form
+      setJobRoleName('');
+      setSkillLists([]);
+      
     } catch (error) {
       console.error('Error saving job role:', error);
+      setDebugInfo(`Error: ${error.message}`);
+      alert(`Error saving job role: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Add Job Role</h2>
-      <input
-        type="text"
-        placeholder="Job Role Name"
-        value={jobRoleName}
-        onChange={(e) => setJobRoleName(e.target.value)}
-        className="border p-2 w-full mb-4"
-      />
+    <div className="p-4 max-w-4xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4">Add Job Role</h2>
+      
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-2">Job Role Name</label>
+        <input
+          type="text"
+          placeholder="Enter job role name"
+          value={jobRoleName}
+          onChange={(e) => setJobRoleName(e.target.value)}
+          className="border border-gray-300 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
 
       {skillLists.map((skill, skillIndex) => (
-        <div key={skillIndex} className="mb-6 border p-3 rounded">
+        <div key={skillIndex} className="mb-6 border border-gray-200 p-4 rounded-lg bg-gray-50">
+          <div className="flex justify-between items-center mb-3">
+            <h3 className="text-lg font-semibold">Skill {skillIndex + 1}</h3>
+            <button
+              onClick={() => {
+                const newSkills = skillLists.filter((_, index) => index !== skillIndex);
+                setSkillLists(newSkills);
+              }}
+              className="bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600"
+            >
+              Remove Skill
+            </button>
+          </div>
+          
           <input
             type="text"
-            placeholder="Skill Name"
+            placeholder="Skill Name (e.g., JavaScript, React, etc.)"
             value={skill.skillName}
             onChange={(e) => handleChange(e, skillIndex, 'skillName')}
-            className="border p-2 w-full mb-2"
+            className="border border-gray-300 p-2 w-full mb-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          
           <button
             onClick={() => handleAddQuestion(skillIndex)}
-            className="bg-blue-500 text-white px-2 py-1 rounded mb-2"
+            className="bg-blue-500 text-white px-3 py-2 rounded mb-3 hover:bg-blue-600"
           >
             Add Question
           </button>
 
           {skill.skillQuestions.map((question, questionIndex) => (
-            <div key={questionIndex} className="mb-4 p-3 border">
+            <div key={questionIndex} className="mb-4 p-3 border border-gray-300 rounded bg-white">
+              <div className="flex justify-between items-center mb-2">
+                <h4 className="font-medium">Question {questionIndex + 1}</h4>
+                <button
+                  onClick={() => {
+                    const newSkills = [...skillLists];
+                    newSkills[skillIndex].skillQuestions = newSkills[skillIndex].skillQuestions.filter(
+                      (_, index) => index !== questionIndex
+                    );
+                    setSkillLists(newSkills);
+                  }}
+                  className="bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600"
+                >
+                  Remove Question
+                </button>
+              </div>
+              
               <input
                 type="text"
-                placeholder="Question"
+                placeholder="Enter your question here"
                 value={question.question}
                 onChange={(e) => handleQuestionChange(e, skillIndex, questionIndex, 'question')}
-                className="border p-2 w-full mb-2"
+                className="border border-gray-300 p-2 w-full mb-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
 
               <button
                 onClick={() => handleAddAnswer(skillIndex, questionIndex)}
-                className="bg-green-500 text-white px-2 py-1 rounded mb-2"
+                className="bg-green-500 text-white px-3 py-2 rounded mb-3 hover:bg-green-600"
               >
                 Add Answer
               </button>
 
               {question.skillAnswers.map((answer, answerIndex) => (
-                <div key={answerIndex} className="flex items-center mb-1">
+                <div key={answerIndex} className="flex items-center mb-2 p-2 bg-gray-50 rounded">
                   <input
                     type="text"
-                    placeholder="Answer"
+                    placeholder="Enter answer option"
                     value={answer.answer}
                     onChange={(e) =>
                       handleAnswerChange(e, skillIndex, questionIndex, answerIndex, 'answer')
                     }
-                    className="border p-1 mr-2 flex-1"
+                    className="border border-gray-300 p-1 mr-2 flex-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
-                  <label className="mr-2">
+                  <label className="flex items-center mr-2">
                     <input
                       type="checkbox"
                       checked={answer.status}
                       onChange={(e) =>
                         handleAnswerChange(e, skillIndex, questionIndex, answerIndex, 'status')
                       }
-                    />{' '}
-                    Correct
+                      className="mr-1"
+                    />
+                    <span className="text-sm">Correct</span>
                   </label>
+                  <button
+                    onClick={() => {
+                      const newSkills = [...skillLists];
+                      newSkills[skillIndex].skillQuestions[questionIndex].skillAnswers = 
+                        newSkills[skillIndex].skillQuestions[questionIndex].skillAnswers.filter(
+                          (_, index) => index !== answerIndex
+                        );
+                      setSkillLists(newSkills);
+                    }}
+                    className="bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600"
+                  >
+                    Remove
+                  </button>
                 </div>
               ))}
             </div>
@@ -148,19 +276,40 @@ const JobRoleForm = () => {
         </div>
       ))}
 
-      <button
-        onClick={handleAddSkill}
-        className="bg-purple-500 text-white px-4 py-2 rounded mb-4"
-      >
-        Add Skill
-      </button>
+      <div className="flex gap-4 mb-4">
+        <button
+          onClick={handleAddSkill}
+          className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
+        >
+          Add Skill
+        </button>
 
-      <button
-        onClick={handleSubmit}
-        className="bg-green-600 text-white px-6 py-2 rounded"
-      >
-        Submit Job Role
-      </button>
+        <button
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+          className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 disabled:bg-gray-400"
+        >
+          {isSubmitting ? 'Submitting...' : 'Submit Job Role'}
+        </button>
+      </div>
+
+      {/* Debug Information */}
+      {debugInfo && (
+        <div className="mt-4 p-3 bg-gray-100 rounded">
+          <h4 className="font-medium mb-2">Debug Information:</h4>
+          <pre className="text-sm bg-white p-2 rounded border overflow-auto max-h-40">
+            {debugInfo}
+          </pre>
+        </div>
+      )}
+
+      {/* Current Form State */}
+      <div className="mt-4 p-3 bg-blue-50 rounded">
+        <h4 className="font-medium mb-2">Current Form Data:</h4>
+        <pre className="text-sm bg-white p-2 rounded border overflow-auto max-h-40">
+          {JSON.stringify({ jobRoleName, skillLists }, null, 2)}
+        </pre>
+      </div>
     </div>
   );
 };

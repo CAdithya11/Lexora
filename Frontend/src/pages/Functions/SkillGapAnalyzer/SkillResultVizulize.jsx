@@ -105,6 +105,29 @@ const SkillAssessmentRadarChart = () => {
     });
   };
 
+  // Helper function to truncate long text
+  const truncateText = (text, maxLength = 100) => {
+    if (!text) return '';
+    if (typeof text !== 'string') return String(text);
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+
+  // Helper function to parse learning path steps
+  const parseLearningPathSteps = (learningPath) => {
+    if (!learningPath) return [];
+    if (typeof learningPath !== 'string') return [];
+    
+    // Split by numbered points (1., 2., 3., etc.) or **bold** markers
+    const steps = learningPath
+      .split(/\d+\.\s*\*\*|\d+\.\s*/)
+      .filter(step => step.trim().length > 0)
+      .map(step => step.replace(/\*\*/g, '').trim())
+      .slice(0, 6); // Limit to first 6 steps for display
+    
+    return steps;
+  };
+
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload?.length) {
       const { subject, predictedScore, totalQuestions, score } = payload[0].payload;
@@ -258,16 +281,41 @@ const SkillAssessmentRadarChart = () => {
                     </svg>
                     Learning Paths
                   </h3>
-                  <ul className="space-y-2">
-                    {[...new Set(filteredScores.map(score => score.learningPath))].map((path, idx) => (
-                      <li key={idx} className="flex items-center p-3 bg-blue-50 rounded-lg">
-                        <svg className="w-4 h-4 mr-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                        <span className="text-gray-700">{path}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="space-y-4 max-h-80 overflow-y-auto">
+                    {filteredScores.map((score, idx) => {
+                      const learningSteps = parseLearningPathSteps(score.learningPath);
+                      return (
+                        <div key={idx} className="border-b border-gray-100 pb-4 last:border-b-0">
+                          <h4 className="font-medium text-gray-800 mb-2">{score.skillName}</h4>
+                          {learningSteps.length > 0 ? (
+                            <div className="space-y-2">
+                              {learningSteps.map((step, stepIdx) => (
+                                <div key={stepIdx} className="flex items-start p-2 bg-blue-50 rounded-lg">
+                                  <span className="flex-shrink-0 w-6 h-6 bg-blue-500 text-white text-xs rounded-full flex items-center justify-center mr-3 mt-0.5">
+                                    {stepIdx + 1}
+                                  </span>
+                                  <span className="text-sm text-gray-700 leading-relaxed">
+                                    {truncateText(step, 120)}
+                                  </span>
+                                </div>
+                              ))}
+                              {score.learningPath && score.learningPath.length > 500 && (
+                                <p className="text-xs text-gray-500 italic mt-2">
+                                  Click on the skill card above for complete learning path details
+                                </p>
+                              )}
+                            </div>
+                          ) : (
+                            <div className="p-3 bg-blue-50 rounded-lg">
+                              <span className="text-sm text-gray-700">
+                                {truncateText(score.learningPath, 150)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
@@ -277,23 +325,26 @@ const SkillAssessmentRadarChart = () => {
                     </svg>
                     Course Links
                   </h3>
-                  <ul className="space-y-2">
-                    {filteredScores.flatMap(score => score.courseLinks || []).map((link, idx) => (
-                      <li key={idx} className="p-3 bg-green-50 rounded-lg">
-                        <a 
-                          href={link} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          className="text-green-600 hover:text-green-800 transition-colors flex items-center"
-                        >
-                          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                          </svg>
-                          <span className="truncate">{link}</span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="space-y-2 max-h-80 overflow-y-auto">
+                    {filteredScores.flatMap((score, scoreIdx) => 
+                      (score.courseLinks || []).map((link, linkIdx) => (
+                        <div key={`${scoreIdx}-${linkIdx}`} className="p-3 bg-green-50 rounded-lg">
+                          <div className="text-xs text-gray-600 mb-1">{score.skillName}</div>
+                          <a 
+                            href={link} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="text-green-600 hover:text-green-800 transition-colors flex items-center text-sm"
+                          >
+                            <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                            <span className="truncate">{truncateText(link, 40)}</span>
+                          </a>
+                        </div>
+                      ))
+                    )}
+                  </div>
                 </div>
               </div>
             </>
