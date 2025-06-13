@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import RoadmapDetails from '../../../component/Roadmaps/RoadmapDetails';
 import SidebarSub from '../../../component/template/SidebarSub';
 import TopHeader from '../../../component/template/TopHeader';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import axios from 'axios';
 import Roadmap from '../../../component/Roadmaps/Roadmap';
 
@@ -14,6 +14,7 @@ export default function RoadmapPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [roadmapData,setRoadmapData] = useState(null);
   const [progressData,setProgressData] = useState();
+  const navigate = useNavigate();
 
   const handleProgressChange = (newProgress) => {
     // newProgress.overall is a number 0–100
@@ -52,9 +53,9 @@ export default function RoadmapPage() {
   
         // Send data to the backend 
         const response = await axios.put(`http://localhost:8080/api/roadmaps/rid/${roadmapToSave.r_Id}`, roadmapToSave);
-  
-        if (response.status === 201 || response.status === 200) {
-          console.log('Roadmap saved successfully:', response.data);
+        if (response.request.status === 201 || response.request.status === 200) {
+          alert('Roadmap saved successfully!');
+          window.location.reload();
         } else {
           throw new Error('Failed to save roadmap');
         }
@@ -68,9 +69,6 @@ export default function RoadmapPage() {
   
     };
   
-
-
-
   // Simulate loading data
   useEffect(() => {
     const timer = setTimeout(() => {

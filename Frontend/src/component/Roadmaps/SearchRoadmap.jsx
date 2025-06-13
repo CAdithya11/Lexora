@@ -15,7 +15,7 @@ const SearchRoadmap = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [user, setUser] = useState(null);
-  const [Rid, setRid] = useState(1);
+  const [Rid, setRid] = useState(3);
 
   const [progressData, setProgressData] = useState({
     overall: 0,
@@ -41,7 +41,6 @@ const SearchRoadmap = () => {
             updatedProgress[stepId].status = "COMPLETED";
         }
     }
-
     return updatedProgress;
 }
 
@@ -125,16 +124,16 @@ const handleProgressUpdate = (updatedProgress) => {
       "userId": ${user.userId},
       "main_text": [
         {
-          "main_text_id": "${r_id}.1",
+          "main_text_id": "${r_id}_1",
           "main_text_name": "Main Category Name",
           "sub_category": [
             {
-              "sub_id": "${r_id}.1.1",
+              "sub_id": "${r_id}_1_1",
               "sub_name": "Sub Category Name",
               "sub_description": "Detailed description of this skill/concept",
               "sub_steps": [
                 {
-                  "steps_id": "${r_id}.1.1.1",
+                  "steps_id": "${r_id}_1_1_1",
                   "steps_description": "Step-by-step detailed task that improves this specific skill"
                 }
               ]

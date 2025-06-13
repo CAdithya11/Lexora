@@ -79,6 +79,7 @@ const RoadmapDetails = ({handleEdit}) => {
     try {
       const response = axios.delete(`http://localhost:8080/api/roadmaps/rid/${id}`);
       alert('Roadmap deleted successfully');
+      window.location.reload();
       fetchRoadmapDetails();
     } catch (error) {
       window.alert("Network error. Failed to connect to network. Please check your internet connection");
@@ -163,7 +164,7 @@ const RoadmapDetails = ({handleEdit}) => {
                         id='ViewRoadmap'
                         className="text-blue-600 hover:text-blue-900 px-3 py-1 bg-blue-100 rounded"
                       >
-                        View
+                        Update
                       </button> 
                       <button
                         onClick={() => handleDelete(roadmap.r_Id)}

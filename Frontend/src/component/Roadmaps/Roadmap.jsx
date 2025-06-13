@@ -595,22 +595,23 @@ const Roadmap = ({ jobGoal, JsonRoadmapData, onProgressChange,handleUpdateRoadma
         </ul>
       </div>
       {
-        <>
-          <button
-            onClick={() => handleUpdateRoadmap(roadmapData)}
-            id='updateRoadmap'
-            className=" hover:text-blue-600 px-3 py-1 bg-blue-500 rounded"
-          >
-            Update Roadmap
-          </button>
-            <button
+        <div className="mt-4 text-center space-x-4">
+         <button
             onClick={() => handleCancel()}
             id='cancel'
-            className="text-red-600 hover:text-red-900 px-3 py-1 bg-red-100 rounded"
+            className="py-2 px-5 bg-gray-100 border border-gray-300 rounded-md cursor-pointer hover:bg-gray-200"
           >
             Cancel
           </button>
-        </>
+          <button
+            onClick={() => handleUpdateRoadmap(roadmapData)}
+            id='updateRoadmap'
+            className=" py-2 px-5 bg-blue-600 hover:bg-blue-700 text-white rounded-md cursor-pointer"
+          >
+            Update Roadmap
+          </button>
+           
+        </div>
 
         
       }
