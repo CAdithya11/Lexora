@@ -176,7 +176,9 @@ export default function SidebarSub() {
 
           <SidebarItem icon={<FileCog size={20} />} text="Admin">
             <SidebarSubItem text="Mentor Varification" />
-            <SidebarSubItem text="Feedback" />
+            <Link to={'/Adminfeedback'}>
+              <SidebarSubItem text="Feedback" active={isLocation == '/mentorSessions'} />
+            </Link>
           </SidebarItem>
           <Link to={'/settings/profile'}>
             <SidebarItem icon={<Settings size={20} />} text="Settings" alwaysOpen={true}>

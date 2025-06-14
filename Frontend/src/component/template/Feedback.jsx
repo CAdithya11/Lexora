@@ -95,6 +95,7 @@ export default function FeedbackPage() {
   if (response.status === 200 || response.status === 201) {
     // Success case
     alert("The feedback successfully added");
+    window.location.reload();
 
     return; // Exit early on success
   }
@@ -139,7 +140,6 @@ export default function FeedbackPage() {
               >
                 <option value="">Select a category</option>
                 <option value="roadmap">Roadmap Generator</option>
-                <option value="mentoring">Mentoring Sessions</option>
                 <option value="industry">Industry Insights</option>
                 <option value="Analyzer">Skill Gap Analyzer</option>
                 <option value="persona">Persona Matcher</option>

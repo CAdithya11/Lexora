@@ -45,6 +45,7 @@ import MenteeMatchmaking from './pages/Functions/MentorMenteeMatchmaking/MenteeM
 import AboutUsPage from './pages/Home/AboutUsPage';
 import AppsPage from './pages/Home/AppsPage';
 import Dashboard from './pages/Dashboard';
+import ViewAllFeedbacks from './pages/Admin/ViewAllFeedbacksPage';
 
 function App() {
   return (
@@ -62,7 +63,9 @@ function App() {
           <Route path="/aboutus" element={<AboutUsPage />} />
           <Route path="/app" element={<AppsPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          
+
+          {/*admin dashboard */}
+          <Route path="/Adminfeedback" element={<ViewAllFeedbacks />} />
 
           {/* <Route path="/PersonaMatching" element={<CareerPersosna />} />
           <Route path="/Personas" element={<MatchedPersosna />} />
