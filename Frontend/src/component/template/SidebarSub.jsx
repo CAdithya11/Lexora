@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -34,6 +34,7 @@ import {
 } from 'lucide-react';
 import Sidebar, { SidebarItem, SidebarSubItem } from '../template/Sidebar';
 import { authService } from '../../services/AuthService';
+import axios from 'axios';
 
 // Categories for the filter dropdown
 const categories = [
@@ -46,14 +47,36 @@ const categories = [
 ];
 
 export default function SidebarSub() {
-  const [selectedCategory, setSelectedCategory] = useState('Software Development & Engineering');
-  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
-  const [selectedYear, setSelectedYear] = useState('2025');
-  const [showYearDropdown, setShowYearDropdown] = useState(false);
   const location = useLocation();
+  const userDetails = JSON.parse(localStorage.getItem('user'));
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    if (userDetails) {
+      fetchNotifications(userDetails.user_id);
+    }
+  }, [userDetails]);
+
+  const fetchNotifications = async (userId) => {
+    try {
+      const response = await axios.get(`http://www.localhost:8080/api/v2/notification/${userId}`);
+      if (response.status === 200 || response.status === 201) {
+        console.log('Notifications fetched successfully:', response.data);
+        const unread = response.data.filter((n) => n.status === 'UNREAD').length;
+        setUnreadCount(unread);
+      }
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+    }
+  };
 
   const isLocation = location.pathname;
 
+  useEffect(() => {
+    console.log('User Details', userDetails);
+  }, [userDetails]);
+
+  console.log(isLocation);
   // Available years for the filter
   const years = ['2023', '2024', '2025', '2026'];
 
@@ -61,12 +84,16 @@ export default function SidebarSub() {
     <>
       <div className="h-screen flex-shrink-0">
         <Sidebar>
-          <Link to={"/dashboard"}>
-            <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" />
+          <Link to={'/dashboard'}>
+            <SidebarItem
+              icon={<LayoutDashboard size={20} />}
+              text="Dashboard"
+              active={isLocation == '/dashboard' ? true : false}
+            />
           </Link>
 
           <hr className="my-3 border-gray-200" />
-          
+
           {/*Roadmap */}
           <SidebarItem
             icon={<Route size={20} />}
@@ -75,10 +102,10 @@ export default function SidebarSub() {
               isLocation == '/roadmap' || isLocation == '/RoadmapDetails' || isLocation == '/searchRoadmap'
                 ? true
                 : false
-            } 
+            }
           >
             <Link to="/searchRoadmap">
-              <SidebarSubItem id='searchRoadmap' text="Roadmaps Generator" active={isLocation == '/searchRoadmap'} />
+              <SidebarSubItem id="searchRoadmap" text="Roadmaps Generator" active={isLocation == '/searchRoadmap'} />
             </Link>
             <Link to="/RoadmapDetails">
               <SidebarSubItem text="Roadmap Details" active={isLocation == '/RoadmapDetails'} />
@@ -89,12 +116,27 @@ export default function SidebarSub() {
           <SidebarItem
             icon={<Users size={20} />}
             text="Mentoring Sessions"
-            alwaysOpen={isLocation == '/menteeDashboard'}
+            alwaysOpen={
+              isLocation == '/mentorDashboardNew' ||
+              isLocation == '/menteeDashboard' ||
+              isLocation == `/RequestedSessionsPage/${userDetails.user_id}/0` ||
+              isLocation == `/meetingsList/0`
+                ? true
+                : false
+            }
           >
-            <Link to={'/menteeDashboard'}>
-              <SidebarSubItem text="Suggested Mentors" active={isLocation == '/menteeDashboard'} />
+            <Link to={'/mentorDashboardNew'}>
+              <SidebarSubItem text="Suggested Mentors" active={isLocation == '/mentorDashboardNew'} />
             </Link>
-            <SidebarSubItem text="My Sessions" />
+            <Link to={`/RequestedSessionsPage/${userDetails.user_id}/0`}>
+              <SidebarSubItem
+                text="Requested Meetings"
+                active={isLocation == `/RequestedSessionsPage/${userDetails.user_id}/0`}
+              />
+            </Link>
+            <Link to={`/meetingsList/0`}>
+              <SidebarSubItem text="Meetings" active={isLocation == `/meetingsList/0`} />
+            </Link>
           </SidebarItem>
 
           <SidebarItem
@@ -128,8 +170,12 @@ export default function SidebarSub() {
             }
             text="Skill Gap Analyzer"
           >
-            <SidebarSubItem text="Anlyzer" />
-            <SidebarSubItem text="Completed" />
+            <Link to="/sk">
+              <SidebarSubItem text="Analyzer" active={isLocation == '/sk' ? true : false} />
+            </Link>
+            <Link to="/sk4">
+              <SidebarSubItem text=" Complted" active={isLocation == '/sk4' ? true : false} />
+            </Link>
           </SidebarItem>
 
           <SidebarItem
@@ -149,37 +195,67 @@ export default function SidebarSub() {
               <SidebarSubItem text="persona" active={isLocation == '/persona' ? true : false} />
             </Link>
             <Link to="/MatchedPersonas">
-              <SidebarSubItem text="Matched Personas" active={isLocation == '/MatchedPersonas' ? true : false} />
+              <SidebarSubItem
+                text="Matched Personas"
+                active={isLocation == '/MatchedPersonas' || isLocation ? true : false}
+              />
             </Link>
           </SidebarItem>
 
           <hr className="my-3 border-gray-200" />
 
-          <SidebarItem icon={<Bell size={20} />} text="Notifications" alert />
-          <div>
-            <Link to="/feedback">
-            <SidebarItem icon={<MessageCircle size={20} />} text="Feedback"></SidebarItem>
-            </Link>
-          </div>
-          
 
-          <hr className="my-3 border-gray-200" />
+          <Link to={'/notifications'}>
+            <SidebarItem
+              active={isLocation == '/notifications' ? true : false}
+              icon={<Bell size={20} />}
+              text="Notifications"
+              alert={unreadCount > 0 ? true : false}
+            />
+          </Link>
 
-          <SidebarItem icon={<User size={20} />} text="Mentor" alwaysOpen={isLocation}>
-            <Link to={'/mentorDashboard'}>
-              <SidebarSubItem text="Dashboard" active={isLocation == '/mentorDashboard'} />
+          <SidebarItem
+            icon={<User size={20} />}
+            text="Mentor"
+            alwaysOpen={
+              isLocation == '/meetingsList/1' ||
+              isLocation == `/RequestedSessionsPage/0/${userDetails.user_id}` ||
+              isLocation == '/mentorDash'
+                ? true
+                : false
+            }
+          >
+            <Link to={'/mentorDash'}>
+              <SidebarSubItem text="Dashboard" active={isLocation == '/mentorDash'} />
             </Link>
-            <Link to={'/mentorSessions'}>
-              <SidebarSubItem text="Sessions" active={isLocation == '/mentorSessions'} />
+            <Link to={'/meetingsList/1'}>
+              <SidebarSubItem text="My Meetings" active={isLocation == '/meetingsList/1'} />
+            </Link>
+            <Link to={`/RequestedSessionsPage/0/${userDetails.user_id}`}>
+              <SidebarSubItem
+                text="Requests"
+                active={isLocation == `/RequestedSessionsPage/0/${userDetails.user_id}`}
+              />
+            </Link>
+            <Link to={`/mentorFeedbacks`}>
+              <SidebarSubItem text="Feedbacks" active={isLocation == `/mentorFeedbacks`} />
             </Link>
           </SidebarItem>
 
-          <SidebarItem icon={<FileCog size={20} />} text="Admin">
-            <SidebarSubItem text="Mentor Varification" />
+
+          <SidebarItem
+            icon={<FileCog size={20} />}
+            text="Admin"
+            alwaysOpen={isLocation == '/Admin/MentorRequests' || isLocation == '/Admin/Feedback' ? true : false}
+          >
+            <Link to={'/Admin/MentorRequests'}>
+              <SidebarSubItem text="Mentor Varification" active={isLocation == '/Admin/MentorRequests'} />
+            </Link>
             <Link to={'/Adminfeedback'}>
               <SidebarSubItem text="Feedback" active={isLocation == '/mentorSessions'} />
             </Link>
           </SidebarItem>
+
           <Link to={'/settings/profile'}>
             <SidebarItem icon={<Settings size={20} />} text="Settings" alwaysOpen={true}>
               <Link to={'/settings/profile'}>

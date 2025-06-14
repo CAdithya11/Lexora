@@ -60,13 +60,15 @@ export function SidebarItem({ icon, text, active, alert, children, alwaysOpen = 
       <li
         className={`relative flex items-center py-2 px-3 my-1.5 font-medium rounded-md cursor-pointer transition-all duration-200 ${
           active
-            ? 'bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800 shadow-md'
-            : 'hover:bg-indigo-50 text-gray-600 hover:shadow-sm'
+            ? 'bg-gradient-to-tr from-blue-200 to-blue-100 text-blue-600 shadow-md'
+            : 'hover:bg-blue-50 text-gray-600 hover:shadow-sm'
         }`}
         onClick={() => hasChildren && !alwaysOpen && setIsOpen(!isOpen)}
       >
-        <div className={`${active ? 'text-indigo-800' : 'text-gray-500'}`}>{icon}</div>
-        <span id={text} className={`overflow-hidden transition-all duration-300 ${expanded ? 'w-52 ml-3' : 'w-0'}`}>{text}</span>
+        <div className={`${active ? 'text-blue-600' : 'text-gray-500'}`}>{icon}</div>
+        <span id={text} className={`overflow-hidden transition-all duration-300 ${expanded ? 'w-52 ml-3' : 'w-0'}`}>
+          {text}
+        </span>
 
         {hasChildren && expanded && !alwaysOpen && (
           <div className="ml-auto">
@@ -86,7 +88,7 @@ export function SidebarItem({ icon, text, active, alert, children, alwaysOpen = 
 
         {alert && (
           <div
-            className={`absolute right-2 w-2 h-2 rounded-full bg-indigo-500 ring-2 ring-indigo-200 ${
+            className={`absolute right-2 w-2 h-2 rounded-full bg-blue-500 ring-2 ring-blue-200 ${
               expanded ? (hasChildren ? 'right-8' : 'right-2') : 'top-2'
             }`}
           ></div>
@@ -94,7 +96,7 @@ export function SidebarItem({ icon, text, active, alert, children, alwaysOpen = 
 
         {!expanded && (
           <div
-            className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-indigo-100 text-indigo-800 text-sm invisible opacity-0 -translate-x-3 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-hover:translate-x-0 shadow-md z-10`}
+            className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-blue-100 text-blue-800 text-sm invisible opacity-0 -translate-x-3 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-hover:translate-x-0 shadow-md z-10`}
           >
             {text}
           </div>
@@ -103,7 +105,7 @@ export function SidebarItem({ icon, text, active, alert, children, alwaysOpen = 
 
       {/* Dropdown menu - shown if open or alwaysOpen is true */}
       {hasChildren && (isOpen || alwaysOpen) && expanded && (
-        <div className="ml-6 pl-2 border-l border-indigo-100">{children}</div>
+        <div className="ml-6 pl-2 border-l border-blue-100">{children}</div>
       )}
     </>
   );
@@ -114,7 +116,7 @@ export function SidebarSubItem({ text, active }) {
     <li
       id={text}
       className={`relative flex items-center py-1.5 px-3 my-1 text-sm font-medium rounded-md cursor-pointer transition-all duration-200 ${
-        active ? 'bg-gradient-to-tr from-indigo-100 to-indigo-50 text-indigo-700' : 'hover:bg-indigo-50 text-gray-600'
+        active ? 'bg-gradient-to-tr from-blue-100 to-blue-50 text-blue-700' : 'hover:bg-blue-50 text-gray-600'
       }`}
     >
       <span>{text}</span>
