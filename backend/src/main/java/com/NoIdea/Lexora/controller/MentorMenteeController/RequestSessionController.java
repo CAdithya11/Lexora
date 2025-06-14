@@ -15,14 +15,24 @@ public class RequestSessionController {
     @Autowired
     RequestSessionService requestSessionService;
 
-
     @GetMapping("/{user_id}/{mentor_id}")
-    public List<RequestSessionDTO> getAllRequestSessionsRelatedToUser(@PathVariable Long user_id,@PathVariable Long mentor_id){
+    public List<RequestSessionDTO> getAllRequestSessionsRelatedToUser(@PathVariable Long user_id,
+            @PathVariable Long mentor_id) {
         return requestSessionService.getAllSessionRequests(user_id, mentor_id);
     }
 
     @PostMapping()
-    public String createSessionRequest(@RequestBody RequestSession requestSession){
+    public String createSessionRequest(@RequestBody RequestSession requestSession) {
         return requestSessionService.createSessionRequest(requestSession);
+    }
+
+    @PutMapping("/{id}/{status}")
+    public String updateSessionRequestStatus(@PathVariable Long id, @PathVariable String status) {
+        return requestSessionService.updateSessionRequestStatus(id, status);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteSessionRequest(@PathVariable Long id) {
+        return requestSessionService.deleteSessionRequest(id);
     }
 }

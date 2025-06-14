@@ -2,6 +2,7 @@ package com.NoIdea.Lexora.service.MentorMenteeService.MentorMenteeServiceImpl;
 
 import com.NoIdea.Lexora.dto.MentorMentee.MeetingDTO;
 import com.NoIdea.Lexora.dto.MentorMentee.RequestSessionDTO;
+import com.NoIdea.Lexora.enums.MentorMentee.RequestSessionStatus;
 import com.NoIdea.Lexora.model.MentorMenteeModel.RequestSession;
 import com.NoIdea.Lexora.model.User.UserEntity;
 import com.NoIdea.Lexora.repository.MentorMenteeRepository.RequestSessionRepo;
@@ -26,7 +27,7 @@ public class RequestSessionServiceImpl implements RequestSessionService {
     @Override
     public List<RequestSessionDTO> getAllSessionRequests(Long user_id, Long mentor_id) {
         // Fetch the user by user_id
-        if(user_id == 0) {
+        if (user_id == 0) {
             UserEntity user = userEntityRepository.findById(mentor_id).orElse(null);
             if (user == null) {
                 return null;
@@ -37,17 +38,18 @@ public class RequestSessionServiceImpl implements RequestSessionService {
 
             // Filter sessions where the mentor matches the provided user_id
             List<RequestSession> filteredSessions = allSessions.stream()
-                    .filter(session -> session.getMentor() != null && session.getMentor().getUser_id().equals(mentor_id))
+                    .filter(session -> session.getMentor() != null
+                            && session.getMentor().getUser_id().equals(mentor_id))
                     .collect(Collectors.toList());
 
             // Map to DTOs
             return filteredSessions.stream()
                     .map(RequestSessionDTO::new)
                     .collect(Collectors.toList());
-            
-        }else{
+
+        } else {
             return requestSessionRepo.findAllByUserIdNative(user_id).stream()
-                    .filter(session -> session.getMentor() != null && session.getMentor().getUser_id().equals(mentor_id)).map(RequestSessionDTO::new)
+                    .map(RequestSessionDTO::new)
                     .collect(Collectors.toList());
         }
     }
@@ -63,7 +65,43 @@ public class RequestSessionServiceImpl implements RequestSessionService {
             requestSession.setMentor(mentor);
             requestSessionRepo.save(requestSession);
             return "Successfully Send";
-        }catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Network Error. Please Try again later";
+        }
+    }
+
+    @Override
+    public String updateSessionRequestStatus(Long id, String status) {
+        try {
+            RequestSession requestSession = requestSessionRepo.findById(id).orElse(null);
+            if (requestSession == null) {
+                return "Request session not found";
+            }
+            if (status.equals("ACCEPTED")) {
+                requestSession.setStatus(RequestSessionStatus.ACCEPTED);
+            } else {
+                requestSession.setStatus(RequestSessionStatus.REJECTED);
+            }
+            requestSessionRepo.save(requestSession);
+            return "Successfully Updated";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Network Error. Please Try again later";
+        }
+    }
+
+    @Override
+    public String deleteSessionRequest(Long id) {
+        try {
+            RequestSession requestSession = requestSessionRepo.findById(id).orElse(null);
+            if (requestSession == null) {
+                return "Request session not found";
+            }
+            requestSessionRepo.deleteById(id);
+            ;
+            return "Successfully Deleted";
+        } catch (Exception e) {
             e.printStackTrace();
             return "Network Error. Please Try again later";
         }

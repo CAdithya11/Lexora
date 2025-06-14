@@ -14,7 +14,9 @@ export default function CreateMeetingPage({ TopHeadertitle }) {
   const [alertType, setAlertType] = useState('');
   const [loading, setLoading] = useState(false);
   const [userDetails, setUserDetails] = useState({});
-  const { meetingId } = useParams();
+  const { meetingId, user_id } = useParams();
+  const [menteeEmail, setMenteeEmail] = useState();
+  const [menteeId, setMenteeId] = useState();
 
   const handleGetUserDetails = (e) => {
     setUserDetails(e.user_id);
@@ -23,6 +25,20 @@ export default function CreateMeetingPage({ TopHeadertitle }) {
       mentor: e.email,
     }));
   };
+
+  useEffect(() => {
+    const fetchMenteeDetails = async () => {
+      try {
+        const response = await axios.get(`http://www.localhost:8080/api/v1/profile/${24}`);
+        setMenteeId(response.data.user_id);
+        setMenteeEmail(response.data.email);
+        console.log('Mentee User Details:', response.data.email);
+      } catch (error) {
+        console.error('Failed to fetch mentee details:', error);
+      }
+    };
+    fetchMenteeDetails();
+  }, [user_id]);
 
   const [data, setData] = useState({
     title: 'Career Guidance',
@@ -61,6 +77,21 @@ export default function CreateMeetingPage({ TopHeadertitle }) {
 
   const genId = () => Math.random().toString(36).substr(2, 9).toUpperCase();
 
+  // Function to send notification to the user. This function can be called after a session request is successfully sent.
+  const sendNotificationToUser = async (user_id, notification, message) => {
+    try {
+      const notificationData = {
+        reciever: { user_id: user_id },
+        notification: notification,
+        message: message,
+      };
+      await axios.post('http://www.localhost:8080/api/v2/notification', notificationData);
+      console.log('Notification sent successfully', notificationData);
+    } catch (error) {
+      console.error('Error sending notification:', error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { title, date, start_time, end_time, mentor, mentee } = data;
@@ -86,32 +117,25 @@ export default function CreateMeetingPage({ TopHeadertitle }) {
       return;
     }
 
-    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRe.test(mentor) || !emailRe.test(mentee)) {
-      showAlert('Please enter valid email addresses', 'error');
-      return;
-    }
-
-    if (mentor === mentee) {
-      showAlert('mentor and mentee emails must be different', 'error');
-      return;
-    }
-
     try {
       setLoading(true);
       const meeting_id = genId();
       const meet = { meeting_id, ...data };
+      meet.mentee = menteeEmail;
       console.log('This is that meeting that is created', meet);
       if (TopHeadertitle != undefined || TopHeadertitle != null) {
         const response = axios.put(`http://localhost:8080/api/v2/matchmaking/meeting/${meet.id}`, meet);
         showAlert('Meeting Updated successfully! Redirecting...', 'success');
+        sendNotificationToUser(menteeId, 'Scheduled Meeting Updated', `Your meeting with ${meet.mentor} has been Rescheduled. Please check the meetings dahsboard for more details..`);
         console.log('This Is the meeting: ', meet);
       } else {
         const response = axios.post(`http://localhost:8080/api/v2/matchmaking/meeting/${userDetails}`, meet);
         showAlert('Meeting created successfully! Redirecting...', 'success');
+        sendNotificationToUser(menteeId, 'Scheduled Meeting', `Your meeting with ${meet.mentor} has been scheduled. Please check the meetings dahsboard for more details..`);
+
       }
       setTimeout(() => {
-        navigate('/meetingsList');
+        navigate('/meetingsList/1');
       }, 3000);
     } catch (error) {
       showAlert('Failed to create meeting. Please try again.', 'error');
@@ -142,7 +166,7 @@ export default function CreateMeetingPage({ TopHeadertitle }) {
                 Meeting Details
               </h1>
               <div className="mb-6 mt-4">
-                <p className="text-sm text-gray-600 mt-1">Fill in the meeting information and participant details</p>
+                <p className="text-sm text-gray-600 mt-1">Fill in the meeting information </p>
               </div>
             </div>
 
@@ -223,54 +247,8 @@ export default function CreateMeetingPage({ TopHeadertitle }) {
                   </div>
                 </div>
 
-                {/* Participant Information */}
-                <div className=" mt-4">
-                  <h4 className="text-md font-semibold text-gray-900 mb-4 flex items-center">
-                    <User className="h-4 w-4 mr-2" />
-                    Participant Information
-                  </h4>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Your Email Address *</label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Mail className="h-4 w-4 text-gray-400" />
-                        </div>
-                        <input
-                          name="mentor"
-                          type="email"
-                          placeholder="your.email@example.com"
-                          value={data.mentor}
-                          onChange={handleChange}
-                          className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">mentee Email Address *</label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Mail className="h-4 w-4 text-gray-400" />
-                        </div>
-                        <input
-                          name="mentee"
-                          type="email"
-                          placeholder="mentee.email@example.com"
-                          value={data.mentee}
-                          onChange={handleChange}
-                          className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Action Buttons */}
-                <div className="flex justify-end_time space-x-4 pt-6 border-t border-gray-200">
+                <div className="flex justify-end_time space-x-4 pt-6 ">
                   <button
                     type="button"
                     onClick={() => navigate(-1)}

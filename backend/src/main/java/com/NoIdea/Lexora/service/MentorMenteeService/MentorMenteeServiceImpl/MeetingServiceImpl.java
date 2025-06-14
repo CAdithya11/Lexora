@@ -23,7 +23,7 @@ public class MeetingServiceImpl implements MeetingService {
     @Autowired
     private UserEntityRepository userEntityRepository;
 
-    //Mentee Show their mentor meeting requests
+    // Mentee Show their mentor meeting requests
     @Override
     public List<MeetingDTO> findAllMeetingsByUser_id(Long user_id) {
         List<Meeting> meeting = meetingRepository.findAllApprovedMeetingsForMentorByUserId(user_id);
@@ -40,29 +40,35 @@ public class MeetingServiceImpl implements MeetingService {
         meeting.setUser(user);
         meeting.setStatus(MeetingStatus.UPCOMING);
         meetingRepository.save(meeting);
-        return modelMapper.map(meeting,MeetingDTO.class);
+        return modelMapper.map(meeting, MeetingDTO.class);
     }
 
     @Override
-    public String updateExistingMeetingWithMeetingId(Long id,Meeting meeting) {
+    public String updateExistingMeetingWithMeetingId(Long id) {
         try {
             Meeting meetingNew = meetingRepository.findById(id).orElse(null);
-            if(meetingNew!=null){
-                meetingNew.setDate(meeting.getDate());
-                meetingNew.setId(id);
-                meetingNew.setMeeting_id(meeting.getMeeting_id());
-                meetingNew.setTitle(meeting.getTitle());
-                meetingNew.setMentee(meeting.getMentee());
-                meetingNew.setMentor(meeting.getMentor());
-                meetingNew.setCreated_at(meeting.getCreated_at());
-                meetingNew.setStart_time(meeting.getStart_time());
-                meetingNew.setEnd_time(meeting.getEnd_time());
-                meetingNew.setStatus(meeting.getStatus());
+            if (meetingNew != null) {
+                meetingNew.setFeedback_given(true);
                 meetingRepository.save(meetingNew);
                 return "Successfully Updated";
             }
             return "Failed to Update. Meeting does not exists with the given id";
-        }catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Internal Server Error. Please Try Again Later";
+        }
+    }
+    @Override
+    public String completeMeetingWithMeetingId(Long meetingId) {
+        try {
+            Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+            if (meeting != null) {
+                meeting.setStatus(MeetingStatus.COMPLETED);
+                meetingRepository.save(meeting);
+                return "Meeting Successfully Completed";
+            }
+            return "Meeting not found with the given ID";
+        } catch (Exception e) {
             e.printStackTrace();
             return "Internal Server Error. Please Try Again Later";
         }
@@ -73,7 +79,7 @@ public class MeetingServiceImpl implements MeetingService {
         try {
             meetingRepository.deleteById(id);
             return "Meeting Successfully Deleted";
-        }catch (Exception e){
+        } catch (Exception e) {
             return "Internal Server Error. Please Try Again Later";
         }
     }
@@ -81,11 +87,10 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     public MeetingDTO findMeetingByMeetingId(Long meetingId) {
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
-        if(meeting!=null){
-            return modelMapper.map(meeting,MeetingDTO.class);
+        if (meeting != null) {
+            return modelMapper.map(meeting, MeetingDTO.class);
         }
         return null;
     }
-
 
 }
