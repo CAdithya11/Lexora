@@ -51,6 +51,11 @@ import MentorDashboardNew from './pages/Functions/MentorMenteeMatchmaking/Mentor
 import JoinMeetingPage from './pages/Functions/MentorMenteeMatchmaking/JoinMeetingPage';
 import CreateMeetingPage from './pages/Functions/MentorMenteeMatchmaking/CreateMeetingPage';
 import MeetingsListPage from './pages/Functions/MentorMenteeMatchmaking/Mentor/MeetingsListPage';
+import RequestedSessionsPage from './pages/Functions/MentorMenteeMatchmaking/Mentor/RequestedSessionsPage';
+import RequestSessionPage from './pages/Functions/MentorMenteeMatchmaking/Mentor/RequestSessionPage';
+import NotificationPage from './pages/Notifications/NotificationPage';
+import MentorStatsDashboardPage from './pages/Functions/MentorMenteeMatchmaking/Mentor/MentorStatsDashboardPage';
+import MentorFeedbackPage from './pages/Functions/MentorMenteeMatchmaking/Mentor/MentorFeedbacksPage';
 
 function App() {
   return (
@@ -68,48 +73,32 @@ function App() {
           <Route path="/aboutus" element={<AboutUsPage />} />
           <Route path="/app" element={<AppsPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
-
           {/* <Route path="/PersonaMatching" element={<CareerPersosna />} />
           <Route path="/Personas" element={<MatchedPersosna />} />
           <Route path="/persona" element={<Persona />} /> */}
           <Route path="/rgapi" element={<RoadmapGeminiApi />} />
           {/* <Route path="/ro" element={<RoadmapOption />} /> */}
-
           <Route path="/skills/:jobRoleId" element={<Skill4 />} />
           <Route path="/result/:jobRole" element={<Skill6 />} />
-
-          {/* Mentor Mentee Matchmaking New */}
-          <Route path="/mentorDashboardNew" element={<MentorDashboardNew />} />
-          <Route path="/teams" element={<CreateMeetingPage />} />
-          <Route path="/join-meeting" element={<JoinMeetingPage />} />
-          <Route path="/create-meeting" element={<CreateMeetingPage />} />
-          <Route path="/edit-meeting/:meetingId" element={<CreateMeetingPage title={"Edit Meeting"} />} />
-          <Route path="/meetingsList" element={<MeetingsListPage />} />
-          <Route path="join-meeting/:meetingId" element={<JoinMeetingPage />} />
-
 
           <Route element={<ProtectedRoute />}>
             {/* User profiles based*/}
             <Route path="/settings/profile" element={<UserProfileSettings />} />
             <Route path="/settings/password" element={<UserChangePassword />} />
             <Route path="/settings/professionalDetails" element={<UserProfessionalDetails />} />
-
             {/* Real-time industry insights dashboard */}
             <Route path="/jobTrendings" element={<TrendingJobsPage />} />
             <Route path="/jobTrends" element={<JobTrendsPage />} />
             <Route path="/salaryTrends" element={<SalaryTrendsPage />} />
             <Route path="/skillTrends" element={<SkillTrendsPage />} />
             <Route path="/personas" element={<Persona />} />
-
             <Route path="/persona" element={<Persona1 />} />
             <Route path="/savedPersonas" element={<FetchPersona />} />
-
             {/* Personolized Roadmap Generator  */}
             <Route path="/roadmap" element={<RoadmapPage />} />
             <Route path="/searchRoadmap" element={<SearchRoadmapPage />} />
             <Route path="/RoadmapDetails" element={<RoadmapDetailsPage />} />
             <Route path="/rgapi" element={<RoadmapGeminiApi />} />
-
             {/* Mentor Mentee matchmaking */}
             <Route path="/mentorDashboard" element={<MentorDashboard />} />
             <Route path="/menteeDashboard" element={<MenteeDashboard />} />
@@ -118,16 +107,27 @@ function App() {
             <Route path="/menteeAddMatchingCriteria" element={<MenteeAddMatchingCriteria />} />
             <Route path="/menteeMatchmaking" element={<MenteeMatchmaking />} />
             {/* <Route path="/bookSession" element={<BookSession />} /> */}
-
             {/* Skill Gap Analyzer */}
             <Route path="/sk" element={<Skill />} />
             <Route path="/sk1/:jobRoleId" element={<Skill1 />} />
             <Route path="/sk2" element={<Skill2 />} />
             <Route path="/sk3" element={<Skill3 />} />
             <Route path="/sk4" element={<Skill5 />} />
-
             {/* Admin */}
             <Route path="/Admin/MentorRequests" element={<AdminMentorRequests />} />
+            <Route path="/notifications" element={<NotificationPage />} />
+            {/* Mentor Mentee Matchmaking New */}
+            <Route path="/mentorDashboardNew" element={<MentorDashboardNew />} /> // these are linked with suggested
+            <Route path="/mentorDash" element={<MentorStatsDashboardPage />} /> // these are linked with suggested
+            mentors
+            <Route path="/RequestedSessionsPage/:mentor_id/:user_id" element={<RequestedSessionsPage />} />
+            <Route path="/RequestSessionPage/:mentor_id/:user_id" element={<RequestSessionPage />} />
+            <Route path="/join-meeting" element={<JoinMeetingPage />} />
+            <Route path="/create-meeting/:user_id" element={<CreateMeetingPage />} />
+            <Route path="/edit-meeting/:meetingId" element={<CreateMeetingPage title={'Edit Meeting'} />} />
+            <Route path="/meetingsList/:Nothing" element={<MeetingsListPage />} />
+            <Route path="join-meeting/:meetingId" element={<JoinMeetingPage />} />
+            <Route path="/mentorFeedbacks" element={<MentorFeedbackPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
