@@ -153,10 +153,10 @@ export default function SidebarSub() {
             <Link to="/persona">
               <SidebarSubItem text="persona" active={isLocation == '/persona' ? true : false} />
             </Link>
-            <Link to="/MatchedPersonas">
+            <Link to="/savedPersonas">
               <SidebarSubItem
                 text="Matched Personas"
-                active={isLocation == '/MatchedPersonas' || isLocation ? true : false}
+                active={isLocation == '/savedPersonas' || isLocation ? true : false}
               />
             </Link>
           </SidebarItem>
