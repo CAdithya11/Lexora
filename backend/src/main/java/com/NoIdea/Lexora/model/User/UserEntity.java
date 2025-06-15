@@ -4,6 +4,10 @@ import com.NoIdea.Lexora.enums.MentorMentee.VerificationStatus;
 
 import com.NoIdea.Lexora.enums.User.Role;
 import com.NoIdea.Lexora.model.MentorMenteeModel.BecomeMentorRequest;
+import com.NoIdea.Lexora.model.MentorMenteeModel.Meeting;
+import com.NoIdea.Lexora.model.MentorMenteeModel.MentorFeedback;
+import com.NoIdea.Lexora.model.MentorMenteeModel.RequestSession;
+import com.NoIdea.Lexora.model.Notification;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -50,10 +54,28 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<BecomeMentorRequest> becomeMentorRequest;
-    @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL,orphanRemoval = true)
 
+    @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<PersonaMatchingModel> personaMatchingModels;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<SkillScore> skillScores;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Meeting> meetings;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "mentor")
+    private List<RequestSession> mentor;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<MentorFeedback> mentorFeedback;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "reciever")
+    private List<Notification> notification;
+
 }

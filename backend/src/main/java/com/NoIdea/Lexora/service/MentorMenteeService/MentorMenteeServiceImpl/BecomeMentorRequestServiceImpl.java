@@ -2,6 +2,7 @@ package com.NoIdea.Lexora.service.MentorMenteeService.MentorMenteeServiceImpl;
 
 import com.NoIdea.Lexora.dto.MentorMentee.BecomeMentorRequestDTO;
 import com.NoIdea.Lexora.enums.MentorMentee.VerificationStatus;
+import com.NoIdea.Lexora.enums.User.Role;
 import com.NoIdea.Lexora.model.MentorMenteeModel.BecomeMentorRequest;
 import com.NoIdea.Lexora.model.User.UserEntity;
 import com.NoIdea.Lexora.repository.MentorMenteeRepository.BecomeMentorRequestRepository;
@@ -54,6 +55,7 @@ public class BecomeMentorRequestServiceImpl implements BecomeMentorRequestServic
                 if(status == VerificationStatus.ACCEPTED){
                     if(user!=null){
                         user.setV_status(status);
+                        user.setRole(Role.MENTOR);
                         userEntityRepository.save(user);
                     }
                 }
