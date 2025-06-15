@@ -141,7 +141,7 @@ export default function SidebarSub() {
 
           <SidebarItem
             icon={<BarChart4Icon size={20} />}
-            text="IndustryInsights"
+            text="Industry Insights"
             alwaysOpen={
               isLocation == '/jobTrends' || isLocation == '/salaryTrends' || isLocation == '/skillTrends' ? true : false
             }
@@ -174,7 +174,7 @@ export default function SidebarSub() {
               <SidebarSubItem text="Analyzer" active={isLocation == '/sk' ? true : false} />
             </Link>
             <Link to="/sk4">
-              <SidebarSubItem text=" Complted" active={isLocation == '/sk4' ? true : false} />
+              <SidebarSubItem text=" Complted Gaps" active={isLocation == '/sk4' ? true : false} />
             </Link>
           </SidebarItem>
 
@@ -183,7 +183,7 @@ export default function SidebarSub() {
               <UserSearch
                 size={20}
                 alwaysOpen={
-                  isLocation == '/persona' || isLocation == '/salaryTrends' || isLocation == '/MatchedPersonas'
+                  isLocation == '/persona' || isLocation == '/savedPersonas'
                     ? true
                     : false
                 }
@@ -192,12 +192,12 @@ export default function SidebarSub() {
             text="Persona Matcher"
           >
             <Link to="/persona">
-              <SidebarSubItem text="persona" active={isLocation == '/persona' ? true : false} />
+              <SidebarSubItem text="Persona" active={isLocation == '/persona'} />
             </Link>
-            <Link to="/MatchedPersonas">
+            <Link to="/savedPersonas">
               <SidebarSubItem
                 text="Matched Personas"
-                active={isLocation == '/MatchedPersonas' || isLocation ? true : false}
+                active={isLocation == '/savedPersonas'}
               />
             </Link>
           </SidebarItem>
@@ -213,6 +213,15 @@ export default function SidebarSub() {
               alert={unreadCount > 0 ? true : false}
             />
           </Link>
+          <Link to={'/feedback'}>
+            <SidebarItem
+              active={isLocation == '/feedback' ? true : false}
+              icon={<MessageCircle size={20} />}
+              text="Feedback"
+            />
+          </Link>
+
+          <hr className="my-3 border-gray-200" />
 
           <SidebarItem
             icon={<User size={20} />}

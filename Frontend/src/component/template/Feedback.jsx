@@ -118,14 +118,14 @@ export default function FeedbackPage() {
 
   return (
     <div>
-      <div className="px-6 py-5 sm:p-5">
-        <h3 className="text-2xl text-gray-900 font-medium mb-2">Share Your Experience </h3>
+      <div className="px-6 py-5 m-5">
+        <h3 className="text-xl text-gray-900 font-medium mb-2">Share Your Experience </h3>
 
         <div className="mt-14">
           {/* Feedback Category */}
           <div className="flex mb-6 object-center">
             <div className="w-35 mr-5">
-              <label htmlFor="category" className="text-base font-medium text-gray-900">
+              <label htmlFor="category" className="text-sm text-gray-900">
                 Feedback Category
               </label>
             </div>
@@ -151,7 +151,7 @@ export default function FeedbackPage() {
           {/* Overall Rating */}
           <div className="flex mb-6 object-center">
             <div className="w-35 mr-5">
-              <label className="text-base font-medium text-gray-900">
+              <label className="text-sm text-gray-900">
                 Overall Rating
               </label>
             </div>
@@ -185,7 +185,7 @@ export default function FeedbackPage() {
           {/* Subject */}
           <div className="flex mb-6 object-center">
             <div className="w-35 mr-5">
-              <label htmlFor="subject" className="text-base font-medium text-gray-900">
+              <label htmlFor="subject" className="text-sm text-gray-900">
                 Subject
               </label>
             </div>
@@ -206,7 +206,7 @@ export default function FeedbackPage() {
           {/* Feedback Section */}
           <div className="flex mb-6 object-center">
             <div className="w-35 mr-5">
-              <label htmlFor="feedback" className="text-base font-medium text-gray-900 ">
+              <label htmlFor="feedback" className="text-sm text-gray-900 ">
                 Your Feedback
               </label>
             </div>
