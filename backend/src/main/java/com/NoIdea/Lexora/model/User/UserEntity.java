@@ -78,4 +78,5 @@ public class UserEntity {
     @OneToMany(mappedBy = "reciever")
     private List<Notification> notification;
 
+
 }

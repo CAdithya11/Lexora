@@ -100,8 +100,7 @@ const ViewAllFeedbacks = ({handleEdit}) => {
           <SidebarSub />
           <div className="flex-1 flex flex-col overflow-hidden">
             <TopHeader HeaderMessage={' Feedback Details'} />
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-5">User Feedbacks</h2>
+    <div className="container mx-auto p-5 m-5">
       
       {roadmaps.length === 0 ? (
         <div className="text-center p-8">
@@ -128,7 +127,7 @@ const ViewAllFeedbacks = ({handleEdit}) => {
                   Subject
                 </th>
                 <th className="py-3 px-6 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Action
+                  Feedback
                 </th>
               </tr>
             </thead>
@@ -142,20 +141,9 @@ const ViewAllFeedbacks = ({handleEdit}) => {
                     <StarRating rating={feedback.rating} />
                   </td>
                   <td className="py-4 px-6 text-sm text-gray-900">{feedback.subject}</td>
-                  <td className="py-4 px-6 text-sm font-medium text-center">
-                    <div className="flex justify-center space-x-2">
-                      <button 
-                        onClick={() => handleEdit(feedback.id)}
-                        id='ViewFeedback'
-                        className="inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-                        title= "View Feedback"
-                      >
-                        <Eye className="h-3 w-3 mr-1" />
-
-                        View
-                      </button> 
-                    </div>  
-                  </td>
+                  <td className="py-4 px-6 text-sm text-gray-900">{feedback.feedback}</td>
+    
+                 
                 </tr>
               ))}
             </tbody>

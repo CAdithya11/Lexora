@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Home, User, Settings, LogOut, Bell, ChevronDown, X, Check } from 'lucide-react';
 import { authService } from '../../services/AuthService';
 import userProfileHandleService from '../../services/userProfileHandleService';
@@ -296,11 +296,11 @@ export default function TopHeader({ HeaderMessage, handleGetUserDetails }) {
                   <ul className="py-1">
                     <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-gray-700">
                       <Home size={17} className="text-gray-500" />
-                      <span className="text-m">Home</span>
+                      <Link to="/"><span className="text-m">Home</span></Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-gray-700">
                       <User size={17} className="text-gray-500" />
-                      <span className="text-m">Profile</span>
+                      <Link to="/settings/profile"><span className="text-m">Profile</span></Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-gray-700">
                       <Settings size={17} className="text-gray-500" />
