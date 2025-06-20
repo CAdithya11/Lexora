@@ -27,6 +27,9 @@ import Skill5 from './pages/Functions/SkillGapAnalyzer/FetchResult';
 import Skill6 from './pages/Functions/SkillGapAnalyzer/SkillResultVizulize';
 import Skill7 from './pages/Functions/SkillGapAnalyzer/ResultFetch';
 import Skill8 from './pages/Functions/SkillGapAnalyzer/adminquestionpost';
+import Skill9 from './pages/Functions/SkillGapAnalyzer/adminquestionput';
+import Skill10 from './pages/Functions/SkillGapAnalyzer/adminskillput';
+import Skill11 from './pages/Functions/SkillGapAnalyzer/adminqizput';
 
 import FeedbackPage from './pages/Home/FeedbackPage';
 import { ProtectedRoute } from './component/template/protectedRoute/ProtectedRoute';
@@ -82,8 +85,10 @@ function App() {
           <Route path="/sk2" element={<Skill2 />} />
           <Route path="/sk3" element={<Skill3 />} />
           <Route path="/sk4" element={<Skill5 />} />
+          <Route path="/sk11/:jobRoleId" element={<Skill11 />} />
           
             <Route path="/skills/:jobRoleId" element={<Skill4/>} />
+            <Route path="/sk10/:jobRoleId" element={<Skill10/>} />
           <Route path="/result/:jobRole" element={<Skill6/>} />
           <Route path="/fetch" element={<Skill7/>} />
           <Route path="/f" element={<Skill8/>} />
@@ -139,6 +144,7 @@ function App() {
             <Route path="/sk2" element={<Skill2 />} />
             <Route path="/sk3" element={<Skill3 />} />
             <Route path="/sk4" element={<Skill5 />} />
+            <Route path="/ff" element={<Skill9/>}/>
 
             {/* Admin */}
             <Route path="/Admin/MentorRequests" element={<AdminMentorRequests />} />

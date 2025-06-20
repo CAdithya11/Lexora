@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 
+import SidebarSub from '../../../component/template/SidebarSub';
+import TopHeader from '../../../component/template/TopHeader';
+import axios from 'axios';
 const JobRoleForm = () => {
   const [jobRoleName, setJobRoleName] = useState('');
   const [skillLists, setSkillLists] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [debugInfo, setDebugInfo] = useState('');
+  const token = localStorage.getItem('token');
 
   const handleAddSkill = () => {
     setSkillLists([
@@ -62,101 +66,110 @@ const JobRoleForm = () => {
   };
 
   const handleSubmit = async () => {
-    if (!jobRoleName.trim()) {
-      alert('Please enter a job role name');
+  if (!jobRoleName.trim()) {
+    alert('Please enter a job role name');
+    return;
+  }
+
+  if (skillLists.length === 0) {
+    alert('Please add at least one skill');
+    return;
+  }
+
+  // Validate skills, questions, answers
+  for (let i = 0; i < skillLists.length; i++) {
+    const skill = skillLists[i];
+    if (!skill.skillName.trim()) {
+      alert(`Please enter a name for skill ${i + 1}`);
+      return;
+    }
+    if (skill.skillQuestions.length === 0) {
+      alert(`Please add at least one question for skill: ${skill.skillName}`);
       return;
     }
 
-    if (skillLists.length === 0) {
-      alert('Please add at least one skill');
-      return;
-    }
-
-    // Validate that all skills have questions and answers
-    for (let i = 0; i < skillLists.length; i++) {
-      const skill = skillLists[i];
-      if (!skill.skillName.trim()) {
-        alert(`Please enter a name for skill ${i + 1}`);
+    for (let j = 0; j < skill.skillQuestions.length; j++) {
+      const question = skill.skillQuestions[j];
+      if (!question.question.trim()) {
+        alert(`Please enter question text for question ${j + 1} in skill: ${skill.skillName}`);
         return;
       }
-      if (skill.skillQuestions.length === 0) {
-        alert(`Please add at least one question for skill: ${skill.skillName}`);
+      if (question.skillAnswers.length === 0) {
+        alert(`Please add at least one answer for question: ${question.question}`);
         return;
       }
-      
-      for (let j = 0; j < skill.skillQuestions.length; j++) {
-        const question = skill.skillQuestions[j];
-        if (!question.question.trim()) {
-          alert(`Please enter question text for question ${j + 1} in skill: ${skill.skillName}`);
-          return;
-        }
-        if (question.skillAnswers.length === 0) {
-          alert(`Please add at least one answer for question: ${question.question}`);
-          return;
-        }
-        
-        // Check if at least one answer is marked as correct
-        const hasCorrectAnswer = question.skillAnswers.some(answer => answer.status === true);
-        if (!hasCorrectAnswer) {
-          alert(`Please mark at least one answer as correct for question: ${question.question}`);
-          return;
-        }
+
+      const hasCorrectAnswer = question.skillAnswers.some(answer => answer.status === true);
+      if (!hasCorrectAnswer) {
+        alert(`Please mark at least one answer as correct for question: ${question.question}`);
+        return;
       }
     }
+  }
 
-    const jobRoleData = {
-      jobRoleName,
-      jobRoleId: null,
-      skillLists
-    };
-
-    setIsSubmitting(true);
-    setDebugInfo('Preparing to send data...');
-
-    try {
-      // Log the data being sent
-      console.log('Sending job role data:', JSON.stringify(jobRoleData, null, 2));
-      setDebugInfo(`Sending data: ${JSON.stringify(jobRoleData, null, 2)}`);
-
-      // Use fetch instead of axios for better error handling
-      const response = await fetch('http://localhost:8080/api/v1/jobRole', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify([jobRoleData]) // Sending as array as per your requirement
-      });
-
-      console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error response:', errorText);
-        setDebugInfo(`Error: ${response.status} - ${errorText}`);
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const responseData = await response.json();
-      console.log('Success response:', responseData);
-      setDebugInfo(`Success: ${JSON.stringify(responseData, null, 2)}`);
-      
-      alert('Job role saved successfully!');
-      
-      // Reset form
-      setJobRoleName('');
-      setSkillLists([]);
-      
-    } catch (error) {
-      console.error('Error saving job role:', error);
-      setDebugInfo(`Error: ${error.message}`);
-      alert(`Error saving job role: ${error.message}`);
-    } finally {
-      setIsSubmitting(false);
-    }
+  const jobRoleData = {
+    jobRoleName,
+    jobRoleId: null,
+    skillLists
   };
 
+  setIsSubmitting(true);
+  setDebugInfo('Preparing to send data...');
+
+  try {
+    const token = localStorage.getItem('token');
+
+    console.log('Sending job role data:', JSON.stringify(jobRoleData, null, 2));
+    setDebugInfo(`Sending data: ${JSON.stringify(jobRoleData, null, 2)}`);
+
+    const response = await axios.post(
+      'http://localhost:8080/api/v1/jobRole',
+      [jobRoleData],
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          
+        }
+      }
+    );
+
+    console.log('Success response:', response.data);
+    setDebugInfo(`Success: ${JSON.stringify(response.data, null, 2)}`);
+    alert('Job role saved successfully!');
+    setJobRoleName('');
+    setSkillLists([]);
+
+  } catch (error) {
+    console.error('Error saving job role:', error);
+    if (error.response) {
+      setDebugInfo(`Error ${error.response.status}: ${JSON.stringify(error.response.data, null, 2)}`);
+      alert(`Error ${error.response.status}: ${error.response.data.message || 'Failed to save'}`);
+    } else {
+      setDebugInfo(`Error: ${error.message}`);
+      alert(`Error: ${error.message}`);
+    }
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
+
   return (
+     <div className="flex h-screen overflow-hidden bg-gray-50">
+          {/* Fixed Sidebar */}
+          <SidebarSub />
+    
+          {/* Main Content Area with Independent Scrolling */}
+          <div className="flex-1 flex flex-col overflow-hidden">
+            {/* Fixed Header */}
+            <TopHeader HeaderMessage={'Matched Career Personas'} />
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto p-6 bg-white">
+              {/* Chart Content */}
+              <div className="p-2"></div>
+    
+              {/* Quick Stats Section - Dynamic based on selected category */}
+              <div className></div>
     <div className="p-4 max-w-4xl mx-auto">
       <h2 className="text-2xl font-bold mb-4">Add Job Role</h2>
       
@@ -311,6 +324,10 @@ const JobRoleForm = () => {
         </pre>
       </div>
     </div>
+    </div>
+        </div>
+      </div>
+    
   );
 };
 

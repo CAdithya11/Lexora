@@ -28,7 +28,7 @@ public class JobRoleController {
     }
     @PostMapping()
     public List<JobRoleEntity> saveJobRole(@RequestBody List<JobRoleEntity> jobRole){
-        return null;
+        return jobRoleService.saveJobRole(jobRole);
     }
     @PutMapping()
     public List<JobRoleEntity> updateJobRole(@RequestBody List<JobRoleEntity> jobRole){
@@ -41,5 +41,18 @@ public class JobRoleController {
     @DeleteMapping("/{id}")
     public void deleteJobRole( @PathVariable int id){
         jobRoleService.deleteJobRole(id);
+    }
+
+    @DeleteMapping("/skill/{id}")
+    public boolean deleteSkill(@PathVariable int id){
+        return jobRoleService.deleteSkill(id);
+    }
+    @DeleteMapping("/question/{id}")
+    public boolean deleteQuestion(@PathVariable int id){
+        return jobRoleService.deleteQuestion(id);
+    }
+    @DeleteMapping("/answer/{id}")
+    public boolean deleteAnswer(@PathVariable int id){
+        return jobRoleService.deleteAnswer(id);
     }
 }
