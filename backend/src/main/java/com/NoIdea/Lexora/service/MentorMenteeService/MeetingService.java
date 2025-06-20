@@ -12,8 +12,9 @@ public interface MeetingService {
 
     public MeetingDTO createMeeting(Long user_id, Meeting meeting);
 
-    public String updateExistingMeetingWithMeetingId(Long id,Meeting meeting);
+    public String updateExistingMeetingWithMeetingId(Long id);
 
     public String deleteExistingMeetingWithMeetingId(Long id);
     public MeetingDTO findMeetingByMeetingId(Long meetingId);
+    public String completeMeetingWithMeetingId(Long meetingId);
 }

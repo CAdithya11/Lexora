@@ -24,6 +24,7 @@ public class Meeting {
     private LocalDateTime created_at = LocalDateTime.now();
     private String mentor;
     private String mentee;
+    private Boolean feedback_given = false;
     private MeetingStatus status;
 
     @JsonIgnore

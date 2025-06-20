@@ -31,7 +31,7 @@ public class MeetingController {
     // Find Meetings By Meeting id
     @GetMapping("/meetingId/{meetingId}")
     public ResponseEntity<MeetingDTO> findMeetingByMeetingId(@PathVariable Long meetingId) {
-        System.out.println("This is the meeting id"+meetingId);
+        System.out.println("This is the meeting id" + meetingId);
         try {
             MeetingDTO meeting = meetingService.findMeetingByMeetingId(meetingId);
             return ResponseEntity.status(HttpStatus.OK).body(meeting);
@@ -54,10 +54,20 @@ public class MeetingController {
 
     // Update Meeting
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateExistingMeeting(@PathVariable Long id, @RequestBody Meeting meeting) {
+    public ResponseEntity<String> updateExistingMeeting(@PathVariable Long id) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(meetingService.updateExistingMeetingWithMeetingId(id, meeting));
+                    .body(meetingService.updateExistingMeetingWithMeetingId(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Please Check your Internet Connection");
+        }
+    }
+    @PutMapping("/complete/{id}")
+    public ResponseEntity<String> completeMeeting(@PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(meetingService.completeMeetingWithMeetingId(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Please Check your Internet Connection");

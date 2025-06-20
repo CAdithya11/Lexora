@@ -43,7 +43,6 @@ export default function UserProfileSettings() {
     });
   }, []);
 
-
   const handleImage = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -57,13 +56,15 @@ export default function UserProfileSettings() {
     setAlertMessage('');
 
     try {
-      await userProfileHandleService.uploadProfileImage(profileImage,userDetails.token,userDetails.user_id).then((response) => {
-        console.log(response);
-        if (response.status == 200) {
-          setAlertMessage(response.data);
-          setAlertType('success');
-        }
-      });
+      await userProfileHandleService
+        .uploadProfileImage(profileImage, userDetails.token, userDetails.user_id)
+        .then((response) => {
+          console.log(response);
+          if (response.status == 200) {
+            setAlertMessage(response.data);
+            setAlertType('success');
+          }
+        });
     } catch (error) {
       if (error.response && error.response.status === 401) {
         setAlertMessage('Server Error ');
@@ -94,7 +95,7 @@ export default function UserProfileSettings() {
     const confirmed = confirm('Are you sure you want to update the profile ?');
     if (confirmed) {
       try {
-        const response = await userProfileHandleService.updateProfileDetails(updatedDetails,userDetails.user_id);
+        const response = await userProfileHandleService.updateProfileDetails(updatedDetails, userDetails.user_id);
         if (response.status === 200) {
           setAlertMessage('Profile updated successfully');
           setAlertType('success');
@@ -144,7 +145,8 @@ export default function UserProfileSettings() {
             <div className="max-w-3xl">
               <div className="mb-6">
                 <h2 className="text-lg font-medium mb-2">Profile</h2>
-                <p className="text-gray-500 text-sm">Lorem ipsum dolor sit amet, consectetur adipis.</p>
+                <p className="text-gray-500 text-sm">Update your profile details to get more advanced responses</p>
+
               </div>
               <form onSubmit={uploadProfileImage} enctype="multipart/form-data">
                 {/* Profile Photo */}
@@ -172,14 +174,14 @@ export default function UserProfileSettings() {
         file:mr-4 file:py-2 file:px-4
         file:rounded-full file:border-0
         file:text-sm file:font-semibold
-        file:bg-violet-50 file:text-violet-700
-        hover:file:bg-violet-100
+        file:bg-blue-500 file:text-white
+        hover:file:bg-blue-700 cursor-pointer
       "
                         />
                       </label>
                     </div>
                     <div>
-                      <button className="text-gray-500 text-sm hover:text-gray-700 cursor-pointer">Remove</button>
+                      <button className="text-gray-500 text-sm mr-5 hover:text-gray-700 cursor-pointer">Remove</button>
                       <button className="text-blue-500 text-sm font-medium hover:text-blue-700 cursor-pointer">
                         Update
                       </button>

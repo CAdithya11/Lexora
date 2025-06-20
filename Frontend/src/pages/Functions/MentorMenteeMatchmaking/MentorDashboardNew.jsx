@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Eye, Briefcase, Calendar, X, User2, MapPin, Star, Clock } from 'lucide-react';
+import { Eye, Briefcase, Calendar, X, User2, MapPin, Star, Clock, TvIcon } from 'lucide-react';
 import SidebarSub from '../../../component/template/SidebarSub';
 import TopHeader from '../../../component/template/TopHeader';
 import userProfileHandleService from '../../../services/userProfileHandleService';
 import Alert from '../../../component/template/alert/Alert';
+import { useNavigate } from 'react-router';
 
 export default function MentorDashboardNew() {
   const [mentors, setMentors] = useState([]);
@@ -13,6 +14,8 @@ export default function MentorDashboardNew() {
   const [alertType, setAlertType] = useState('');
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+  const userDetails = JSON.parse(localStorage.getItem('user'));
 
   const adminDetails = JSON.parse(localStorage.getItem('admin'));
 
@@ -128,11 +131,6 @@ export default function MentorDashboardNew() {
           <TopHeader HeaderMessage={'Mentor Dashboard'} />
 
           <div className="flex-1 flex m-2 flex-col pt-5 pl-5 overflow-auto">
-            {/* Page Header */}
-            <div className="mb-6">
-              <p className="text-gray-600">View and manage all approved mentors in the platform</p>
-            </div>
-
             {/* Mentors Grid */}
             <div className="overflow-auto">
               {loading ? (
@@ -331,6 +329,13 @@ export default function MentorDashboardNew() {
                           </div>
                         </div>
                       </div>
+                      <button
+                        onClick={() => navigate(`/RequestSessionPage/${selectedMentor.user_id}/${userDetails.user_id}`)}
+                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2  focus:ring-blue-500"
+                      >
+                        <TvIcon className="h-4 w-4 mr-2" />
+                        Request A Session
+                      </button>
                     </div>
                   </div>
                 </div>

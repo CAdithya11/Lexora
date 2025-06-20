@@ -4,6 +4,7 @@ import SidebarSub from '../../../component/template/SidebarSub';
 import TopHeader from '../../../component/template/TopHeader';
 import userProfileHandleService from '../../../services/userProfileHandleService';
 import Alert from '../../../component/template/alert/Alert';
+import axios from 'axios';
 
 export default function AdminMentorRequests() {
   const [verificationRequests, setVerificationRequests] = useState([]);
@@ -48,40 +49,48 @@ export default function AdminMentorRequests() {
     }
   };
 
-  const handleApproveRequest = async (requestId, userId) => {
-    const confirmed = confirm('Are you sure you want to approve this mentor request?');
-
-    if (confirmed) {
-      try {
-        const response = await userProfileHandleService.approveVerificationRequest(requestId, userId);
-        if (response.status === 200) {
-          setAlertMessage('Request approved successfully');
-          setAlertType('success');
-          fetchVerificationRequests(); // Refresh the list
-          setShowModal(false);
-        }
-      } catch (error) {
-        setAlertMessage(error.response?.data || 'Failed to approve request');
-        setAlertType('error');
-      }
+  const sendNotificationToUser = async (user_id, notification, message) => {
+    try {
+      const notificationData = {
+        reciever: { user_id: user_id },
+        notification: notification,
+        message: message,
+      };
+      await axios.post('http://www.localhost:8080/api/v2/notification', notificationData);
+      console.log('Notification sent successfully', notificationData);
+    } catch (error) {
+      console.error('Error sending notification:', error);
     }
   };
 
   const handleRequestResponse = async (requestId, status) => {
-    const confirmed = confirm('Are you sure you want to reject this mentor request?');
-
+    const confirmed = confirm(`Are you sure you want to ${status.toLowerCase()} this mentor request?`);
     if (confirmed) {
       try {
         const response = await userProfileHandleService.ResponseVerificationRequest(requestId, status);
-        if (response.status === 200) {
+        console.log('Response from server:', selectedRequest);
+        if (response.status === 200 || response.status === 201) {
           console.log('THis is the Resposne', response.data);
-          setAlertMessage('Request rejected successfully');
-          setAlertType('success');
           fetchVerificationRequests(); // Refresh the list
+          setAlertMessage(`Request ${status.toLowerCase()} successfully`);
+          setAlertType('success');
           setShowModal(false);
         }
+        if (status === 'ACCEPTED') {
+          sendNotificationToUser(
+            selectedRequest.user_id,
+            '🎉 Congratulations! Your mentor request has been approved.',
+            "Welcome aboard as a mentor! We're excited to have you join our community of experts. Your experience and knowledge will be invaluable in guiding mentees on their career journeys. You can now access your mentor dashboard to start connecting with mentees, share your insights, and make a meaningful impact. Thank you for your commitment to helping others grow!"
+          );
+        } else if (status === 'REJECTED') {
+          sendNotificationToUser(
+            selectedRequest.user_id,
+            '❌ Mentor Request Update',
+            "We appreciate your interest in becoming a mentor. After careful review, we regret to inform you that your mentor request has not been approved at this time. We encourage you to continue developing your skills and expertise, and you're welcome to reapply in the future. Thank you for your understanding and continued interest in supporting our community."
+          );
+        }
       } catch (error) {
-        setAlertMessage(error.response?.data || 'Failed to reject request');
+        setAlertMessage(error.response?.data || `Failed to ${status.toLowerCase()} request`);
         setAlertType('error');
       }
     }
@@ -127,6 +136,27 @@ export default function AdminMentorRequests() {
     });
   };
 
+  // Get request counts for each status
+  const getRequestCounts = () => {
+    const counts = {
+      all: verificationRequests.length,
+      pending: 0,
+      approved: 0,
+      rejected: 0,
+    };
+
+    verificationRequests.forEach((request) => {
+      const status = request.verificationStatus?.trim().toUpperCase().replaceAll('"', '');
+      if (status === 'NULL' || !status) counts.pending++;
+      else if (status === 'ACCEPTED') counts.approved++;
+      else if (status === 'REJECTED') counts.rejected++;
+    });
+
+    return counts;
+  };
+
+  const requestCounts = getRequestCounts();
+
   return (
     <>
       {alertMessage && <Alert message={alertMessage} type={alertType} />}
@@ -148,10 +178,10 @@ export default function AdminMentorRequests() {
             <div className="border-b border-gray-200 mb-6">
               <nav className="flex space-x-8">
                 {[
-                  { key: 'all', label: 'All Requests' },
-                  { key: 'NULL', label: 'Pending' },
-                  { key: 'ACCEPTED', label: 'Approved' },
-                  { key: 'REJECTED', label: 'Rejected' },
+                  { key: 'all', label: `All Requests (${requestCounts.all})` },
+                  { key: 'NULL', label: `Pending (${requestCounts.pending})` },
+                  { key: 'ACCEPTED', label: `Approved (${requestCounts.approved})` },
+                  { key: 'REJECTED', label: `Rejected (${requestCounts.rejected})` },
                 ].map(({ key, label }) => (
                   <button
                     key={key}
@@ -167,72 +197,144 @@ export default function AdminMentorRequests() {
             </div>
 
             {/* Requests Table */}
-            <div className="bg-white shadow sm:rounded-md overflow-auto">
-              {loading ? (
-                <div className="text-center py-8">
-                  <p className="text-gray-500">Loading verification requests...</p>
-                </div>
-              ) : filteredRequests.length === 0 ? (
-                <div className="text-center py-8">
-                  <p className="text-gray-500">No verification requests found</p>
-                </div>
-              ) : (
-                <ul className="divide-y divide-gray-200">
-                  {filteredRequests.reverse().map((request) => (
-                    <li key={request.id} className="px-6 py-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0">
-                            <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center">
-                              <img
-                                src={'data:image/jpeg;base64,' + request.profile_image}
-                                className="h-10 w-10 rounded-full"
-                                alt="Profile"
-                              />
-                            </div>
-                          </div>
-                          <div className="ml-4">
-                            <div className="flex items-center">
-                              <p className="text-sm font-medium text-gray-900">
-                                {request.first_name} {request.last_name}
-                              </p>
-                              <div className="ml-2">{getStatusBadge(JSON.stringify(request.verificationStatus))}</div>
-                            </div>
-                            <div className="mt-1 flex items-center text-sm text-gray-500">
-                              <Briefcase className="h-4 w-4 mr-1" />
-                              <span className="mr-4">{request.occupation || 'Not specified'}</span>
-                              <span className="mr-4">@{request.company || 'No company'}</span>
-                              <Calendar className="h-4 w-4 mr-1" />
-                              <span className="mr-4">{request.experience || '0'} years experience</span>
-                              <span className="mr-4">Career: {request.career || 'Not specified'}</span>
-                            </div>
-                            <p className="mt-1 text-sm text-gray-500"></p>
-                            <p className="text-xs text-gray-400">
-                              Date: {formatDate(request.created_at || new Date().toISOString())}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <button
-                            onClick={() => handleViewRequest(request)}
-                            className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                          >
-                            View Details
-                          </button>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
+            <div className="mr-8">
+              <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+                {loading ? (
+                  <div className="flex items-center justify-center h-64">
+                    <div className="animate-spin h-8 w-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+                    <span className="ml-2 text-gray-600">Loading verification requests...</span>
+                  </div>
+                ) : filteredRequests.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+                    <h3 className="text-lg font-medium text-gray-900 mb-1">No verification requests found</h3>
+                    <p className="text-sm text-gray-500">
+                      {verificationRequests.length === 0
+                        ? 'No mentor verification requests available'
+                        : `No ${
+                            filter === 'all' ? '' : filter === 'NULL' ? 'pending' : filter.toLowerCase()
+                          } requests found`}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Applicant
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Professional Info
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Experience
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Request Date
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {filteredRequests.reverse().map((request) => (
+                          <tr key={request.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <div className="flex-shrink-0">
+                                  <img
+                                    src={'data:image/jpeg;base64,' + request.profile_image}
+                                    className="h-10 w-10 rounded-full"
+                                    alt="Profile"
+                                  />
+                                </div>
+                                <div className="ml-4">
+                                  <div className="text-sm font-medium text-gray-900">
+                                    {request.first_name} {request.last_name}
+                                  </div>
+                                  <div className="text-sm text-gray-500">ID: {request.user_id}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-600">
+                                <div className="flex items-center">
+                                  <Briefcase className="h-4 w-4 text-gray-400 mr-1" />
+                                  <span className="">{request.occupation || 'Not specified'}</span>
+                                </div>
+                                <div className="text-gray-500 mt-1">@{request.company || 'No company'}</div>
+                                <div className="text-gray-500 text-xs mt-1">{request.career || 'Not specified'}</div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-600">
+                                <div className="">{request.experience || '0'} years</div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              {getStatusBadge(JSON.stringify(request.verificationStatus))}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center text-sm text-gray-900">
+                                <Calendar className="h-4 w-4 text-gray-400 mr-2" />
+                                <div>
+                                  <div className="text-gray-600 text-sm">
+                                    {formatDate(request.created_at || new Date().toISOString())}
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <div className="flex items-center space-x-2">
+                                <button
+                                  onClick={() => handleViewRequest(request)}
+                                  className="inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                                  title="View Details"
+                                >
+                                  <Eye className="h-3 w-3 mr-1" />
+                                  View
+                                </button>
+                                {request.verificationStatus === null && (
+                                  <>
+                                    <button
+                                      onClick={() => handleRequestResponse(request.id, 'ACCEPTED')}
+                                      className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
+                                      title="Approve Request"
+                                    >
+                                      <CheckCircle className="h-3 w-3 mr-1" />
+                                      Approve
+                                    </button>
+                                    <button
+                                      onClick={() => handleRequestResponse(request.id, 'REJECTED')}
+                                      className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+                                      title="Reject Request"
+                                    >
+                                      <XIcon className="h-3 w-3 mr-1" />
+                                      Reject
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Details Modal */}
         {showModal && selectedRequest && (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div className="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+          <div className="fixed inset-0 bg-gray-600 overflow-y-auto h-full w-full z-50">
+            <div className="relative top-20 mx-auto p-5 shadow w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
               <div className="mt-3">
                 {/* Modal Header */}
                 <div className="flex justify-between items-start mb-6">
@@ -329,7 +431,7 @@ export default function AdminMentorRequests() {
                                 <div className="flex space-x-3">
                                   <button
                                     onClick={handleOpenPdf}
-                                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                                   >
                                     <File className="h-4 w-4 mr-2" />
                                     Open PDF File
