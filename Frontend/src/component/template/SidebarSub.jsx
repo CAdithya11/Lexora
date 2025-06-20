@@ -171,10 +171,18 @@ export default function SidebarSub() {
             text="Skill Gap Analyzer"
           >
             <Link to="/sk">
-              <SidebarSubItem text="Analyzer" active={isLocation == '/sk' ? true : false} />
+
+            <SidebarSubItem text="Anlyzer" active={isLocation == '/sk' ? true : false} />
             </Link>
             <Link to="/sk4">
+
+            
+
+              
+
+
               <SidebarSubItem text=" Complted Gaps" active={isLocation == '/sk4' ? true : false} />
+
             </Link>
           </SidebarItem>
 
@@ -197,7 +205,11 @@ export default function SidebarSub() {
             <Link to="/savedPersonas">
               <SidebarSubItem
                 text="Matched Personas"
+
+                
+
                 active={isLocation == '/savedPersonas'}
+
               />
             </Link>
           </SidebarItem>
