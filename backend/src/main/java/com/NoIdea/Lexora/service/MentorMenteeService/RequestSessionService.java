@@ -13,4 +13,8 @@ public interface RequestSessionService {
 
     // Create a request by mentee
     public String createSessionRequest(RequestSession requestSession);
+    // Update the status of a request by mentor
+    public String updateSessionRequestStatus(Long id, String status);
+    // Delete a request by mentee
+    public String deleteSessionRequest(Long id);
 }

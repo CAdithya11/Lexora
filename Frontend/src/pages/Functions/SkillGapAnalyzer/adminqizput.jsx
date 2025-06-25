@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import SidebarSub from '../../../component/template/SidebarSub';
-import TopHeader from '../../../component/template/Quiztop';
+import TopHeader from '../../../component/template/TopHeader';
 
 export default function AdminSkillQuizPage() {
   const { jobRoleId } = useParams();
@@ -90,8 +90,11 @@ export default function AdminSkillQuizPage() {
 
   // Save changes to API
   const saveChanges = async () => {
+
     try {
-      const token = localStorage.getItem('token'); // Adjust based on your auth implementation
+      const userDetails = localStorage.getItem("user");
+  console.log(userDetails);
+      const token = userDetails.token; // Adjust based on your auth implementation
       
       // Update the original job role data with current questions
       const updatedJobRoleData = { ...originalJobRoleData };
@@ -640,7 +643,7 @@ export default function AdminSkillQuizPage() {
     <div className="flex h-screen overflow-hidden bg-gray-50">
       <SidebarSub />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <TopHeader />
+        <TopHeader HeaderMessage={'Persona Matcher'} />
         <div className="flex-1 overflow-y-auto p-6 bg-white">
           <div className="border-b-2 border-solid border-gray-300 mb-6">
             <div className="flex justify-between items-center">

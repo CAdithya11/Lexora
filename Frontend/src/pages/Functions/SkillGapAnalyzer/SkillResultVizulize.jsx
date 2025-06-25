@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 
 import SidebarSub from '../../../component/template/SidebarSub';
-import TopHeader from '../../../component/template/SkillGapTop';
+import TopHeader from '../../../component/template/TopHeader';
 
 const SkillAssessmentRadarChart = () => {
   const { jobRole } = useParams();
@@ -167,7 +167,7 @@ const SkillAssessmentRadarChart = () => {
     <div className="flex h-screen overflow-hidden bg-gray-50">
       <SidebarSub />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <TopHeader />
+       <TopHeader HeaderMessage={'Persona Matcher'} />
         <div className="flex-1 overflow-y-auto p-6 bg-white relative">
           <button
             onClick={handleGoBack}
@@ -273,7 +273,7 @@ const SkillAssessmentRadarChart = () => {
               </div>
 
               {/* Learning Resources */}
-              <div className="grid md:grid-cols-2 gap-6">
+              {/* <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                     <svg className="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -346,7 +346,7 @@ const SkillAssessmentRadarChart = () => {
                     )}
                   </div>
                 </div>
-              </div>
+              </div> */}
             </>
           )}
 

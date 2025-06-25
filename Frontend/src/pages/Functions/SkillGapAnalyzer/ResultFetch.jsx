@@ -15,7 +15,7 @@ import {
 } from 'recharts';
 
 import SidebarSub from '../../../component/template/SidebarSub';
-import TopHeader from '../../../component/template/SkillGapTop';
+import TopHeader from '../../../component/template/TopHeader';
 
 const SkillDetailPage = () => {
   const location = useLocation();
@@ -116,7 +116,7 @@ const SkillDetailPage = () => {
       <div className="flex h-screen overflow-hidden bg-gray-50">
         <SidebarSub />
         <div className="flex-1 flex flex-col overflow-hidden">
-          <TopHeader />
+          <TopHeader HeaderMessage={'Persona Matcher'} />
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">No Data Available</h2>
@@ -424,20 +424,7 @@ const SkillDetailPage = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="mt-8 flex justify-center space-x-4">
-            <button
-              onClick={handleStartLearning}
-              className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors font-medium"
-            >
-              Start Learning Path
-            </button>
-            <button
-              onClick={() => window.print()}
-              className="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors font-medium"
-            >
-              Print Report
-            </button>
-          </div>
+          
         </div>
       </div>
     </div>

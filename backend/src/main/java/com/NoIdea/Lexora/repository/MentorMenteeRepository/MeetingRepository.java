@@ -1,6 +1,6 @@
 package com.NoIdea.Lexora.repository.MentorMenteeRepository;
 
-import com.NoIdea.Lexora.model.MentorMenteeModel.BecomeMentorRequest;
+// import com.NoIdea.Lexora.model.MentorMenteeModel.BecomeMentorRequest;
 import com.NoIdea.Lexora.model.MentorMenteeModel.Meeting;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

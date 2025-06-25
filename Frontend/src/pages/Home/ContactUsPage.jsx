@@ -1,8 +1,25 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import NavBar from '../../component/template/NavBar';
 import Footer from '../Home/Footer';
+import emailjs from '@emailjs/browser';
 
 export default function ContactUsPage() {
+  const form = useRef();
+
+  const sendEmail = (e) => {
+  e.preventDefault();
+
+  emailjs
+    .sendForm("service_eiquyk9", "template_a05h22x", form.current, "yo4avt31bObRTsZln")
+    .then(() => {
+      alert("Message sent successfully!");
+      form.current.reset();
+    })
+    .catch((error) => {
+      console.error("Error sending message:", error);
+      alert("Failed to send message. Please try again later.");
+    });
+};
   return (
     <div>
       <NavBar activeNavMenu={'contactUs'} />
@@ -17,7 +34,7 @@ export default function ContactUsPage() {
               <div class="px-6 py-12 sm:p-12">
                 <h3 class="text-3xl font-semibold text-center text-gray-900">Send us a message</h3>
 
-                <form action="#" method="POST" class="mt-14">
+                <form ref={form} onSubmit={sendEmail} action="#" method="POST" class="mt-14">
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
                     <div>
                       <label for="" class="text-base font-medium text-gray-900">
@@ -27,7 +44,7 @@ export default function ContactUsPage() {
                       <div class="mt-2.5 relative">
                         <input
                           type="text"
-                          name=""
+                          name="name"
                           id=""
                           placeholder="Enter your full name"
                           class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-blue-600 caret-blue-600"
@@ -43,7 +60,7 @@ export default function ContactUsPage() {
                       <div class="mt-2.5 relative">
                         <input
                           type="email"
-                          name=""
+                          name="email"
                           id=""
                           placeholder="Enter your full name"
                           class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-blue-600 caret-blue-600"
@@ -59,7 +76,7 @@ export default function ContactUsPage() {
                       <div class="mt-2.5 relative">
                         <input
                           type="tel"
-                          name=""
+                          name="phone_number"
                           id=""
                           placeholder="Enter your full name"
                           class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-blue-600 caret-blue-600"
@@ -75,7 +92,7 @@ export default function ContactUsPage() {
                       <div class="mt-2.5 relative">
                         <input
                           type="text"
-                          name=""
+                          name="company_name"
                           id=""
                           placeholder="Enter your full name"
                           class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-blue-600 caret-blue-600"
@@ -86,11 +103,27 @@ export default function ContactUsPage() {
                     <div class="sm:col-span-2">
                       <label for="" class="text-base font-medium text-gray-900">
                         {' '}
+                        Subject{' '}
+                      </label>
+                      <div class="mt-2.5 relative">
+                        <input
+                          name="subject"
+                          id=""
+                          placeholder=""
+                          class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md resize-y focus:outline-none focus:border-blue-600 caret-blue-600"
+                          type="text"
+                        ></input>
+                      </div>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                      <label for="" class="text-base font-medium text-gray-900">
+                        {' '}
                         Message{' '}
                       </label>
                       <div class="mt-2.5 relative">
                         <textarea
-                          name=""
+                          name="message"
                           id=""
                           placeholder=""
                           class="block w-full px-4 py-4 text-black placeholder-gray-500 transition-all duration-200 bg-white border border-gray-200 rounded-md resize-y focus:outline-none focus:border-blue-600 caret-blue-600"

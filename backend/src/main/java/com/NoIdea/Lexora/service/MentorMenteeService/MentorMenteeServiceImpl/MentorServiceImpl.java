@@ -22,12 +22,10 @@ public class MentorServiceImpl implements MentorService{
 
     @Override
     public void deleteMentor(Long mentorId){
-        if (mentorRepository.findById(mentorId) == null){
-            throw new MentorNotFoundException("Mentor not found by "+mentorId);
+        if (!mentorRepository.findById(mentorId).isPresent()) {
+            throw new MentorNotFoundException("Mentor not found by " + mentorId);
         }
-        else{
-            mentorRepository.deleteById(mentorId);
-        }
+        mentorRepository.deleteById(mentorId);
     }
 
     @Override
@@ -45,22 +43,20 @@ public class MentorServiceImpl implements MentorService{
 
     @Override
     public Mentor updateMentor(Long mentorId, Mentor mentor) {
-        Mentor existingMentor = mentorRepository.findById(mentorId).orElseThrow();
-        if (existingMentor == null){
-            throw new MentorNotFoundException("Mentor is not found by " + mentorId);
-        }else{
-            existingMentor.setName(mentor.getName());
-            existingMentor.setEmail(mentor.getEmail());
-            existingMentor.setPassword(mentor.getPassword());
-            existingMentor.setOccupation(mentor.getOccupation());
-            existingMentor.setCompany(mentor.getCompany());
-            existingMentor.setSkills(mentor.getSkills());
-            existingMentor.setAvailability(mentor.getAvailability());
-            existingMentor.setCompany(mentor.getCompany());
-            existingMentor.setExperience(mentor.getExperience());
-            existingMentor.setVerificationStatus(mentor.getVerificationStatus());
-        }
-        return existingMentor;
+        Mentor existingMentor = mentorRepository.findById(mentorId)
+            .orElseThrow(() -> new MentorNotFoundException("Mentor not found by " + mentorId));
+
+        existingMentor.setName(mentor.getName());
+        existingMentor.setEmail(mentor.getEmail());
+        existingMentor.setPassword(mentor.getPassword());
+        existingMentor.setOccupation(mentor.getOccupation());
+        existingMentor.setCompany(mentor.getCompany());
+        existingMentor.setSkills(mentor.getSkills());
+        existingMentor.setAvailability(mentor.getAvailability());
+        existingMentor.setExperience(mentor.getExperience());
+        existingMentor.setVerificationStatus(mentor.getVerificationStatus());
+
+        return mentorRepository.save(existingMentor);
     }
 
 }
