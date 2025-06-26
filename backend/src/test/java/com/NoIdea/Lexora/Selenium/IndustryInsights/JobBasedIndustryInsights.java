@@ -91,8 +91,6 @@ public class JobBasedIndustryInsights {
         //Click year to get chart
         WebElement JobTrendYearButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("year")));
         JobTrendYearButton.click();
-        //Click month to get chart
-        WebElement JobTrendMonthButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("month")));
         JobTrendYearButton.click();
         //Click week to get chart
         WebElement JobTrendWeekButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("week")));

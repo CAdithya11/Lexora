@@ -194,13 +194,6 @@ export default function JoinMeetingPage() {
 
         peer.on('error', (err) => {
           console.error('Peer error:', err);
-          if (err.type === 'unavailable-id') {
-            setError('Someone is already in this meeting with your role. Please use a different email or refresh.');
-          } else if (err.type === 'peer-unavailable') {
-            setError('The other participant is not online. Please make sure they join first.');
-          } else {
-            setError('Connection error: ' + (err.message || err.type));
-          }
         });
 
         peer.on('disconnected', () => {

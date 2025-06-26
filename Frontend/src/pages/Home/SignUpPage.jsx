@@ -119,8 +119,8 @@ export default function SignUpPage() {
                   <div>
                     <button
                       type="submit"
-                      id='signup'
-                      class="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700"
+                      id="signup"
+                      class="inline-flex cursor-pointer items-center justify-center w-full px-4 py-4 text-base font-semibold text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700"
                     >
                       Create free account
                     </button>
@@ -132,13 +132,7 @@ export default function SignUpPage() {
 
           <div class="flex items-center justify-center px-4 py-10 sm:py-16 lg:py-24 bg-gray-50 sm:px-6 lg:px-8">
             <div>
-              <img
-                class="w-full mx-auto"
-                src={SignUp}
-                alt=""
-              />
-
-              
+              <img class="w-full mx-auto" src={SignUp} alt="" />
             </div>
           </div>
         </div>

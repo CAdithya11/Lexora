@@ -10,11 +10,12 @@ import java.util.List;
 public interface MeetingService {
     public List<MeetingDTO> findAllMeetingsByUser_id(Long user_id);
 
-    public MeetingDTO createMeeting(Long user_id, Meeting meeting);
+    public MeetingDTO createMeeting(Long user_id, Long mentee_id, Meeting meeting);
 
     public String updateExistingMeetingWithMeetingId(Long id);
 
     public String deleteExistingMeetingWithMeetingId(Long id);
     public MeetingDTO findMeetingByMeetingId(Long meetingId);
+    public List<MeetingDTO> findMeetingByMenteeId(Long mentee_Id);
     public String completeMeetingWithMeetingId(Long meetingId);
 }

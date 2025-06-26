@@ -5,7 +5,6 @@ package com.NoIdea.Lexora.controller.UserController;
 import com.NoIdea.Lexora.model.User.UserEntity;
 import com.NoIdea.Lexora.service.User.UserEntityService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

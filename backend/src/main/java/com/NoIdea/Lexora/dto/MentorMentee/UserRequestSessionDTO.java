@@ -1,7 +1,6 @@
 package com.NoIdea.Lexora.dto.MentorMentee;
 
 import com.NoIdea.Lexora.enums.User.Role;
-import com.NoIdea.Lexora.model.MentorMenteeModel.RequestSession;
 import com.NoIdea.Lexora.model.User.UserEntity;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

@@ -17,12 +17,13 @@ import static com.NoIdea.Lexora.enums.NotificationStatus.READ;
 public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private NotificationRepo notificationRepo;
+
     @Override
     public List<NotificationDTO> findAllNotificationsByRecieverId(Long reciever_id) {
         try {
             List<Notification> notification = notificationRepo.findAllByReciever_id(reciever_id);
             return notification.stream().map(NotificationDTO::new).collect(Collectors.toList());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -34,7 +35,7 @@ public class NotificationServiceImpl implements NotificationService {
             notification.setStatus(NotificationStatus.UNREAD);
             notificationRepo.save(notification);
             return "Successfully Saved";
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "Failed to create a notification instance in the database";
         }
@@ -45,7 +46,7 @@ public class NotificationServiceImpl implements NotificationService {
         try {
             notificationRepo.deleteById(id);
             return "Successfully deleted";
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "Failed to delete the notification";
         }
@@ -55,13 +56,13 @@ public class NotificationServiceImpl implements NotificationService {
     public String updateNotification(Long id) {
         try {
             Notification notification = notificationRepo.findById(id).orElse(null);
-            if(notification==null){
+            if (notification == null) {
                 return "Notification with the id does not exist";
             }
             notification.setStatus(READ);
             notificationRepo.save(notification);
             return "Successfully updated";
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "Failed to update the status";
         }

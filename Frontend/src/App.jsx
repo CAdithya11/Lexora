@@ -59,7 +59,6 @@ import NotificationPage from './pages/Notifications/NotificationPage';
 import MentorStatsDashboardPage from './pages/Functions/MentorMenteeMatchmaking/Mentor/MentorStatsDashboardPage';
 import MentorFeedbackPage from './pages/Functions/MentorMenteeMatchmaking/Mentor/MentorFeedbacksPage';
 
-
 function App() {
   return (
     <>
@@ -76,7 +75,7 @@ function App() {
           <Route path="/aboutus" element={<AboutUsPage />} />
           <Route path="/app" element={<AppsPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          
+
           {/* <Route path="/PersonaMatching" element={<CareerPersosna />} />
           <Route path="/Personas" element={<MatchedPersosna />} />
           <Route path="/persona" element={<Persona />} /> */}
