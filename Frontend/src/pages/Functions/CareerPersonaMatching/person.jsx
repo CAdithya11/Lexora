@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import SidebarSub from '../../../component/template/SidebarSub';
-import TopHeader from '../../../component/template/AITopHeader';
+import TopHeader from '../../../component/template/TopHeader';
 import { Eye, X } from "lucide-react";
 
 export default function MatchedPersona() {

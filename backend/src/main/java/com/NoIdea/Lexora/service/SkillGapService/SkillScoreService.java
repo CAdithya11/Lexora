@@ -29,4 +29,6 @@ public interface SkillScoreService {
     // Delete all SkillScores
     void deleteAllSkillScores();
     public List<SkillScoreWithUserDTO> getUserSkillScore(Long id);
+    public SkillScoreWithUserDTO saveUserSkillScore(Long id,SkillScoreWithUserDTO userScore);
+
 }
