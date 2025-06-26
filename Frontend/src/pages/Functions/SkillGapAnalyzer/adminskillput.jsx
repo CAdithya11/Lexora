@@ -320,7 +320,7 @@ export default function SkillListPage() {
     <div className="flex h-screen overflow-hidden bg-gray-50">
       {/* Sidebar */}
       <SidebarSub />
-
+{/*ssss*/}
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <TopHeader HeaderMessage={' Analyser'} />

@@ -1,0 +1,17 @@
+
+
+# <type>: <short summary>
+#
+# Detailed description:
+# - What was changed?
+# - Why was it changed?
+# - Related issues (e.g., Fixes #123)
+#
+# Types:
+#   feat     = New feature
+#   fix      = Bug fix
+#   docs     = Documentation changes
+#   style    = Formatting, no code change
+#   refactor = Code restructuring
+#   test     = Adding or fixing tests
+#   chore    = Maintenance
