@@ -6,7 +6,10 @@ import com.NoIdea.Lexora.model.User.UserEntity;
 import com.NoIdea.Lexora.repository.MentorMenteeRepository.MentorFeedbackRepo;
 import com.NoIdea.Lexora.repository.User.UserEntityRepository;
 import com.NoIdea.Lexora.service.MentorMenteeService.MentorFeedbackService;
+<<<<<<< Updated upstream
 // import com.NoIdea.Lexora.service.User.UserEntityService;
+=======
+>>>>>>> Stashed changes
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

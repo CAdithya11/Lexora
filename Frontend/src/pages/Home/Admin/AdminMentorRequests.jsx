@@ -56,48 +56,46 @@ export default function AdminMentorRequests() {
         notification: notification,
         message: message,
       };
-      await axios.post('http://www.localhost:8080/api/v2/notification', notificationData);
       console.log('Notification sent successfully', notificationData);
+      await axios.post('http://www.localhost:8080/api/v2/notification', notificationData);
     } catch (error) {
-      console.error('Error sending notification:', error);
+      console.log('Error sending notification:', error);
     }
   };
 
-  const handleRequestResponse = async (requestId, status) => {
+  const handleRequestResponse = async (requestId, user_id, status) => {
     const confirmed = confirm(`Are you sure you want to ${status.toLowerCase()} this mentor request?`);
     if (confirmed) {
       try {
         const response = await userProfileHandleService.ResponseVerificationRequest(requestId, status);
-        console.log('Response from server:', selectedRequest);
         if (response.status === 200 || response.status === 201) {
-          console.log('THis is the Resposne', response.data);
           fetchVerificationRequests(); // Refresh the list
-          setAlertMessage(`Request ${status.toLowerCase()} successfully`);
-          setAlertType('success');
           setShowModal(false);
         }
         if (status === 'ACCEPTED') {
+          setAlertMessage(`Request accepted successfully`);
+          setAlertType('success');
           sendNotificationToUser(
-            selectedRequest.user_id,
+            user_id,
             '🎉 Congratulations! Your mentor request has been approved.',
             "Welcome aboard as a mentor! We're excited to have you join our community of experts. Your experience and knowledge will be invaluable in guiding mentees on their career journeys. You can now access your mentor dashboard to start connecting with mentees, share your insights, and make a meaningful impact. Thank you for your commitment to helping others grow!"
           );
         } else if (status === 'REJECTED') {
+          setAlertMessage(`Request rejected successfully`);
+          setAlertType('success');
           sendNotificationToUser(
-            selectedRequest.user_id,
+            user_id,
             '❌ Mentor Request Update',
             "We appreciate your interest in becoming a mentor. After careful review, we regret to inform you that your mentor request has not been approved at this time. We encourage you to continue developing your skills and expertise, and you're welcome to reapply in the future. Thank you for your understanding and continued interest in supporting our community."
           );
         }
       } catch (error) {
-        setAlertMessage(error.response?.data || `Failed to ${status.toLowerCase()} request`);
-        setAlertType('error');
+        console.log(error);
       }
     }
   };
 
   const getStatusBadge = (status) => {
-    console.log(status);
     switch (status.trim().toUpperCase().replaceAll('"', '')) {
       case 'NULL':
         return <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">Pending</span>;
@@ -301,7 +299,7 @@ export default function AdminMentorRequests() {
                                 {request.verificationStatus === null && (
                                   <>
                                     <button
-                                      onClick={() => handleRequestResponse(request.id, 'ACCEPTED')}
+                                      onClick={() => handleRequestResponse(request.id, request.user_id, 'ACCEPTED')}
                                       className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
                                       title="Approve Request"
                                     >
@@ -309,7 +307,7 @@ export default function AdminMentorRequests() {
                                       Approve
                                     </button>
                                     <button
-                                      onClick={() => handleRequestResponse(request.id, 'REJECTED')}
+                                      onClick={() => handleRequestResponse(request.id, request.user_id, 'REJECTED')}
                                       className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
                                       title="Reject Request"
                                     >

@@ -2,12 +2,10 @@ package com.NoIdea.Lexora.dto.MentorMentee;
 
 import com.NoIdea.Lexora.enums.MentorMentee.RequestSessionStatus;
 import com.NoIdea.Lexora.model.MentorMenteeModel.RequestSession;
-import com.NoIdea.Lexora.model.User.UserEntity;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.checkerframework.checker.units.qual.N;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +21,7 @@ public class RequestSessionDTO {
     private RequestSessionStatus status;
     private UserRequestSessionDTO mentor;
     private Long user_id;
+    private String mentee_email;
 
     public RequestSessionDTO(RequestSession session) {
         this.id = session.getId();
@@ -31,6 +30,8 @@ public class RequestSessionDTO {
         this.requested_time = session.getRequested_time();
         this.status = session.getStatus();
         this.mentor = new UserRequestSessionDTO(session.getMentor());
-        this.user_id = session.getUser_id(); 
+        this.user_id = session.getUser_id();
+        this.mentee_email = session.getMentee_email();
     }
+
 }

@@ -14,13 +14,19 @@ export default function RequestSessionPage() {
   const [alertMessage, setAlertMessage] = useState('');
   const [alertType, setAlertType] = useState('');
   const [loading, setLoading] = useState(false);
+  const [userDetails, setUserDetails] = useState('');
 
   const [data, setData] = useState({
     mentorMessage: '',
     menteeMessage: '',
     requested_time: '',
     mentor_user_id: '',
+    mentee_email: '',
   });
+
+  const handleGetUserDetails = (user) => {
+    setUserDetails(user);
+  };
 
   const showAlert = (text, type = 'success') => {
     setAlertMessage(text);
@@ -80,6 +86,7 @@ export default function RequestSessionPage() {
           user_id: parseInt(mentor_id),
         },
         user_id: parseInt(user_id),
+        mentee_email: userDetails.email,
       };
 
       console.log('Session request data:', sessionRequest);
@@ -95,7 +102,7 @@ export default function RequestSessionPage() {
       console.log('Session request response:', response.data);
 
       setTimeout(() => {
-        navigate(`/RequestedSessionsPage/0/${user_id}`); // Adjust route as needed
+        navigate(`/RequestedSessionsPage/${user_id}/0`); // Adjust route as needed
       }, 3000);
     } catch (error) {
       console.error('Failed to send session request:', error);
@@ -114,7 +121,7 @@ export default function RequestSessionPage() {
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Header */}
-          <TopHeader HeaderMessage="Request Mentoring Session" />
+          <TopHeader HeaderMessage="Request Mentoring Session" handleGetUserDetails={handleGetUserDetails} />
 
           <div className="flex-1 flex m-5 flex-col pt-5 pl-10 overflow-auto">
             {/* Page Header */}
