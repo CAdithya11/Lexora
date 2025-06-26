@@ -134,7 +134,6 @@ class LexoraApplicationTests {
 		WebElement JobTrendYearButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("year")));
 		JobTrendYearButton.click();
 		//Click month to get chart
-		WebElement JobTrendMonthButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("year")));
 		JobTrendYearButton.click();
 
 		try {

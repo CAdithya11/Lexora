@@ -81,6 +81,10 @@ class ProfileSettings {
     return axios.get('http://www.localhost:8080/api/v2/request/all');
   }
 
+  getVerificationRequestByUserId(userId) {
+    return axios.get(`http://www.localhost:8080/api/v2/request/all/${userId}`);
+  }
+
   ResponseVerificationRequest(requestId, response) {
     return axios.put(`http://www.localhost:8080/api/v2/request/${requestId}/${response}`);
   }

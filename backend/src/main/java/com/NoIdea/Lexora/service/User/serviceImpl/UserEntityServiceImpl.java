@@ -1,6 +1,7 @@
 package com.NoIdea.Lexora.service.User.serviceImpl;
 
 import com.NoIdea.Lexora.dto.UserProfile.UserProfileResponseDTO;
+import com.NoIdea.Lexora.enums.User.Role;
 import com.NoIdea.Lexora.model.User.UserEntity;
 import com.NoIdea.Lexora.repository.User.UserEntityRepository;
 import com.NoIdea.Lexora.service.User.UserEntityService;
@@ -8,7 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+<<<<<<< Updated upstream
 // import org.springframework.web.multipart.MultipartFile;
+=======
+>>>>>>> Stashed changes
 
 import java.io.IOException;
 import java.util.Base64;
@@ -26,6 +30,7 @@ public class UserEntityServiceImpl implements UserEntityService {
     @Override
     public UserEntity createUser(UserEntity userEntity) {
         UserEntity userEntity1 = userEntity;
+        userEntity1.setRole(Role.STUDENT);
         userEntity1.setPassword(passwordEncoder.encode(userEntity1.getPassword()));
         return userEntityRepository.save(userEntity);
     }

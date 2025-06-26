@@ -149,7 +149,7 @@ const NavBar = ({ activeNavMenu }) => {
               <Link to={'/signIn'}>
                 <div
                   id="singInButton"
-                  className="  block w-full px-5 py-2 text-center font-medium text-blue-600 bg-gray-50 hover:bg-gray-100 rounded-md flex items-center justify-center transition-colors duration-150"
+                  className="block w-full px-5 py-2 text-center font-medium text-blue-600 bg-gray-50 hover:bg-gray-100 rounded-md flex items-center justify-center transition-colors duration-150"
                 >
                   <LogIn size={18} className="mr-1" />
                   Sign In

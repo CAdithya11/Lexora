@@ -1,6 +1,7 @@
 package com.NoIdea.Lexora.service.MentorMenteeService;
 
 import com.NoIdea.Lexora.dto.MentorMentee.BecomeMentorRequestDTO;
+import com.NoIdea.Lexora.dto.MentorMentee.LastBecomeMentorRequestDTO;
 import com.NoIdea.Lexora.enums.MentorMentee.VerificationStatus;
 import com.NoIdea.Lexora.model.MentorMenteeModel.BecomeMentorRequest;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,6 @@ public interface BecomeMentorRequestService {
     String createRequest(Long userId);
     String createResponse(Long id, VerificationStatus status);
 
-    List<BecomeMentorRequestDTO> getAllRequestsFromTheUserId(Long UserId);
+    LastBecomeMentorRequestDTO getAllRequestsFromTheUserId(Long UserId);
     List<BecomeMentorRequestDTO> getAllRequests();
 }

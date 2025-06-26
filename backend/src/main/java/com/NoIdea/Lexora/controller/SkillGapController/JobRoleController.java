@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/jobRole")
@@ -18,29 +16,34 @@ public class JobRoleController {
     private JobRoleService jobRoleService;
 
     @GetMapping()
-    public List<JobRoleEntity> getJobRole(){
+    public List<JobRoleEntity> getJobRole() {
         return jobRoleService.getJobRole();
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<JobRoleEntity> getJobRoleById(@PathVariable int id) {
         return jobRoleService.getByJobRoleId(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @PostMapping()
     public List<JobRoleEntity> saveJobRole(@RequestBody List<JobRoleEntity> jobRole){
         return jobRoleService.saveJobRole(jobRole);
     }
+
     @PutMapping()
-    public List<JobRoleEntity> updateJobRole(@RequestBody List<JobRoleEntity> jobRole){
+    public List<JobRoleEntity> updateJobRole(@RequestBody List<JobRoleEntity> jobRole) {
         return jobRoleService.updateJobRole(jobRole);
     }
+
     @DeleteMapping
-    public void deleteAllJobRole(){
+    public void deleteAllJobRole() {
         jobRoleService.deleteAllJobRole();
     }
+
     @DeleteMapping("/{id}")
-    public void deleteJobRole( @PathVariable int id){
+    public void deleteJobRole(@PathVariable int id) {
         jobRoleService.deleteJobRole(id);
     }
 

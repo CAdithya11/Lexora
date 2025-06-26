@@ -17,6 +17,7 @@ export default function MeetingsListPage() {
   const [userDetails, setUserDetails] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [role, setRole] = useState('');
 
   // Feedback popup states
   const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
@@ -29,9 +30,8 @@ export default function MeetingsListPage() {
   const [hoveredStar, setHoveredStar] = useState(0);
   const [submittingFeedback, setSubmittingFeedback] = useState(false);
 
-  const handleGetUserDetails = (e) => {
-    console.log('This is the bedl', e);
-    setUserDetails(e);
+  const handleGetUserDetails = (user) => {
+    setUserDetails(user);
   };
 
   const showAlert = (text, type = 'success') => {
@@ -47,9 +47,16 @@ export default function MeetingsListPage() {
   const fetchMeetings = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:8080/api/v2/matchmaking/meeting/${userDetails.user_id}`);
-      console.log('This is the resposne ', response.data);
-      setMeetings(response.data);
+      console.log('id :', userDetails);
+      if (userDetails.role == 'MENTOR') {
+        const response = await axios.get(`http://localhost:8080/api/v2/matchmaking/meeting/${userDetails.user_id}`);
+        setMeetings(response.data);
+      } else {
+        const response = await axios.get(
+          `http://localhost:8080/api/v2/matchmaking/meeting/mentee/${userDetails.user_id}`
+        );
+        setMeetings(response.data);
+      }
     } catch (error) {
       console.error('Error fetching meetings:', error);
     } finally {

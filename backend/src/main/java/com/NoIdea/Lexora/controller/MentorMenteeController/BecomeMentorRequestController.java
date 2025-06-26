@@ -1,14 +1,13 @@
 package com.NoIdea.Lexora.controller.MentorMenteeController;
 
 import com.NoIdea.Lexora.dto.MentorMentee.BecomeMentorRequestDTO;
+import com.NoIdea.Lexora.dto.MentorMentee.LastBecomeMentorRequestDTO;
 import com.NoIdea.Lexora.enums.MentorMentee.VerificationStatus;
 import com.NoIdea.Lexora.model.MentorMenteeModel.BecomeMentorRequest;
 import com.NoIdea.Lexora.service.MentorMenteeService.BecomeMentorRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,8 +34,8 @@ public class BecomeMentorRequestController {
 
     //Admin Show Requests by user ID
     @GetMapping("/all/{userId}")
-    public ResponseEntity<List<BecomeMentorRequestDTO>> getAllRequestsFromTheUserId(@PathVariable Long userId){
-        List<BecomeMentorRequestDTO> response = becomeMentorRequestService.getAllRequestsFromTheUserId(userId);
+    public ResponseEntity<LastBecomeMentorRequestDTO> getAllRequestsFromTheUserId(@PathVariable Long userId){
+        LastBecomeMentorRequestDTO response = becomeMentorRequestService.getAllRequestsFromTheUserId(userId);
         HttpStatus status;
         if(response == null){
             status = HttpStatus.NOT_FOUND;

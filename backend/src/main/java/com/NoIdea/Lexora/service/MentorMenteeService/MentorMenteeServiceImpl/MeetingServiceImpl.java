@@ -7,12 +7,17 @@ import com.NoIdea.Lexora.model.User.UserEntity;
 import com.NoIdea.Lexora.repository.MentorMenteeRepository.MeetingRepository;
 import com.NoIdea.Lexora.repository.User.UserEntityRepository;
 import com.NoIdea.Lexora.service.MentorMenteeService.MeetingService;
+<<<<<<< Updated upstream
 // import io.micrometer.observation.ObservationFilter;
+=======
+>>>>>>> Stashed changes
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.Collator;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,10 +40,11 @@ public class MeetingServiceImpl implements MeetingService {
     private ModelMapper modelMapper;
 
     @Override
-    public MeetingDTO createMeeting(Long user_id, Meeting meeting) {
+    public MeetingDTO createMeeting(Long user_id, Long mentee_id, Meeting meeting) {
         UserEntity user = userEntityRepository.findById(user_id).orElse(null);
         meeting.setUser(user);
         meeting.setStatus(MeetingStatus.UPCOMING);
+        meeting.setMentee_id(mentee_id);
         meetingRepository.save(meeting);
         return modelMapper.map(meeting, MeetingDTO.class);
     }
@@ -91,6 +97,12 @@ public class MeetingServiceImpl implements MeetingService {
             return modelMapper.map(meeting, MeetingDTO.class);
         }
         return null;
+    }
+    @Override
+    public List<MeetingDTO> findMeetingByMenteeId(Long menteeId){
+        List<Meeting> meeting = meetingRepository.findMeetingByMenteeId(menteeId);
+        return meeting.stream().map(MeetingDTO::new).collect(Collectors.toList());
+
     }
 
 }
