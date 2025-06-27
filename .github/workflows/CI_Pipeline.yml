@@ -59,7 +59,7 @@ jobs:
       - name: waiting for springboot to start
         run: |
           echo "Waiting to springboot to become healthy"
-          for i in {1..30} do
+          for i in {1..30}; do
             if curl -s http://localhost:8080/actuator/health | grep UP; then
               echo "Spring Boot is up!"
               break
