@@ -4,8 +4,12 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,9 +20,17 @@ public class SalaryBasedIndustryInsightsTest {
     private WebDriverWait wait;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IOException {
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+
+        ChromeOptions options = new ChromeOptions();
+
+        // Create a unique temp directory for the user data dir
+        Path tempProfileDir = Files.createTempDirectory("chrome-profile-");
+        options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath().toString());
+
+        driver = new ChromeDriver(options);
+
         wait = new WebDriverWait(driver, Duration.ofSeconds(60));
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
