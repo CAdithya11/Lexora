@@ -20,7 +20,7 @@ const SearchRoadmap = () => {
   const [progressData, setProgressData] = useState({
     overall: 0,
     completedItems: { mainNodes: [], subCategories: [], steps: [] },
-    totalItems: { mainNodes: 0, subCategories: 0, steps: 0 }
+    totalItems: { mainNodes: 0, subCategories: 0, steps: 0 },
   });
 
   const handleProgressChange = (newProgress) => {
@@ -37,12 +37,12 @@ const SearchRoadmap = () => {
     const updatedProgress = { ...roadmapProgress };
 
     for (const stepId in updatedProgress) {
-        if (completedSteps.includes(stepId)) {
-            updatedProgress[stepId].status = "COMPLETED";
-        }
+      if (completedSteps.includes(stepId)) {
+        updatedProgress[stepId].status = 'COMPLETED';
+      }
     }
     return updatedProgress;
-}
+  }
 
   useEffect(() => {
     const userDetails = localStorage.getItem('user');
@@ -89,15 +89,13 @@ const SearchRoadmap = () => {
     }
   };
 
-  // Handle Roadmap Progress 
+  // Handle Roadmap Progress
   const [roadmapProgress, setRoadmapProgress] = useState({});
 
-const handleProgressUpdate = (updatedProgress) => {
-  setRoadmapProgress(updatedProgress);
-  console.log("THIS IS THE PROGRESS RESPONSE",updatedProgress);
-};
-
-
+  const handleProgressUpdate = (updatedProgress) => {
+    setRoadmapProgress(updatedProgress);
+    console.log('THIS IS THE PROGRESS RESPONSE', updatedProgress);
+  };
 
   const handleSkillSubmit = () => {
     if (!skill) {
@@ -304,7 +302,6 @@ const handleProgressUpdate = (updatedProgress) => {
     return `${jobRole} Roadmap`;
   };
 
-
   // Save roadmap data to backend
   const saveRoadmapToBackend = async () => {
     if (!roadmapData || !roadmapData.jsonData) {
@@ -317,10 +314,10 @@ const handleProgressUpdate = (updatedProgress) => {
     try {
       // Make sure we have the correct data structure that matches our backend model
       const roadmapData_json = roadmapData.jsonData;
-      setRid(Rid + 1)
+      setRid(Rid + 1);
 
-      const updatedProgress = updateCompletedSteps(roadmapData_json.progress,progressData );
-      
+      const updatedProgress = updateCompletedSteps(roadmapData_json.progress, progressData);
+
       // Create the roadmap object matching the exact structure of the backend model
       const roadmapToSave = {
         r_Id: Rid,
@@ -343,7 +340,7 @@ const handleProgressUpdate = (updatedProgress) => {
         progress: updatedProgress,
       };
 
-      // Send data to the backend 
+      // Send data to the backend
       const response = await axios.post('http://localhost:8080/api/roadmaps', roadmapToSave);
 
       if (response.status === 201 || response.status === 200) {
@@ -359,8 +356,7 @@ const handleProgressUpdate = (updatedProgress) => {
     } finally {
       setIsSaving(false);
     }
-    console.log("Payload to backend:", payload);
-
+    console.log('Payload to backend:', payload);
   };
 
   return (
@@ -373,7 +369,7 @@ const handleProgressUpdate = (updatedProgress) => {
             <input
               type="text"
               placeholder="Frontend Developer"
-              id='SX4'
+              id="SX4"
               className="w-96 py-2 px-4 text-base border border-gray-300 rounded-l-md focus:outline-none"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
@@ -381,7 +377,7 @@ const handleProgressUpdate = (updatedProgress) => {
             <button
               className="bg-blue-600 hover:bg-blue-700 text-white rounded-r-md py-2 px-5 text-base cursor-pointer h-full"
               onClick={handleInitialSubmit}
-              id='GenerateButton'
+              id="GenerateButton"
             >
               Generate
             </button>
@@ -400,7 +396,7 @@ const handleProgressUpdate = (updatedProgress) => {
               <div className="flex flex-col gap-4">
                 <button
                   onClick={() => handleOptionSelect(1)}
-                  id='OptionOneSelection'
+                  id="OptionOneSelection"
                   className="p-4 text-left border border-gray-300 rounded-md bg-white hover:bg-gray-100 cursor-pointer transition-colors"
                 >
                   1. In which skill area do you want to improve for becoming a {jobRole}?
@@ -414,7 +410,8 @@ const handleProgressUpdate = (updatedProgress) => {
               </div>
               <button
                 onClick={resetForm}
-                className="mt-5 py-2 px-5 bg-blue-600 border text-white border-gray-300 rounded-md cursor-pointer hover:bg-blue-700 ">
+                className="mt-5 py-2 px-5 bg-blue-600 border text-white border-gray-300 rounded-md cursor-pointer hover:bg-blue-700 "
+              >
                 Go Back
               </button>
             </div>
@@ -425,7 +422,7 @@ const handleProgressUpdate = (updatedProgress) => {
               <div className="mb-5">
                 <input
                   type="text"
-                  id='SkillRoadmap'
+                  id="SkillRoadmap"
                   value={skill}
                   onChange={(e) => setSkill(e.target.value)}
                   placeholder="Example: JavaScript, Design, Database, etc."
@@ -442,7 +439,7 @@ const handleProgressUpdate = (updatedProgress) => {
                 </button>
                 <button
                   onClick={handleSkillSubmit}
-                  id='SkillGenerateRoadmap'
+                  id="SkillGenerateRoadmap"
                   className="py-2 px-5 bg-blue-600 hover:bg-blue-700 text-white rounded-md cursor-pointer"
                 >
                   Generate Roadmap
@@ -460,7 +457,11 @@ const handleProgressUpdate = (updatedProgress) => {
           {roadmapData && !isLoading && (
             <div className="mb-8">
               {roadmapData.jsonData ? (
-                <Roadmap jobGoal={getRoadmapTitle()} onProgressChange={handleProgressChange} JsonRoadmapData={roadmapData.jsonData} />
+                <Roadmap
+                  jobGoal={getRoadmapTitle()}
+                  onProgressChange={handleProgressChange}
+                  JsonRoadmapData={roadmapData.jsonData}
+                />
               ) : (
                 <div>{roadmapData.html}</div>
               )}
@@ -474,7 +475,7 @@ const handleProgressUpdate = (updatedProgress) => {
                 <button
                   className="py-2 px-5 bg-blue-600 hover:bg-blue-700 text-white rounded-md cursor-pointer"
                   onClick={saveRoadmapToBackend}
-                  id='SaveRoadmap'
+                  id="SaveRoadmap"
                   disabled={isSaving}
                 >
                   {isSaving ? 'Saving...' : 'Save'}

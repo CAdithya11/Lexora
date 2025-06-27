@@ -99,9 +99,6 @@
 			<scope>runtime</scope>
 		</dependency>
 
-
-
-
 		<!--Selenium testing-->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
@@ -114,8 +111,19 @@
 			<artifactId>webdrivermanager</artifactId>
 			<version>6.0.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 		
-	</dependencies>
+	
+   <dependency>
+     <groupId>io.github.openmaqs.selenium</groupId>
+     <artifactId>openmaqs-selenium</artifactId>
+     <version>3.0.1</version>
+   </dependency>
+ </dependencies>
 
 	<build>
 		<plugins>
