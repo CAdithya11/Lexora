@@ -1,4 +1,4 @@
-package com.NoIdea.Lexora.Selenium.IndustryInsights;
+package com.NoIdea.Lexora.Selenium.IndustryInsights.Salary;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
