@@ -81,7 +81,7 @@ jobs:
           
       - name: Install frontend dependancies
         working-directory: ./Frontend
-        run: npm ci # npm ci is faster than npm install
+        run: npm ci --legacy-peer-deps # npm ci is faster than npm install
       
           
       
