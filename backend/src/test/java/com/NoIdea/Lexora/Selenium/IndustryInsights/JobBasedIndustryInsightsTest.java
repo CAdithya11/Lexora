@@ -1,6 +1,8 @@
 package com.NoIdea.Lexora.Selenium.IndustryInsights;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,6 +21,7 @@ public class JobBasedIndustryInsightsTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
+    private Path tempProfileDir;
 
     @BeforeEach
     public void setUp() throws IOException {
@@ -26,8 +30,8 @@ public class JobBasedIndustryInsightsTest {
         ChromeOptions options = new ChromeOptions();
 
         // Create a unique temp directory for the user data dir
-        Path tempProfileDir = Files.createTempDirectory("chrome-profile-");
-        options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath().toString());
+        tempProfileDir = Files.createTempDirectory("chrome-profile-" + UUID.randomUUID());
+        options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath());
 
         driver = new ChromeDriver(options);
 
@@ -38,10 +42,12 @@ public class JobBasedIndustryInsightsTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws IOException {
         if (driver != null) {
             driver.quit();
         }
+        // Optional cleanup
+        FileUtils.deleteDirectory(tempProfileDir.toFile());
     }
 
     private void waitAndClick(By locator) {

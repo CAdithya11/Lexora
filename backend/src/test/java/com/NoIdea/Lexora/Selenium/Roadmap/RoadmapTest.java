@@ -3,6 +3,7 @@ package com.NoIdea.Lexora.Selenium.Roadmap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeEach;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -18,6 +19,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.Duration;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,6 +27,7 @@ public class RoadmapTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
+    private Path tempProfileDir;
 
     @BeforeEach
     public void setUp() throws IOException {
@@ -33,8 +36,8 @@ public class RoadmapTest {
         ChromeOptions options = new ChromeOptions();
 
         // Create a unique temp directory for the user data dir
-        Path tempProfileDir = Files.createTempDirectory("chrome-profile-");
-        options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath().toString());
+        tempProfileDir = Files.createTempDirectory("chrome-profile-" + UUID.randomUUID());
+        options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath());
 
         driver = new ChromeDriver(options);
 
@@ -45,11 +48,14 @@ public class RoadmapTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws IOException {
         if (driver != null) {
             driver.quit();
         }
+        // Optional cleanup
+        FileUtils.deleteDirectory(tempProfileDir.toFile());
     }
+
 
     // --- Helper: Wait and click ---
     private void waitAndClick(By locator) {
