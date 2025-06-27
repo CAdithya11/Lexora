@@ -28,9 +28,6 @@ jobs:
           --health-retries=5
 
     steps:
-      - name: Wait for MySQL and MongoDB to be ready
-        run: sleep 30
-        
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -44,7 +41,7 @@ jobs:
         with: 
           java-version: 21
           distribution: temurin
-      
+
       # This creates the machine-readable format .class file inside a .jar container
       # Bcz with github actions there is no compiler do it automatically
       - name: Build the project
@@ -67,21 +64,47 @@ jobs:
             echo "Waiting..."
             sleep 5
           done
-      # curl -s Sends an HTTP GET request silently. get a json like {"status":"UP"}
-      # fi - End of the if statment. Not Else 
-      
-      - name: Run JUnit tests
-        working-directory: backend
-        run: mvn test
+        # curl -s Sends an HTTP GET request silently. get a json like {"status":"UP"}
+        # fi - End of the if statment. Not Else 
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.9.1
         with:
           node-version: '20'
-          
+
       - name: Install frontend dependancies
         working-directory: ./Frontend
         run: npm ci --legacy-peer-deps # npm ci is faster than npm install
-      
-          
-      
+
+      - name: Build frontend
+        working-directory: ./Frontend
+        run: npm run build
+
+      - name: Serve frontend
+        working-directory: ./Frontend
+        run: |
+          npm install -g serve
+          nohup serve -s dist -l 5173 &
+
+      - name: waiting for frontend to start
+        run: |
+          echo "Waiting for frontend to become ready"
+          for i in {1..30}; do
+            if curl -s http://localhost:5173 | grep Lexora; then
+              echo "Frontend is ready!"
+              break
+            fi
+            echo "Waiting..."
+            sleep 5
+          done
+
+      - name: Install Chrome for Selenium
+        run: |
+          sudo apt update
+          sudo apt install -y wget unzip xvfb libxi6 libgconf-2-4 libnss3 libxss1 libappindicator1 libindicator7
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
+
+      - name: Run JUnit tests
+        working-directory: backend
+        run: mvn test
