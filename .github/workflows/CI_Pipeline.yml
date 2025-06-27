@@ -23,9 +23,11 @@ jobs:
       # This creates the machine-readable format .class file inside a .jar container
       # Bcz with github actions there is no compiler do it automatically
       - name: Build the project
+        working-directory: backend # Just like cd backend
         run: mvn clean package --no-transfer-progress 
 
       - name: Run Spring boot application
+        working-directory: backend # Just like cd backend
         run: java -jar target/*.jar
 
       
