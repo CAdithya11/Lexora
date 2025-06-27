@@ -1,4 +1,4 @@
-package com.NoIdea.Lexora.Selenium.IndustryInsights;
+package com.NoIdea.Lexora.Selenium.IndustryInsights.Skill;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -17,7 +17,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JobBasedIndustryInsightsTest {
+public class SkillBasedIndustryInsightsTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
@@ -32,6 +32,7 @@ public class JobBasedIndustryInsightsTest {
         // Create a unique temp directory for the user data dir
         tempProfileDir = Files.createTempDirectory("chrome-profile-" + UUID.randomUUID());
         options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath());
+
 
         driver = new ChromeDriver(options);
 
@@ -61,10 +62,6 @@ public class JobBasedIndustryInsightsTest {
         element.sendKeys(value);
     }
 
-    private void waitForChartToLoad() {
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("showTrends")));
-    }
-
     private void loginToApplication() {
         waitAndClick(By.id("singInButton"));
         waitAndSendKeys(By.name("signinemail"), "anjalisewmini5@gmail.com");
@@ -72,51 +69,51 @@ public class JobBasedIndustryInsightsTest {
         waitAndClick(By.id("loginButton"));
     }
 
-    @Test
-    @DisplayName("Job Based Industry Insights Workflow Test")
-    public void testJobBasedIndustryInsights() {
+    // Wait untill all is appeard
+    private void waitForChartToLoad() {
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("showTrends")));
+    }
 
+    @Test
+    @DisplayName("Industry Insights Workflow Test")
+    public void testSkillBasedIndustryInsights() {
         // Step 1: Login
         loginToApplication();
 
-        // Step 2: Navigate to Job Trends
+        // Step 2: Navigate to Skill Trends
         waitAndClick(By.id("Industry Insights"));
-        waitAndClick(By.id("JobTrends"));
+        waitAndClick(By.id("SkillTrends"));
 
-        // Step 3: Select Country
+        // Step 3: Show Pie Chart
+        waitForChartToLoad();
+        waitAndClick(By.id("pie"));
+        waitAndClick(By.id("line"));
+        waitAndClick(By.id("radar"));
+        waitAndClick(By.id("salary"));
+        // chart element
+
+        // Step 4: Select Country
         waitAndClick(By.id("Country"));
         waitAndSendKeys(By.id("SearchCountries"), "United States");
         waitAndClick(By.id("United States"));
-        waitForChartToLoad();
 
-        // Step 4: Date Filters
+        // Step 5: Date Filters
         waitAndClick(By.id("DateTime"));
         waitAndClick(By.id("year"));
-        waitAndClick(By.id("year")); // clicked twice in original
         waitAndClick(By.id("week"));
         waitAndClick(By.id("ApplyDateTime"));
-        waitForChartToLoad();
 
-        // Step 5: View Charts
-        waitAndClick(By.id("pie"));
-        waitForChartToLoad();
-
+        // Step 6: View Charts
         waitAndClick(By.id("line"));
-        waitForChartToLoad();
-
         waitAndClick(By.id("radar"));
-        waitForChartToLoad();
-
         waitAndClick(By.id("salary"));
-        waitForChartToLoad();
 
-        // Step 6: Select Job Categories
+        // Step 7: Job Category Selections
         waitAndClick(By.id("Software Development"));
         waitAndClick(By.id("Web Development"));
-        waitForChartToLoad();
 
-        // Step 7: Final Assertion
+        // Step 8: Verify Page Still Active
         assertTrue(driver.getTitle().toLowerCase().contains("lexora") || driver.getCurrentUrl().contains("Lexora"),
-                "User should remain on Lexora page after all interactions.");
+                "User should remain in Lexora site after charts are viewed.");
     }
 }
