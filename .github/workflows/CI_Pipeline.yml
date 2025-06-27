@@ -18,6 +18,7 @@ jobs:
         uses: actions/setup-java@v3.14.1
         with: 
           java-version: 21
+          distribution: temurin
 
       # This creates the machine-readable format .class file inside a .jar container
       # Bcz with github actions there is no compiler do it automatically
