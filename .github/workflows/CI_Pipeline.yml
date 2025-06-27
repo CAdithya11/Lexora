@@ -13,15 +13,21 @@ jobs:
       matrix:
         mongodb-version: ['6.0', '7.0', '8.0']
 
-    steps:
-      - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql root password: ""
-          host port: 3306
-          mysql database: lexoradb
-          mysql user: root
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: ""
+          MYSQL_DATABASE: lexoraDB
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
+    steps:
       - name: Wait for MySQL and MongoDB to be ready
         run: sleep 30
         
