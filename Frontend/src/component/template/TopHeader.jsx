@@ -296,13 +296,7 @@ export default function TopHeader({ HeaderMessage, handleGetUserDetails }) {
                   <ul className="py-1">
                     <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-gray-700">
                       <Home size={17} className="text-gray-500" />
-<<<<<<< Updated upstream
-                      <Link to="/"><span className="text-m">Home</span></Link>
-                    </li>
-                    <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-gray-700">
-                      <User size={17} className="text-gray-500" />
-                      <Link to="/settings/profile"><span className="text-m">Profile</span></Link>
-=======
+
                       <Link to={'/'}>
                         <span className="text-m">Home</span>
                       </Link>
@@ -312,7 +306,6 @@ export default function TopHeader({ HeaderMessage, handleGetUserDetails }) {
                       <Link to={'/settings/profile'}>
                         <span className="text-m">Profile</span>{' '}
                       </Link>
->>>>>>> Stashed changes
                     </li>
                     <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-gray-700">
                       <Settings size={17} className="text-gray-500" />

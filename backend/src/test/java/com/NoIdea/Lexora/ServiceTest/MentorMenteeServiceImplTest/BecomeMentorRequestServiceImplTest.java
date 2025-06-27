@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 class BecomeMentorRequestServiceImplTest {
 
     @InjectMocks
-    private BecomeMentorRequestServiceImpl requestService;
+    private BecomeMentorRequestServiceImplTest requestService;
 
     @Mock
     private BecomeMentorRequestRepository requestRepository;

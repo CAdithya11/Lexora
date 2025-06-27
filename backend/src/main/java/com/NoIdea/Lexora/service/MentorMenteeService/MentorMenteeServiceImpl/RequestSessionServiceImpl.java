@@ -1,9 +1,5 @@
 package com.NoIdea.Lexora.service.MentorMenteeService.MentorMenteeServiceImpl;
 
-<<<<<<< Updated upstream
-// import com.NoIdea.Lexora.dto.MentorMentee.MeetingDTO;
-=======
->>>>>>> Stashed changes
 import com.NoIdea.Lexora.dto.MentorMentee.RequestSessionDTO;
 import com.NoIdea.Lexora.enums.MentorMentee.RequestSessionStatus;
 import com.NoIdea.Lexora.model.MentorMenteeModel.RequestSession;
@@ -14,10 +10,6 @@ import com.NoIdea.Lexora.service.MentorMenteeService.RequestSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-<<<<<<< Updated upstream
-// import java.util.ArrayList;
-=======
->>>>>>> Stashed changes
 import java.util.List;
 import java.util.stream.Collectors;
 
