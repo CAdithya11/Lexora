@@ -134,7 +134,7 @@ const Roadmap = ({ jobGoal, JsonRoadmapData, onProgressChange, handleUpdateRoadm
   };
 
   const handleCancel = () => {
-    navigate('/roadmapDetails');
+    window.location.reload();
   };
 
   // Helper function to get total steps count

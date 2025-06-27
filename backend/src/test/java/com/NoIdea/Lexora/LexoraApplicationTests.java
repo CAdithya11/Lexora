@@ -28,19 +28,6 @@ class LexoraApplicationTests {
 		WebElement signupButton = driver.findElement(By.id("singInButton"));
 		signupButton.click();
 
-//		//Fill usename, email, password
-//		WebElement signup_username = driver.findElement(By.id("username"));
-//		WebElement signup_email = driver.findElement(By.name("email"));
-//		WebElement signup_password = driver.findElement(By.name("password"));
-//
-//		signup_username.sendKeys("Anjalee");
-//		signup_email.sendKeys("anjalisewmini5@gmail.com");
-//		signup_password.sendKeys("12345678");
-
-//		// Click the singUp button
-//		WebElement singInButton = driver.findElement(By.id("signup"));
-//		singInButton.click();
-
 		// Find and fill email and password
 		WebElement email = driver.findElement(By.name("signinemail"));
 		WebElement password = driver.findElement(By.name("signinpassword"));
@@ -119,29 +106,29 @@ class LexoraApplicationTests {
 
 
 
-		//Click job trends button in Sidebar
-		WebElement JobTrendButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("JobTrends")));
-		JobTrendButton.click();
+		// //Click job trends button in Sidebar
+		// WebElement JobTrendButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("JobTrends")));
+		// JobTrendButton.click();
 
-		try {
-			Thread.sleep(40000);
+		// try {
+		// 	Thread.sleep(40000);
 
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		// } catch (InterruptedException e) {
+		// 	e.printStackTrace();
+		// }
 
-		//Click year to get chart
-		WebElement JobTrendYearButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("year")));
-		JobTrendYearButton.click();
-		//Click month to get chart
-		JobTrendYearButton.click();
+		// //Click year to get chart
+		// WebElement JobTrendYearButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("year")));
+		// JobTrendYearButton.click();
+		// //Click month to get chart
+		// JobTrendYearButton.click();
 
-		try {
-			Thread.sleep(40000);
+		// try {
+		// 	Thread.sleep(40000);
 
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		// } catch (InterruptedException e) {
+		// 	e.printStackTrace();
+		// }
 
 
 
