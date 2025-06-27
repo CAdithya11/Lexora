@@ -7,17 +7,10 @@ import com.NoIdea.Lexora.model.User.UserEntity;
 import com.NoIdea.Lexora.repository.MentorMenteeRepository.MeetingRepository;
 import com.NoIdea.Lexora.repository.User.UserEntityRepository;
 import com.NoIdea.Lexora.service.MentorMenteeService.MeetingService;
-<<<<<<< Updated upstream
-// import io.micrometer.observation.ObservationFilter;
-=======
->>>>>>> Stashed changes
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.text.Collator;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service

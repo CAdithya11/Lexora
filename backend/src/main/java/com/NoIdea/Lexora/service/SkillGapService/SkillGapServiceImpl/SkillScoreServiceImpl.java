@@ -8,10 +8,6 @@ import com.NoIdea.Lexora.service.SkillGapService.SkillScoreService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-<<<<<<< Updated upstream
-// import org.springframework.web.bind.annotation.GetMapping;
-=======
->>>>>>> Stashed changes
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,5 @@
 package com.NoIdea.Lexora.ServiceTest.MentorMenteeServiceImplTest;
 
-// import com.NoIdea.Lexora.dto.MentorMentee.MentorFeedbackDTO;
 import com.NoIdea.Lexora.model.MentorMenteeModel.MentorFeedback;
 import com.NoIdea.Lexora.model.User.UserEntity;
 import com.NoIdea.Lexora.repository.MentorMenteeRepository.MentorFeedbackRepo;
@@ -12,9 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDateTime;
-// import java.util.Arrays;
-import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,18 +34,18 @@ class MentorFeedbackServiceImplTest {
 
     // @Test
     // void testFindAllFeedbacksByMentorId_ReturnsList() {
-    //     MentorFeedback feedback = new MentorFeedback();
-    //     feedback.setMentor_id(1L);
-    //     feedback.setFeedback("Great session");
-    //     feedback.setRating(5);
-    //     feedback.setFeedback_date_time(LocalDateTime.now());
+    // MentorFeedback feedback = new MentorFeedback();
+    // feedback.setMentor_id(1L);
+    // feedback.setFeedback("Great session");
+    // feedback.setRating(5);
+    // feedback.setFeedback_date_time(LocalDateTime.now());
 
-    //     when(mentorFeedbackRepo.findAllByMentorId(1L)).thenReturn(Collections.singletonList(feedback));
+    // when(mentorFeedbackRepo.findAllByMentorId(1L)).thenReturn(Collections.singletonList(feedback));
 
-    //     var result = mentorFeedbackService.findAllFeedbacksByMentorId(1L);
+    // var result = mentorFeedbackService.findAllFeedbacksByMentorId(1L);
 
-    //     assertEquals(1, result.size());
-    //     assertEquals("Great session", result.get(0).getFeedback());
+    // assertEquals(1, result.size());
+    // assertEquals("Great session", result.get(0).getFeedback());
     // }
 
     @Test
@@ -70,13 +66,13 @@ class MentorFeedbackServiceImplTest {
 
     // @Test
     // void testCreateFeedback_Failure() {
-    //     MentorFeedback feedback = new MentorFeedback();
-    //     feedback.setUser(new UserEntity());
-    //     when(userEntityRepository.findById(null)).thenReturn(Optional.empty());
+    // MentorFeedback feedback = new MentorFeedback();
+    // feedback.setUser(new UserEntity());
+    // when(userEntityRepository.findById(null)).thenReturn(Optional.empty());
 
-    //     String result = mentorFeedbackService.createFeedback(feedback);
+    // String result = mentorFeedbackService.createFeedback(feedback);
 
-    //     assertEquals("Failed to create the feedback", result);
+    // assertEquals("Failed to create the feedback", result);
     // }
 
     @Test
