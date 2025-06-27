@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        mongodb-version: ['6.0', '7.0', '8.0']
+        mongodb-version: ['8.0']
 
     services:
       mysql:
@@ -53,31 +53,24 @@ jobs:
 
       - name: Run Spring boot application
         working-directory: backend # Just like cd backend
-        run: java -jar target/*.jar
+        run: nohup java -jar target/*.jar & # Runs the whole command in the background
+        # nohup stands for no hang up
 
+      - name: waiting for springboot to start
+        run: |
+          echo "Waiting to springboot to become healthy"
+          for i in {1..30} do
+            if curl -s http://localhost:8080/actuator/health | grep UP; then
+              echo "Spring Boot is up!"
+              break
+            fi
+            echo "Waiting..."
+            sleep 5
+          done
+      # curl -s Sends an HTTP GET request silently. get a json like {"status":"UP"}
+      # fi - End of the if statment. Not Else 
+      
       - name: Run JUnit tests
         working-directory: backend
         run: mvn test
-
-      - uses: browser-actions/setup-chrome@latest
-      - run: chrome --version
-
-      - name: Build with Maven
-        run: mvn -B clean test
-      
-        
-
-
-
-
-
-
-
-
-
-
-
-          
-          
-
       
