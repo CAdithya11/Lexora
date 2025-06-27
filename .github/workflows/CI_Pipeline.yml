@@ -73,4 +73,15 @@ jobs:
       - name: Run JUnit tests
         working-directory: backend
         run: mvn test
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.9.1
+        with:
+          node-version: '20'
+          
+      - name: Install frontend dependancies
+        working-directory: frontend
+        run: npm ci # npm ci is faster than npm install
+      
+          
       
