@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import userProfileHandleService from '../../services/userProfileHandleService';
 import Alert from '../../component/template/alert/Alert';
-import SignUp from '../../assets/images/signUp.jpg';
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
