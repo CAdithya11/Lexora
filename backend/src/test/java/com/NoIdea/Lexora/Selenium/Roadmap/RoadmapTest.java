@@ -59,6 +59,10 @@ public class RoadmapTest {
         if (driver != null) {
             driver.quit();
         }
+        if (tempProfileDir != null) {
+            FileUtils.deleteDirectory(tempProfileDir.toFile());
+        }
+
         // Optional cleanup
         FileUtils.deleteDirectory(tempProfileDir.toFile());
     }
