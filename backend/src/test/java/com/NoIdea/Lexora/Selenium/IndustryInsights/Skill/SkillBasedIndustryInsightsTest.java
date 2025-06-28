@@ -56,9 +56,6 @@ public class SkillBasedIndustryInsightsTest {
         if (tempProfileDir != null) {
             FileUtils.deleteDirectory(tempProfileDir.toFile());
         }
-
-        // Optional cleanup
-        FileUtils.deleteDirectory(tempProfileDir.toFile());
     }
 
     private void waitAndClick(By locator) {
