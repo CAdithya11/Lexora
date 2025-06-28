@@ -62,9 +62,6 @@ public class RoadmapTest {
         if (tempProfileDir != null) {
             FileUtils.deleteDirectory(tempProfileDir.toFile());
         }
-
-        // Optional cleanup
-        FileUtils.deleteDirectory(tempProfileDir.toFile());
     }
 
     // --- Helper: Wait and click ---
