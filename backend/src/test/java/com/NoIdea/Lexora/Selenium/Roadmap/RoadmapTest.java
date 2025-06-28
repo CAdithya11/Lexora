@@ -35,9 +35,16 @@ public class RoadmapTest {
 
         ChromeOptions options = new ChromeOptions();
 
-        // Create a unique temp directory for the user data dir
-        tempProfileDir = Files.createTempDirectory("chrome-profile-" + UUID.randomUUID());
-        options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath());
+        // For CI environments like GitHub Actions
+        options.addArguments("--headless=new"); // modern headless mode
+        options.addArguments("--disable-gpu");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+
+        // Optional - only use if needed (but in CI, it's risky)
+        // tempProfileDir = Files.createTempDirectory("chrome-profile-" +
+        // UUID.randomUUID());
+        // options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath());
 
         driver = new ChromeDriver(options);
 
@@ -55,7 +62,6 @@ public class RoadmapTest {
         // Optional cleanup
         FileUtils.deleteDirectory(tempProfileDir.toFile());
     }
-
 
     // --- Helper: Wait and click ---
     private void waitAndClick(By locator) {
