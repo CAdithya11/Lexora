@@ -84,12 +84,19 @@ jobs:
       - name: Wait for frontend to be ready
         run: wait-on http://localhost:5173/Lexora/
 
-      - name: Install Chrome for Selenium
+      - name: Install Chrome **102** and ChromeDriver **102**
         run: |
-          sudo apt update
-          sudo apt install -y wget unzip xvfb libxi6 libgconf-2-4 libnss3 libxss1 libappindicator1 libindicator7
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
+          sudo apt-get update
+          sudo apt-get install -y unzip wget
+          
+          wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_102.0.5005.61-1_amd64.deb
+          sudo dpkg -i google-chrome-stable_102.0.5005.61-1_amd64.deb || sudo apt-get -f install -y
+          
+          wget https://chromedriver.storage.googleapis.com/102.0.5005.61/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+          chromedriver --version
+          google-chrome --version
 
       - name: Run JUnit tests
         working-directory: backend
