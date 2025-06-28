@@ -25,7 +25,7 @@ public class JobBasedIndustryInsightsTest {
 
     @BeforeEach
     public void setUp() throws IOException {
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().driverVersion("125.0.6422.60").setup();
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new");
@@ -35,7 +35,6 @@ public class JobBasedIndustryInsightsTest {
         options.addArguments("--disable-extensions");
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--remote-debugging-port=9222");
-
 
         driver = new ChromeDriver(options);
 

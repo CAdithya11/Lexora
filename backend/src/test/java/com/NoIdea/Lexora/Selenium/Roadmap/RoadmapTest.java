@@ -31,7 +31,7 @@ public class RoadmapTest {
 
     @BeforeEach
     public void setUp() throws IOException {
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().driverVersion("125.0.6422.60").setup();
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new");
