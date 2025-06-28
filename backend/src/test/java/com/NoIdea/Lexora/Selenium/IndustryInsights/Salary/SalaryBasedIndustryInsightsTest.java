@@ -28,17 +28,14 @@ public class SalaryBasedIndustryInsightsTest {
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
-
-        // For CI environments like GitHub Actions
-        options.addArguments("--headless=new"); // modern headless mode
+        options.addArguments("--headless=new");
         options.addArguments("--disable-gpu");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--remote-debugging-port=9222");
 
-        // Optional - only use if needed (but in CI, it's risky)
-        // tempProfileDir = Files.createTempDirectory("chrome-profile-" +
-        // UUID.randomUUID());
-        // options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath());
 
         driver = new ChromeDriver(options);
 
