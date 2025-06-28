@@ -26,7 +26,7 @@ public class SkillBasedIndustryInsightsTest {
     @BeforeEach
     public void setUp() throws IOException {
         WebDriverManager.chromedriver().setup();
-        
+
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new");
         options.addArguments("--disable-gpu");
@@ -35,6 +35,11 @@ public class SkillBasedIndustryInsightsTest {
         options.addArguments("--disable-extensions");
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--remote-debugging-port=9222");
+    
+    // Add this for better stability in CI
+    options.addArguments("--disable-background-timer-throttling");
+    options.addArguments("--disable-renderer-backgrounding");
+    options.addArguments("--disable-backgrounding-occluded-windows");
 
         driver = new ChromeDriver(options);
 
