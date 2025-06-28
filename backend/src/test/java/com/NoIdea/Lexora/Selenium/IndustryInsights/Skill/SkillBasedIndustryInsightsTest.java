@@ -25,7 +25,8 @@ public class SkillBasedIndustryInsightsTest {
 
     @BeforeEach
     public void setUp() throws IOException {
-        WebDriverManager.chromedriver().driverVersion("125.0.6422.60").setup();
+        WebDriverManager.chromedriver().setup();
+        
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new");
         options.addArguments("--disable-gpu");
