@@ -80,23 +80,27 @@ jobs:
         working-directory: ./Frontend
         run: npm run build
 
+      # Use http-server instead of serve (more compatible with Selenium tests)
       - name: Serve frontend
         working-directory: ./Frontend
         run: |
-          npm install -g serve
-          nohup serve -s dist -l 5173 &
+          npm install -g http-server
+          nohup http-server ./dist -p 5173 &
+        # nohup makes the process continue running in the background even after the command step ends
 
       - name: waiting for frontend to start
         run: |
           echo "Waiting for frontend to become ready"
           for i in {1..30}; do
-            if curl -s http://localhost:5173 | grep Lexora; then
+            if curl -s http://localhost:5173/Lexora/ | grep Lexora; then
               echo "Frontend is ready!"
               break
             fi
             echo "Waiting..."
             sleep 5
           done
+        # We hit the exact route /Lexora/ since Selenium tests also go there
+        # If 'Lexora' text is found in the HTML, we assume it's ready
 
       - name: Install Chrome for Selenium
         run: |
@@ -104,7 +108,22 @@ jobs:
           sudo apt install -y wget unzip xvfb libxi6 libgconf-2-4 libnss3 libxss1 libappindicator1 libindicator7
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
+        # Installs Chrome browser so Selenium can control it
+        # Also installs dependencies needed for Chrome to run in headless mode
+
+      - name: Start virtual display for headless Chrome
+        run: |
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
+        env:
+          DISPLAY: :99
+        # Xvfb is like a virtual monitor required by ChromeDriver
+        # DISPLAY env variable makes Selenium connect to the virtual screen
 
       - name: Run JUnit tests
         working-directory: backend
+        env:
+          DISPLAY: :99 # Required so Selenium can run with Chrome in CI
         run: mvn test
+        # Runs Selenium tests written in Java using JUnit
+        # Will automatically open the browser and test the full workflow
