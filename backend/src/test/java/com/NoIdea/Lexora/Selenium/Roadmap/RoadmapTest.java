@@ -9,7 +9,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,23 +33,37 @@ public class RoadmapTest {
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--window-size=1920,1080");
-        options.addArguments("--remote-debugging-port=9222");
 
-        // Add this for better stability in CI
-        options.addArguments("--disable-background-timer-throttling");
-        options.addArguments("--disable-renderer-backgrounding");
-        options.addArguments("--disable-backgrounding-occluded-windows");
+        // Detect if running in CI environment
+        boolean isCI = isRunningInCI();
 
-        // Optional - only use if needed (but in CI, it's risky)
-        // tempProfileDir = Files.createTempDirectory("chrome-profile-" +
-        // UUID.randomUUID());
-        // options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath());
+        if (isCI) {
+            // CI-specific configuration (headless mode)
+            System.out.println("Running in CI environment - using headless mode");
+            options.addArguments("--headless=new");
+            options.addArguments("--disable-gpu");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-extensions");
+            options.addArguments("--window-size=1920,1080");
+            options.addArguments("--remote-debugging-port=9222");
+            options.addArguments("--disable-background-timer-throttling");
+            options.addArguments("--disable-renderer-backgrounding");
+            options.addArguments("--disable-backgrounding-occluded-windows");
+            options.addArguments("--disable-web-security");
+            options.addArguments("--allow-running-insecure-content");
+        } else {
+            // Local development configuration (visible browser)
+            System.out.println("Running in local environment - using visible browser");
+
+            // Create a unique temp directory for the user data dir
+            tempProfileDir = Files.createTempDirectory("chrome-profile-" + UUID.randomUUID());
+            options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath());
+
+            // Optional: Add some stability arguments for local testing too
+            options.addArguments("--disable-web-security");
+            options.addArguments("--allow-running-insecure-content");
+        }
 
         driver = new ChromeDriver(options);
 
@@ -65,9 +78,31 @@ public class RoadmapTest {
         if (driver != null) {
             driver.quit();
         }
-        if (tempProfileDir != null) {
-            FileUtils.deleteDirectory(tempProfileDir.toFile());
+
+        // Clean up temp profile directory (only exists in local environment)
+        if (tempProfileDir != null && Files.exists(tempProfileDir)) {
+            try {
+                FileUtils.deleteDirectory(tempProfileDir.toFile());
+            } catch (IOException e) {
+                System.err.println("Warning: Could not delete temp profile directory: " + e.getMessage());
+            }
         }
+    }
+
+    /**
+     * Detects if the test is running in a CI environment
+     */
+    private boolean isRunningInCI() {
+        // Check common CI environment variables
+        return System.getenv("CI") != null ||
+                System.getenv("GITHUB_ACTIONS") != null ||
+                System.getenv("JENKINS_URL") != null ||
+                System.getenv("TRAVIS") != null ||
+                System.getenv("CIRCLECI") != null ||
+                System.getenv("GITLAB_CI") != null ||
+                System.getProperty("ci") != null ||
+                // Check if running headless by system property
+                "true".equals(System.getProperty("headless"));
     }
 
     // --- Helper: Wait and click ---
@@ -115,12 +150,12 @@ public class RoadmapTest {
 
         // Step 5: Save generated roadmap
         try {
-            waitAndClick(By.id("SaveRoadmap")); // <-- double check this ID in your HTML
+            waitAndClick(By.id("SaveRoadmap"));
 
-            // Optional wait (in case backend takes time)
+            // Wait for potential backend processing
             Thread.sleep(2000);
 
-            // Handle alert if appears (due to backend 400 error or frontend message)
+            // Handle alert if appears
             try {
                 Alert alert = driver.switchTo().alert();
                 System.out.println("Alert shown: " + alert.getText());
