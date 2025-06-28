@@ -42,6 +42,11 @@ public class RoadmapTest {
         options.addArguments("--window-size=1920,1080");
         options.addArguments("--remote-debugging-port=9222");
 
+        // Add this for better stability in CI
+        options.addArguments("--disable-background-timer-throttling");
+        options.addArguments("--disable-renderer-backgrounding");
+        options.addArguments("--disable-backgrounding-occluded-windows");
+
         // Optional - only use if needed (but in CI, it's risky)
         // tempProfileDir = Files.createTempDirectory("chrome-profile-" +
         // UUID.randomUUID());
