@@ -24,35 +24,39 @@ public class JobBasedIndustryInsightsTest {
     private Path tempProfileDir;
 
     @BeforeEach
-public void setUp() throws IOException {
-    WebDriverManager.chromedriver().setup();
-    
-    ChromeOptions options = new ChromeOptions();
-    
-    // For CI environments like GitHub Actions
-    options.addArguments("--headless=new"); // modern headless mode
-    options.addArguments("--disable-gpu");
-    options.addArguments("--no-sandbox");
-    options.addArguments("--disable-dev-shm-usage");
+    public void setUp() throws IOException {
+        WebDriverManager.chromedriver().setup();
 
-    // Optional - only use if needed (but in CI, it's risky)
-    // tempProfileDir = Files.createTempDirectory("chrome-profile-" + UUID.randomUUID());
-    // options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath());
+        ChromeOptions options = new ChromeOptions();
 
-    driver = new ChromeDriver(options);
+        // For CI environments like GitHub Actions
+        options.addArguments("--headless=new"); // modern headless mode
+        options.addArguments("--disable-gpu");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
 
-    wait = new WebDriverWait(driver, Duration.ofSeconds(60));
-    driver.manage().window().maximize();
-    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-    driver.get("http://localhost:5173/Lexora/");
-}
+        // Optional - only use if needed (but in CI, it's risky)
+        // tempProfileDir = Files.createTempDirectory("chrome-profile-" +
+        // UUID.randomUUID());
+        // options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath());
 
+        driver = new ChromeDriver(options);
+
+        wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+        driver.get("http://localhost:5173/Lexora/");
+    }
 
     @AfterEach
     public void tearDown() throws IOException {
         if (driver != null) {
             driver.quit();
         }
+        if (tempProfileDir != null) {
+            FileUtils.deleteDirectory(tempProfileDir.toFile());
+        }
+
         // Optional cleanup
         FileUtils.deleteDirectory(tempProfileDir.toFile());
     }

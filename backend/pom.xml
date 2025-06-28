@@ -119,10 +119,10 @@
 		
 	
    <dependency>
-     <groupId>io.github.openmaqs.selenium</groupId>
-     <artifactId>openmaqs-selenium</artifactId>
-     <version>3.0.1</version>
-   </dependency>
+  <groupId>org.seleniumhq.selenium</groupId>
+  <artifactId>selenium-java</artifactId>
+  <version>4.21.0</version> <!-- or latest available -->
+</dependency>
  </dependencies>
 
 	<build>
