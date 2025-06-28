@@ -88,17 +88,19 @@ jobs:
           nohup http-server ./dist -p 5173 &
         # nohup makes the process continue running in the background even after the command step ends
 
-      - name: waiting for frontend to start
+      - name: Wait for frontend to be ready
         run: |
-          echo "Waiting for frontend to become ready"
+          echo "Waiting for frontend to become ready..."
           for i in {1..30}; do
-            if curl -s http://localhost:5173/Lexora/ | grep Lexora; then
+            status_code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5173/Lexora/)
+            if [ "$status_code" -eq 200 ]; then
               echo "Frontend is ready!"
               break
             fi
             echo "Waiting..."
             sleep 5
           done
+
         # We hit the exact route /Lexora/ since Selenium tests also go there
         # If 'Lexora' text is found in the HTML, we assume it's ready
 
