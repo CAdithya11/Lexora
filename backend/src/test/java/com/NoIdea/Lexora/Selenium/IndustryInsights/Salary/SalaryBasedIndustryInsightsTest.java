@@ -28,19 +28,10 @@ public class SalaryBasedIndustryInsightsTest {
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--window-size=1920,1080");
-        options.addArguments("--remote-debugging-port=9222");
-        
-        // Add this for better stability in CI
-        options.addArguments("--disable-background-timer-throttling");
-        options.addArguments("--disable-renderer-backgrounding");
-        options.addArguments("--disable-backgrounding-occluded-windows");
 
+        // Create a unique temp directory for the user data dir
+        tempProfileDir = Files.createTempDirectory("chrome-profile-" + UUID.randomUUID());
+        options.addArguments("--user-data-dir=" + tempProfileDir.toAbsolutePath());
 
         driver = new ChromeDriver(options);
 
@@ -55,9 +46,8 @@ public class SalaryBasedIndustryInsightsTest {
         if (driver != null) {
             driver.quit();
         }
-        if (tempProfileDir != null) {
-            FileUtils.deleteDirectory(tempProfileDir.toFile());
-        }
+        // Optional cleanup
+        FileUtils.deleteDirectory(tempProfileDir.toFile());
     }
 
     private void waitAndClick(By locator) {
