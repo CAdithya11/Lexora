@@ -91,8 +91,15 @@ jobs:
       - name: Wait for Spring Boot to start
         run: |
           echo "Waiting for Spring Boot to become healthy"
-          timeout 120 bash -c 'until curl -s http://localhost:8080/actuator/health | grep -q UP; do echo "Waiting for Spring Boot..."; sleep 5; done'
-          echo "Spring Boot is ready!"
+          for i in {1..30}; do
+            if curl -s http://localhost:8080/actuator/health | grep UP; then
+              echo "Spring Boot is up!"
+              break
+            fi
+            echo "Waiting..."
+            sleep 5
+          done
+
           
       - name: Wait for frontend to be ready
         run: |
