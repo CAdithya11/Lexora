@@ -57,12 +57,14 @@ jobs:
           sudo mv chrome-linux64 /opt/chrome
           sudo ln -s /opt/chrome/chrome /usr/bin/google-chrome
 
-      - name: Install ChromeDriver 125
+      - name: Install Chrome 125
         run: |
-          wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/125.0.6422.60/linux64/chromedriver-linux64.zip
-          unzip chromedriver-linux64.zip
-          chmod +x chromedriver-linux64/chromedriver
-          sudo mv chromedriver-linux64/chromedriver /usr/bin/chromedriver
+          wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/125.0.6422.60/linux64/chrome-linux64.zip
+          unzip chrome-linux64.zip
+          sudo mv chrome-linux64 /opt/chrome
+          sudo rm -f /usr/bin/google-chrome  # Remove existing symlink if exists
+          sudo ln -s /opt/chrome/chrome /usr/bin/google-chrome
+
 
       # Build backend
       - name: Build the project
