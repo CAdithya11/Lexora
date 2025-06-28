@@ -4,7 +4,7 @@ import HomeRealTime2 from '../../assets/images/HomeRealTime2.jpeg';
 import HomeRoadmap from '../../assets/images/HomeRoadmap.jpg';
 import HomeRoadmap2 from '../../assets/images/HomeRoadmap2.webp';
 import HomeMentoring from '../../assets/images/HomeMentoring.jpeg';
-import HomeMentoring2 from '../../assets/images/HomeMentoring.jpg';
+import HomeMentoring2 from '../../assets/images/HomeMentoring.jpeg';
 import HomeSkill from '../../assets/images/HomeSkill.jpg';
 import HomeSkill2 from '../../assets/images/HomeSkill2.jpeg';
 import HomePersona from '../../assets/images/HomePersona.jpeg';
