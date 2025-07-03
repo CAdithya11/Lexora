@@ -2,8 +2,6 @@ package com.NoIdea.Lexora.ServiceTest.AuthTest;
 
 
 import com.NoIdea.Lexora.service.Auth.JWTService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

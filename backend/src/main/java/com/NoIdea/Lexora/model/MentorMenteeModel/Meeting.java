@@ -26,7 +26,9 @@ public class Meeting {
     private String mentee;
     private Boolean feedback_given = false;
     private MeetingStatus status;
+    private Long mentee_id;
 
+    // Mentor
     @JsonIgnore
     @ManyToOne
     @JoinColumn(nullable = false,name = "user_id")

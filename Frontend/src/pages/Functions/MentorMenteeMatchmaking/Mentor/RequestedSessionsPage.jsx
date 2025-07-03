@@ -37,11 +37,19 @@ export default function RequestedSessionsPage() {
   const fetchRequestedSessions = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `http://localhost:8080/api/v2/matchmaking/requestSession/${mentor_id}/${user_id}`
-      );
-      console.log('This is the response ', response.data);
-      setRequestedSessions(response.data);
+      if (userDetails.role == 'MENTOR') {
+        const response = await axios.get(
+          `http://localhost:8080/api/v2/matchmaking/requestSession/${user_id}/${mentor_id}`
+        );
+        console.log('This is the response ', response.data);
+        setRequestedSessions(response.data);
+      } else {
+        const response = await axios.get(
+          `http://localhost:8080/api/v2/matchmaking/requestSession/${mentor_id}/${user_id}`
+        );
+        console.log('This is the response ', response.data);
+        setRequestedSessions(response.data);
+      }
     } catch (error) {
       console.error('Error fetching requested sessions:', error);
       showAlert('Failed to fetch requested sessions. Please try again.', 'error');
@@ -253,7 +261,6 @@ export default function RequestedSessionsPage() {
                           const displayName =
                             `${session.mentor.f_name || ''} ${session.mentor.l_name || ''}`.trim() ||
                             session.mentor.username;
-
                           return (
                             <tr key={session.id} className="hover:bg-gray-50">
                               <td className="px-6 py-4 whitespace-nowrap">
@@ -261,7 +268,9 @@ export default function RequestedSessionsPage() {
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
-                                  <div className="text-sm text-gray-500 flex items-center">{session.mentor.email}</div>
+                                  <div className="text-sm text-gray-500 flex items-center">
+                                    {userDetails.role === 'MENTOR' ? session.mentee_email : session.mentor.email}
+                                  </div>
                                 </div>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
@@ -325,7 +334,7 @@ export default function RequestedSessionsPage() {
                                   {userDetails.role === 'MENTOR' && session.status === 'ACCEPTED' && (
                                     <>
                                       <button
-                                        onClick={() => navigate(`/create-meeting/${session.user_id}`)}
+                                        onClick={() => navigate(`/create-meeting/${session.mentor.user_id}`)}
                                         className="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded text-white bg-blue-600 hover:bg-blue-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
                                         title="Approve Request"
                                       >

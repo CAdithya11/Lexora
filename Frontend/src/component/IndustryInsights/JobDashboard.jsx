@@ -184,13 +184,13 @@ const JobDashboard = ({ Datatype, jobRole, country, year, dateTime, jobCategory,
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
           </div>
         ) : (
-          <>
+          <div id="showTrends">
             {chartType === 'bar' && <BarChart Datatype={Datatype} DataSet={jobData} />}
             {chartType === 'pie' && <PieChartT Datatype={Datatype} DataSet={jobData} />}
             {chartType === 'radar' && <RadarChartT Datatype={Datatype} DataSet={jobData} />}
             {chartType === 'salary' && <DollarChart DataType={Datatype} DataSet={jobData} />}
             {chartType === 'line' && <DollarChart DataType={Datatype} DataSet={jobData} />}
-          </>
+          </div>
         )}
       </div>
     </div>

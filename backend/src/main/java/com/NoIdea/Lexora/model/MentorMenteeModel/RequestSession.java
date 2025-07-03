@@ -13,6 +13,7 @@ public class RequestSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long user_id;
+    private String mentee_email;
     private String mentor_message;
     private String mentee_message;
     private LocalDateTime requested_time;

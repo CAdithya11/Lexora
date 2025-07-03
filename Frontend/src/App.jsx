@@ -25,6 +25,11 @@ import Skill3 from './pages/Functions/SkillGapAnalyzer/Resultvisualize';
 import Skill4 from './pages/Functions/SkillGapAnalyzer/SkillList';
 import Skill5 from './pages/Functions/SkillGapAnalyzer/FetchResult';
 import Skill6 from './pages/Functions/SkillGapAnalyzer/SkillResultVizulize';
+import Skill7 from './pages/Functions/SkillGapAnalyzer/ResultFetch';
+import Skill8 from './pages/Functions/SkillGapAnalyzer/adminquestionpost';
+import Skill9 from './pages/Functions/SkillGapAnalyzer/adminquestionput';
+import Skill10 from './pages/Functions/SkillGapAnalyzer/adminskillput';
+import Skill11 from './pages/Functions/SkillGapAnalyzer/adminqizput';
 
 import FeedbackPage from './pages/Home/FeedbackPage';
 import { ProtectedRoute } from './component/template/protectedRoute/ProtectedRoute';
@@ -59,7 +64,6 @@ import NotificationPage from './pages/Notifications/NotificationPage';
 import MentorStatsDashboardPage from './pages/Functions/MentorMenteeMatchmaking/Mentor/MentorStatsDashboardPage';
 import MentorFeedbackPage from './pages/Functions/MentorMenteeMatchmaking/Mentor/MentorFeedbacksPage';
 
-
 function App() {
   return (
     <>
@@ -76,14 +80,41 @@ function App() {
           <Route path="/aboutus" element={<AboutUsPage />} />
           <Route path="/app" element={<AppsPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          
+
           {/* <Route path="/PersonaMatching" element={<CareerPersosna />} />
           <Route path="/Personas" element={<MatchedPersosna />} />
           <Route path="/persona" element={<Persona />} /> */}
           <Route path="/rgapi" element={<RoadmapGeminiApi />} />
           {/* <Route path="/ro" element={<RoadmapOption />} /> */}
-          <Route path="/skills/:jobRoleId" element={<Skill4 />} />
-          <Route path="/result/:jobRole" element={<Skill6 />} />
+
+
+          <Route path="/sk" element={<Skill />} />
+          <Route path="/sk1/:jobRoleId" element={<Skill1 />} />
+          <Route path="/sk2" element={<Skill2 />} />
+          <Route path="/sk3" element={<Skill3 />} />
+          <Route path="/sk4" element={<Skill5 />} />
+          <Route path="/sk11/:jobRoleId" element={<Skill11 />} />
+          
+            <Route path="/skills/:jobRoleId" element={<Skill4/>} />
+            <Route path="/sk10/:jobRoleId" element={<Skill10/>} />
+          <Route path="/result/:jobRole" element={<Skill6/>} />
+          <Route path="/fetch" element={<Skill7/>} />
+          <Route path="/f" element={<Skill8/>} />
+
+
+          
+
+          {/* Mentor Mentee Matchmaking New */}
+          <Route path="/mentorDashboardNew" element={<MentorDashboardNew />} />
+          <Route path="/teams" element={<CreateMeetingPage />} />
+          <Route path="/join-meeting" element={<JoinMeetingPage />} />
+          <Route path="/create-meeting" element={<CreateMeetingPage />} />
+          <Route path="/edit-meeting/:meetingId" element={<CreateMeetingPage title={"Edit Meeting"} />} />
+          <Route path="/meetingsList" element={<MeetingsListPage />} />
+          <Route path="join-meeting/:meetingId" element={<JoinMeetingPage />} />
+
+
+
 
           <Route element={<ProtectedRoute />}>
             {/* User profiles based*/}
@@ -117,6 +148,10 @@ function App() {
             <Route path="/sk2" element={<Skill2 />} />
             <Route path="/sk3" element={<Skill3 />} />
             <Route path="/sk4" element={<Skill5 />} />
+
+            <Route path="/ff" element={<Skill9/>}/>
+
+
             {/* Admin */}
             <Route path="/Admin/MentorRequests" element={<AdminMentorRequests />} />
             <Route path="/Adminfeedback" element={<ViewAllFeedbacks />} />

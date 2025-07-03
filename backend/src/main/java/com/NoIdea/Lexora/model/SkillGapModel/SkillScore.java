@@ -19,7 +19,6 @@ public class SkillScore {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "skillscore_seq")
     private Integer skillScoreId;
 
-
     private int predictedScore;
     private int totalQuestions;
     //    private String learningPath;

@@ -61,7 +61,6 @@ export default function SidebarSub() {
     try {
       const response = await axios.get(`http://www.localhost:8080/api/v2/notification/${userId}`);
       if (response.status === 200 || response.status === 201) {
-        console.log('Notifications fetched successfully:', response.data);
         const unread = response.data.filter((n) => n.status === 'UNREAD').length;
         setUnreadCount(unread);
       }
@@ -73,10 +72,7 @@ export default function SidebarSub() {
   const isLocation = location.pathname;
 
   useEffect(() => {
-    console.log('User Details', userDetails);
   }, [userDetails]);
-
-  console.log(isLocation);
   // Available years for the filter
   const years = ['2023', '2024', '2025', '2026'];
 
@@ -171,10 +167,17 @@ export default function SidebarSub() {
             text="Skill Gap Analyzer"
           >
             <Link to="/sk">
-              <SidebarSubItem text="Analyzer" active={isLocation == '/sk' ? true : false} />
+
+            <SidebarSubItem text="Anlyzer" active={isLocation == '/sk' ? true : false} />
             </Link>
             <Link to="/sk4">
+
+
+              
+
+
               <SidebarSubItem text=" Complted Gaps" active={isLocation == '/sk4' ? true : false} />
+
             </Link>
           </SidebarItem>
 
@@ -197,7 +200,9 @@ export default function SidebarSub() {
             <Link to="/savedPersonas">
               <SidebarSubItem
                 text="Matched Personas"
-                active={isLocation == '/savedPersonas'}
+
+                active={isLocation == '/savedPersonas' || isLocation ? true : false}
+
               />
             </Link>
           </SidebarItem>

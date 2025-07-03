@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Bell, CheckCircle, Clock, Trash2, X, Eye, CornerLeftUpIcon, Check } from 'lucide-react';
+import { Bell, CheckCircle, Clock, Trash2, X, Eye, CornerLeftUpIcon, Check, ArrowRight } from 'lucide-react';
 import axios from 'axios';
 import SidebarSub from '../../component/template/SidebarSub';
 import TopHeader from '../../component/template/TopHeader';
 import Alert from '../../component/template/alert/Alert';
+import { useNavigate } from 'react-router';
 
 // Notification Detail Modal Component
 const NotificationDetailModal = ({ notification, isOpen, onClose, onMarkAsRead, onDelete }) => {
@@ -109,6 +110,7 @@ export default function NotificationsPage() {
   const [alertType, setAlertType] = useState('');
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // all, unread, read
+  const navigate = useNavigate();
 
   const deleteAllNotifications = async () => {
     const confirmed = confirm('Are you sure you want to delete all notifications?');
@@ -116,6 +118,7 @@ export default function NotificationsPage() {
       try {
         notifications.forEach((notification) => {
           deleteNotification(notification.id);
+          window.location.reload();
           setAlertMessage('All notifications deleted successfully');
           setAlertType('success');
         });
@@ -323,7 +326,17 @@ export default function NotificationsPage() {
                             <div className="flex items-center">
                               <p className="text- font-medium text-gray-900 truncate">{notification.title}</p>
                             </div>
+
                             <p className="mt-1 text-sm text-gray-600 ">{notification.message}</p>
+                            {notification.title == 'MENTOR_SESSION_REQUEST' && (
+                              <button
+                                onClick={() => navigate(`../RequestedSessionsPage/0/${notification.recieverId}`)}
+                                className="inline-flex mt-4 cursor-pointer mb-4 items-center px-2 py-1 text-xs font-medium text-blue-600 bg-blue-100 rounded-full hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ml-2"
+                              >
+                                <ArrowRight className="h-4 w-4 mr-1" />
+                                <p className="text- font-medium ">Take Action</p>
+                              </button>
+                            )}
                             <p className="text-xs text-gray-400 mt-1">
                               {formatDateTime(notification.created_at || new Date().toISOString())}
                             </p>
@@ -359,7 +372,7 @@ export default function NotificationsPage() {
                 </ul>
               )}
             </div>
-            {unreadCount == 0 && notifications.length !== 0 && (
+            {notifications.length !== 0 && (
               <div className="flex justify-end mr-3">
                 <button
                   onClick={() => {
