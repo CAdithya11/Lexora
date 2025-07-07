@@ -14,25 +14,24 @@ export default function CreateMeetingPage({ TopHeadertitle }) {
   const [alertType, setAlertType] = useState('');
   const [loading, setLoading] = useState(false);
   const [userDetails, setUserDetails] = useState({});
-  const { meetingId, user_id } = useParams();
+  const { user_id } = useParams();
   const [menteeEmail, setMenteeEmail] = useState();
   const [menteeId, setMenteeId] = useState();
 
-  const handleGetUserDetails = (e) => {
-    setUserDetails(e.user_id);
+  const handleGetUserDetails = (user) => {
+    setUserDetails(user);
     setData((prev) => ({
       ...prev,
-      mentor: e.email,
+      mentor: user.email,
     }));
   };
 
   useEffect(() => {
     const fetchMenteeDetails = async () => {
       try {
-        const response = await axios.get(`http://www.localhost:8080/api/v1/profile/${24}`);
+        const response = await axios.get(`http://www.localhost:8080/api/v1/profile/${user_id}`);
         setMenteeId(response.data.user_id);
         setMenteeEmail(response.data.email);
-        console.log('Mentee User Details:', response.data.email);
       } catch (error) {
         console.error('Failed to fetch mentee details:', error);
       }
@@ -47,22 +46,21 @@ export default function CreateMeetingPage({ TopHeadertitle }) {
     end_time: '',
     mentor: '',
     mentee: '',
+    mentee_id: '',
   });
 
   useEffect(() => {
     const fetchMeeting = async () => {
-      if (meetingId) {
-        try {
-          const response = await axios.get(`http://localhost:8080/api/v2/matchmaking/meeting/meetingId/${meetingId}`);
-          console.log('Data is fetched', response.data);
-          setData(response.data);
-        } catch (error) {
-          console.error('Failed to fetch meeting:', error);
-        }
+      try {
+        const response = await axios.get(`http://localhost:8080/api/v2/matchmaking/meeting/meetingId/${0}`);
+        console.log('Data is fetched', response.data);
+        setData(response.data);
+      } catch (error) {
+        console.error('Failed to fetch meeting:', error);
       }
     };
     fetchMeeting();
-  }, [meetingId]);
+  }, []);
 
   const showAlert = (text, type = 'success') => {
     setAlertMessage(text);
@@ -97,11 +95,6 @@ export default function CreateMeetingPage({ TopHeadertitle }) {
     const { title, date, start_time, end_time, mentor, mentee } = data;
 
     // Validation
-    if (!title.trim()) {
-      showAlert('Meeting title is required', 'error');
-      return;
-    }
-
     if (!date || !start_time || !end_time) {
       showAlert('Please fill in all date and time fields', 'error');
       return;
@@ -120,19 +113,29 @@ export default function CreateMeetingPage({ TopHeadertitle }) {
     try {
       setLoading(true);
       const meeting_id = genId();
+
       const meet = { meeting_id, ...data };
       meet.mentee = menteeEmail;
+      meet.mentee_id = user_id;
+      meet.mentor = userDetails.email;
       console.log('This is that meeting that is created', meet);
       if (TopHeadertitle != undefined || TopHeadertitle != null) {
-        const response = axios.put(`http://localhost:8080/api/v2/matchmaking/meeting/${meet.id}`, meet);
+        axios.put(`http://localhost:8080/api/v2/matchmaking/meeting/${meet.id}`, meet);
         showAlert('Meeting Updated successfully! Redirecting...', 'success');
-        sendNotificationToUser(menteeId, 'Scheduled Meeting Updated', `Your meeting with ${meet.mentor} has been Rescheduled. Please check the meetings dahsboard for more details..`);
+        sendNotificationToUser(
+          menteeId,
+          'Scheduled Meeting Updated',
+          `Your meeting with ${meet.mentor} has been Rescheduled. Please check the meetings dahsboard for more details..`
+        );
         console.log('This Is the meeting: ', meet);
       } else {
-        const response = axios.post(`http://localhost:8080/api/v2/matchmaking/meeting/${userDetails}`, meet);
+        axios.post(`http://localhost:8080/api/v2/matchmaking/meeting/${userDetails.user_id}/${user_id}`, meet);
         showAlert('Meeting created successfully! Redirecting...', 'success');
-        sendNotificationToUser(menteeId, 'Scheduled Meeting', `Your meeting with ${meet.mentor} has been scheduled. Please check the meetings dahsboard for more details..`);
-
+        sendNotificationToUser(
+          menteeId,
+          'Scheduled Meeting',
+          `Your meeting with ${meet.mentor} has been scheduled. Please check the meetings dahsboard for more details..`
+        );
       }
       setTimeout(() => {
         navigate('/meetingsList/1');
@@ -157,7 +160,6 @@ export default function CreateMeetingPage({ TopHeadertitle }) {
             HeaderMessage={TopHeadertitle ? TopHeadertitle : 'Create Video Meeting'}
             handleGetUserDetails={handleGetUserDetails}
           />
-
           <div className="flex-1 flex m-5 flex-col pt-5 pl-10 overflow-auto">
             {/* Page Header */}
             <div className="mb-3">

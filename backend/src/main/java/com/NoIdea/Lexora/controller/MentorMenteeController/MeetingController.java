@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v2/matchmaking/meeting")
@@ -28,6 +26,17 @@ public class MeetingController {
         }
     }
 
+    // Find Meetings By Mentee Id
+    @GetMapping("/mentee/{mentee_id}")
+    public ResponseEntity<List<MeetingDTO>> findMeetingByMenteeId(@PathVariable Long mentee_id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(meetingService.findMeetingByMenteeId(mentee_id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(0).body(null);
+        }
+    }
+
     // Find Meetings By Meeting id
     @GetMapping("/meetingId/{meetingId}")
     public ResponseEntity<MeetingDTO> findMeetingByMeetingId(@PathVariable Long meetingId) {
@@ -42,10 +51,12 @@ public class MeetingController {
     }
 
     // Mentor Create a meeting with mentor user_id
-    @PostMapping("/{user_id}")
-    public ResponseEntity<MeetingDTO> createAMeeting(@PathVariable Long user_id, @RequestBody Meeting meeting) {
+    @PostMapping("/{user_id}/{mentee_id}")
+    public ResponseEntity<MeetingDTO> createAMeeting(@PathVariable Long user_id, @PathVariable Long mentee_id,
+            @RequestBody Meeting meeting) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(meetingService.createMeeting(user_id, meeting));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(meetingService.createMeeting(user_id, mentee_id, meeting));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -63,6 +74,7 @@ public class MeetingController {
                     .body("Please Check your Internet Connection");
         }
     }
+
     @PutMapping("/complete/{id}")
     public ResponseEntity<String> completeMeeting(@PathVariable Long id) {
         try {

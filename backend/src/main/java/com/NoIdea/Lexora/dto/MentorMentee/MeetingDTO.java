@@ -26,6 +26,7 @@ public class MeetingDTO {
     private Long user_id;
     private MeetingStatus status;
     private boolean feedbackGiven;
+    private Long mentee_id;
 
     public MeetingDTO(Meeting meeting) {
         this.id = meeting.getId();
@@ -39,5 +40,6 @@ public class MeetingDTO {
         this.user_id = meeting.getUser().getUser_id();
         this.status = meeting.getStatus();
         this.feedbackGiven = meeting.getFeedback_given();
+        this.mentee_id = meeting.getMentee_id();
     }
 }

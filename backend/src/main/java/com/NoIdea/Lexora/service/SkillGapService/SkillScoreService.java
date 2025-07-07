@@ -2,7 +2,6 @@ package com.NoIdea.Lexora.service.SkillGapService;
 
 import com.NoIdea.Lexora.dto.UserProfile.SkillScoreWithUserDTO;
 import com.NoIdea.Lexora.model.SkillGapModel.SkillScore;
-// import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;

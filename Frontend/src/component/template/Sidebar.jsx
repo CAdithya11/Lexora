@@ -1,8 +1,6 @@
 import { ChevronFirst, ChevronLast, MoreVertical, ChevronDown, ChevronRight } from 'lucide-react';
 import logo from '../../assets/logo.png';
-import profile from '../../assets/profile.png';
 import { createContext, useContext, useState, useEffect } from 'react';
-import '../../sidebar.css';
 
 const SidebarContext = createContext();
 

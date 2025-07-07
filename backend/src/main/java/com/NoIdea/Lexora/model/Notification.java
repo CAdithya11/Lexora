@@ -17,6 +17,7 @@ public class Notification
     private String message;
     private String notification;
     private NotificationStatus status;
+    
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity reciever;

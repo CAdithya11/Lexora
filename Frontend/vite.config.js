@@ -9,11 +9,11 @@ export default defineConfig({
   base: '/Lexora/', 
   plugins: [react(), tailwindcss()],
   optimizeDeps: {
-    exclude: ['pdfjs-dist'], // Exclude pdfjs-dist from dependency optimization
+    exclude: ['pdfjs-dist'], 
   },
   build: {
     rollupOptions: {
-      external: ['pdfjs-dist'], // Mark pdfjs-dist as external if not bundling
+      external: ['pdfjs-dist'], 
     },
   },
   test: {
@@ -22,9 +22,9 @@ export default defineConfig({
     setupFiles: './src/setupTests.js'
   },
   server:{
-    host:'0.0.0.0',
+    host:true,
     port:5173,
-    https: {
+     https: {
       key: fs.readFileSync('./192.168.1.2-key.pem'),
       cert: fs.readFileSync('./192.168.1.2.pem'),
     }
