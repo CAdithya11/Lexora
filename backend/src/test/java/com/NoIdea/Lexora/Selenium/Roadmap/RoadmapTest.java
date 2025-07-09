@@ -2,6 +2,7 @@ package com.NoIdea.Lexora.Selenium.Roadmap;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.BeforeEach;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -18,10 +19,9 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.Duration;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@Tag("selenium")
 public class RoadmapTest {
 
     private WebDriver driver;
@@ -39,35 +39,35 @@ public class RoadmapTest {
         System.out.println("Configuring Chrome for CI environment");
 
         // Essential arguments for GitHub Actions stability
-        options.addArguments("--headless=new");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--disable-background-timer-throttling");
-        options.addArguments("--disable-renderer-backgrounding");
-        options.addArguments("--disable-backgrounding-occluded-windows");
-        options.addArguments("--disable-ipc-flooding-protection");
-        options.addArguments("--window-size=1920,1080");
+        // options.addArguments("--headless=new");
+        // options.addArguments("--no-sandbox");
+        // options.addArguments("--disable-dev-shm-usage");
+        // options.addArguments("--disable-gpu");
+        // options.addArguments("--disable-extensions");
+        // options.addArguments("--disable-background-timer-throttling");
+        // options.addArguments("--disable-renderer-backgrounding");
+        // options.addArguments("--disable-backgrounding-occluded-windows");
+        // options.addArguments("--disable-ipc-flooding-protection");
+        // options.addArguments("--window-size=1920,1080");
 
-        // Additional stability arguments
-        options.addArguments("--disable-features=TranslateUI");
-        options.addArguments("--disable-features=BlinkGenPropertyTrees");
-        options.addArguments("--disable-default-apps");
-        options.addArguments("--disable-background-networking");
-        options.addArguments("--disable-sync");
-        options.addArguments("--metrics-recording-only");
-        options.addArguments("--no-first-run");
-        options.addArguments("--safebrowsing-disable-auto-update");
-        options.addArguments("--disable-component-update");
+        // // Additional stability arguments
+        // options.addArguments("--disable-features=TranslateUI");
+        // options.addArguments("--disable-features=BlinkGenPropertyTrees");
+        // options.addArguments("--disable-default-apps");
+        // options.addArguments("--disable-background-networking");
+        // options.addArguments("--disable-sync");
+        // options.addArguments("--metrics-recording-only");
+        // options.addArguments("--no-first-run");
+        // options.addArguments("--safebrowsing-disable-auto-update");
+        // options.addArguments("--disable-component-update");
 
-        // Memory and performance optimizations
-        options.addArguments("--memory-pressure-off");
-        options.addArguments("--max_old_space_size=4096");
+        // // Memory and performance optimizations
+        // options.addArguments("--memory-pressure-off");
+        // options.addArguments("--max_old_space_size=4096");
 
-        // Network settings
-        options.addArguments("--aggressive-cache-discard");
-        options.addArguments("--disable-background-mode");
+        // // Network settings
+        // options.addArguments("--aggressive-cache-discard");
+        // options.addArguments("--disable-background-mode");
 
         driver = new ChromeDriver(options);
 

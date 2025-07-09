@@ -16,7 +16,7 @@ import java.time.Duration;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@Tag("selenium")
 public class SalaryBasedIndustryInsightsTest {
 
     private WebDriver driver;
