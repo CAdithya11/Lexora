@@ -46,9 +46,9 @@ jobs:
         working-directory: backend
         run: mvn clean package --no-transfer-progress 
 
-      - name: Run JUnit tests
+      - name: Run only JUnit tests
         working-directory: backend
-        run: mvn test
+        run: mvn test -Dtest=!com.NoIdea.Lexora.Selenium.**
 
       - name: Print test failure report
         if: failure()
