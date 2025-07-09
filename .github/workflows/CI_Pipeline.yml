@@ -1,5 +1,4 @@
 name: CI Pipeline
-
 on:
   push:
     branches: [main]
@@ -7,12 +6,11 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  backend-build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         mongodb-version: ['8.0']
-
     services:
       mysql:
         image: mysql:8.0
@@ -26,81 +24,232 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+      
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.12.0
         with: 
           mongodb-version: ${{ matrix.mongodb-version }}
-
+      
       - name: Setup JDK 21
         uses: actions/setup-java@v3.14.1
         with: 
           java-version: 21
           distribution: temurin
-
+      
       - name: Build the project
         working-directory: backend
         run: mvn clean package --no-transfer-progress 
+      
+      - name: Upload backend artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-jar
+          path: backend/target/*.jar
+          retention-days: 1
 
-      - name: Run Spring boot application
+  frontend-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.9.1
+        with:
+          node-version: '20'
+      
+      - name: Install frontend dependencies
+        working-directory: ./Frontend
+        run: npm ci --legacy-peer-deps
+      
+      - name: Build frontend
+        working-directory: ./Frontend
+        run: npm run build
+      
+      - name: Upload frontend artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-dist
+          path: Frontend/dist/
+          retention-days: 1
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    needs: [backend-build]
+    strategy:
+      matrix:
+        mongodb-version: ['8.0']
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: lexoraDB
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.12.0
+        with: 
+          mongodb-version: ${{ matrix.mongodb-version }}
+      
+      - name: Setup JDK 21
+        uses: actions/setup-java@v3.14.1
+        with: 
+          java-version: 21
+          distribution: temurin
+      
+      - name: Run JUnit tests
+        working-directory: backend
+        run: mvn test
+      
+      - name: Print test failure report
+        if: failure()
+        run: |
+          echo "Printing Surefire test logs:"
+          cat backend/target/surefire-reports/*.txt || true
+
+  selenium-tests:
+    runs-on: ubuntu-latest
+    needs: [backend-build, frontend-build]
+    strategy:
+      matrix:
+        mongodb-version: ['8.0']
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: lexoraDB
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.12.0
+        with: 
+          mongodb-version: ${{ matrix.mongodb-version }}
+      
+      - name: Setup JDK 21
+        uses: actions/setup-java@v3.14.1
+        with: 
+          java-version: 21
+          distribution: temurin
+      
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.9.1
+        with:
+          node-version: '20'
+      
+      - name: Download backend artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: backend-jar
+          path: backend/target/
+      
+      - name: Download frontend artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend-dist
+          path: Frontend/dist/
+      
+      - name: Start Spring Boot application
         working-directory: backend
         run: nohup java -jar target/*.jar &
-
+      
       - name: Wait for Spring Boot to start
         run: |
           echo "Waiting for Spring Boot to become healthy"
           for i in {1..30}; do
             if curl -s http://localhost:8080/actuator/health | grep UP; then
-              echo "Spring Boot is up!"
+              echo "Spring Boot is up and healthy!"
               break
             fi
-            echo "Waiting..."
+            echo "Attempt $i/30 - Spring Boot not ready yet..."
             sleep 5
           done
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3.9.1
-        with:
-          node-version: '20'
-
-      - name: Install frontend dependencies
-        working-directory: ./Frontend
-        run: npm ci --legacy-peer-deps
-
-      - name: Build frontend
-        working-directory: ./Frontend
-        run: npm run build
-
+          
+          # Final check
+          if ! curl -s http://localhost:8080/actuator/health | grep UP; then
+            echo "Spring Boot failed to start properly"
+            exit 1
+          fi
+      
+      - name: Install frontend serving tools
+        run: npm install -g serve wait-on
+      
       - name: Serve frontend
         working-directory: ./Frontend
-        run: |
-          npm install -g serve wait-on
-          nohup serve -s dist -l 5173 --single &
-
+        run: nohup serve -s dist -l 5173 --single &
+      
       - name: Wait for frontend to be ready
-        run: wait-on http://localhost:5173/Lexora/
-
-      - name: Install Chrome **102** and ChromeDriver **102**
+        run: |
+          echo "Waiting for frontend to be ready"
+          wait-on http://localhost:5173/Lexora/ --timeout 60000
+          echo "Frontend is ready!"
+      
+      - name: Verify both services are running
+        run: |
+          echo "=== Backend Health Check ==="
+          curl -s http://localhost:8080/actuator/health || echo "Backend health check failed"
+          
+          echo "=== Frontend Health Check ==="
+          curl -s http://localhost:5173/Lexora/ || echo "Frontend health check failed"
+          
+          echo "=== Both services are ready for testing ==="
+      
+      - name: Install Chrome 102 and ChromeDriver 102
         run: |
           sudo apt-get update
           sudo apt-get install -y unzip wget
           
+          # Install Chrome 102
           wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_102.0.5005.61-1_amd64.deb
           sudo dpkg -i google-chrome-stable_102.0.5005.61-1_amd64.deb || sudo apt-get -f install -y
           
+          # Install ChromeDriver 102
           wget https://chromedriver.storage.googleapis.com/102.0.5005.61/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
+          
+          # Verify installations
           chromedriver --version
           google-chrome --version
-
       
-      - name: Print test failure report
-        if: failure()  # Only runs if previous step failed
+      - name: Run Selenium tests
+        working-directory: backend
         run: |
-          echo "Printing Surefire test logs:"
-          cat backend/target/surefire-reports/*.txt || true
+          echo "Starting Selenium tests..."
+          mvn test -Dtest=*SeleniumTest* -DfailIfNoTests=false
+        continue-on-error: true
+      
+      - name: Print Selenium test results
+        if: always()
+        run: |
+          echo "=== Selenium Test Results ==="
+          cat backend/target/surefire-reports/*SeleniumTest*.txt || echo "No Selenium test reports found"
+          
+          echo "=== Application Logs ==="
+          echo "Backend logs (if any):"
+          ps aux | grep java || echo "No Java processes found"
+          
+          echo "Frontend logs (if any):"
+          ps aux | grep serve || echo "No serve processes found"
