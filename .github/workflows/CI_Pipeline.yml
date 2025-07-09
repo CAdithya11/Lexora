@@ -6,7 +6,34 @@ on:
     branches: [main]
 
 jobs:
+  frontend-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.9.1
+        with:
+          node-version: '20'
+      
+      - name: Install frontend dependencies
+        working-directory: ./Frontend
+        run: npm ci --legacy-peer-deps
+      
+      - name: Build frontend
+        working-directory: ./Frontend
+        run: npm run build
+      
+      - name: Upload frontend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: Frontend/dist/
+          retention-days: 1
+          
   backend-build:
+    needs: [frontend-build]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -50,31 +77,6 @@ jobs:
           path: backend/target/*.jar
           retention-days: 1
 
-  frontend-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3.9.1
-        with:
-          node-version: '20'
-      
-      - name: Install frontend dependencies
-        working-directory: ./Frontend
-        run: npm ci --legacy-peer-deps
-      
-      - name: Build frontend
-        working-directory: ./Frontend
-        run: npm run build
-      
-      - name: Upload frontend artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-dist
-          path: Frontend/dist/
-          retention-days: 1
 
   unit-tests:
     runs-on: ubuntu-latest
