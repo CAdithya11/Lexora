@@ -205,6 +205,16 @@ jobs:
           echo "Waiting for frontend to be ready"
           wait-on http://localhost:5173/Lexora/ --timeout 60000
           echo "Frontend is ready!"
+          
+          # Additional check to ensure the route is accessible
+          echo "Testing frontend accessibility..."
+          curl -f http://localhost:5173/Lexora/ || {
+            echo "Frontend is not responding properly, checking alternative routes..."
+            curl -f http://localhost:5173/ || {
+              echo "Frontend root is not accessible either"
+              exit 1
+            }
+          }
       
       - name: Verify both services are running
         run: |
@@ -221,6 +231,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y unzip wget
           
+          # Remove any existing Chrome installations
+          sudo apt-get remove -y google-chrome-stable || true
+          
           # Install Chrome 102
           wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_102.0.5005.61-1_amd64.deb
           sudo dpkg -i google-chrome-stable_102.0.5005.61-1_amd64.deb || sudo apt-get -f install -y
@@ -229,6 +242,10 @@ jobs:
           wget https://chromedriver.storage.googleapis.com/102.0.5005.61/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+          
+          # Create directory for Chrome user data
+          mkdir -p /tmp/chrome-user-data
           
           # Verify installations
           chromedriver --version
@@ -236,20 +253,39 @@ jobs:
       
       - name: Run Selenium tests
         working-directory: backend
+        env:
+          CHROME_USER_DATA_DIR: /tmp/chrome-user-data
+          DISPLAY: :99
         run: |
           echo "Starting Selenium tests..."
-          mvn test -Dtest=*SeleniumTest* -DfailIfNoTests=false
+          # Start virtual display for headless testing
+          sudo apt-get install -y xvfb
+          Xvfb :99 -screen 0 1920x1080x24 &
+          
+          # Run tests with proper Chrome configuration
+          mvn test -Dtest=*Selenium* -DfailIfNoTests=false \
+            -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver \
+            -Dchrome.user.data.dir=/tmp/chrome-user-data-${RANDOM}
         continue-on-error: true
       
       - name: Print Selenium test results
         if: always()
         run: |
           echo "=== Selenium Test Results ==="
-          cat backend/target/surefire-reports/*SeleniumTest*.txt || echo "No Selenium test reports found"
+          find backend/target/surefire-reports -name "*Selenium*" -type f -exec cat {} \; || echo "No Selenium test reports found"
           
-          echo "=== Application Logs ==="
-          echo "Backend logs (if any):"
-          ps aux | grep java || echo "No Java processes found"
+          echo "=== Test Summary ==="
+          find backend/target/surefire-reports -name "TEST-*.xml" -type f | while read file; do
+            echo "Processing: $file"
+            grep -o 'tests="[^"]*" failures="[^"]*" errors="[^"]*"' "$file" || true
+          done
           
-          echo "Frontend logs (if any):"
-          ps aux | grep serve || echo "No serve processes found"
+          echo "=== Application Status ==="
+          echo "Backend process:"
+          ps aux | grep -E "(java|spring)" | grep -v grep || echo "No backend processes found"
+          
+          echo "Frontend process:"
+          ps aux | grep serve | grep -v grep || echo "No frontend processes found"
+          
+          echo "=== Network Status ==="
+          netstat -tlnp | grep -E "(8080|5173)" || echo "No services listening on expected ports"
