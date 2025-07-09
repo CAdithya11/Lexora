@@ -96,9 +96,10 @@ jobs:
           name: backend-build-artifact
           path: backend/target/   # Make sure this doesn't overwrite the project root
   
-      - name: Run JUnit tests excluding Selenium
+      - name: Run unit tests (skip Selenium)
         working-directory: backend
-        run: mvn test -Dtest=!Selenium*
+        run: mvn test -Dgroups=!selenium
+
         
       - name: Print test failure report
         if: failure()
