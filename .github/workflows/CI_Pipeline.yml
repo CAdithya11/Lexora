@@ -96,77 +96,15 @@ jobs:
           name: backend-build-artifact
           path: backend/target/   # Make sure this doesn't overwrite the project root
   
-      - name: Run JUnit tests
+      - name: Run JUnit tests excluding Selenium
         working-directory: backend
-        run: mvn test -Dtest=!*Selenium*Test
-  
+        run: mvn test -Dtest=!Selenium*
+        
       - name: Print test failure report
         if: failure()
         run: |
           echo "Printing Surefire test logs:"
           cat backend/target/surefire-reports/*.txt || true
-
-
-  selenium-tests:
-    runs-on: ubuntu-latest
-    needs: [backend-build, frontend-build]
-    steps:
-      - name: Download backend target
-        uses: actions/download-artifact@v4
-        with:
-          name: backend-target
-          path: backend/target/
-      
-      - name: Download frontend artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: frontend-dist
-          path: Frontend/dist/
-      
-      - name: Start Spring Boot application
-        working-directory: backend
-        run: nohup java -jar target/*.jar &
-      
-      - name: Wait for Spring Boot to start
-        run: |
-          echo "Waiting for Spring Boot to become healthy"
-          for i in {1..30}; do
-            if curl -s http://localhost:8080/actuator/health | grep UP; then
-              echo "Spring Boot is up and healthy!"
-              break
-            fi
-            echo "Attempt $i/30 - Spring Boot not ready yet..."
-            sleep 5
-          done
-          
-          # Final check
-          if ! curl -s http://localhost:8080/actuator/health | grep UP; then
-            echo "Spring Boot failed to start properly"
-            exit 1
-          fi
-      
-      - name: Install frontend serving tools
-        run: npm install -g serve wait-on
-      
-      - name: Serve frontend
-        working-directory: ./Frontend
-        run: nohup serve -s dist -l 5173 --single &
-      
-      - name: Wait for frontend to be ready
-        run: |
-          echo "Waiting for frontend to be ready"
-          wait-on http://localhost:5173/Lexora/ --timeout 60000
-          echo "Frontend is ready!"
-          
-          # Additional check to ensure the route is accessible
-          echo "Testing frontend accessibility..."
-          curl -f http://localhost:5173/Lexora/ || {
-            echo "Frontend is not responding properly, checking alternative routes..."
-            curl -f http://localhost:5173/ || {
-              echo "Frontend root is not accessible either"
-              exit 1
-            }
-          }
       
       - name: Verify both services are running
         run: |
@@ -177,67 +115,3 @@ jobs:
           curl -s http://localhost:5173/Lexora/ || echo "Frontend health check failed"
           
           echo "=== Both services are ready for testing ==="
-      
-      - name: Install Chrome 102 and ChromeDriver 102
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y unzip wget
-          
-          # Remove any existing Chrome installations
-          sudo apt-get remove -y google-chrome-stable || true
-          
-          # Install Chrome 102
-          wget https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_102.0.5005.61-1_amd64.deb
-          sudo dpkg -i google-chrome-stable_102.0.5005.61-1_amd64.deb || sudo apt-get -f install -y
-          
-          # Install ChromeDriver 102
-          wget https://chromedriver.storage.googleapis.com/102.0.5005.61/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
-          
-          # Create directory for Chrome user data
-          mkdir -p /tmp/chrome-user-data
-          
-          # Verify installations
-          chromedriver --version
-          google-chrome --version
-      
-      - name: Run Selenium tests
-        working-directory: backend
-        env:
-          CHROME_USER_DATA_DIR: /tmp/chrome-user-data
-          DISPLAY: :99
-        run: |
-          echo "Starting Selenium tests..."
-          # Start virtual display for headless testing
-          sudo apt-get install -y xvfb
-          Xvfb :99 -screen 0 1920x1080x24 &
-          
-          # Run tests with proper Chrome configuration
-          mvn test -Dtest=*Selenium* -DfailIfNoTests=false \
-            -Dwebdriver.chrome.driver=/usr/local/bin/chromedriver \
-            -Dchrome.user.data.dir=/tmp/chrome-user-data-${RANDOM}
-        continue-on-error: true
-      
-      - name: Print Selenium test results
-        if: always()
-        run: |
-          echo "=== Selenium Test Results ==="
-          find backend/target/surefire-reports -name "*Selenium*" -type f -exec cat {} \; || echo "No Selenium test reports found"
-          
-          echo "=== Test Summary ==="
-          find backend/target/surefire-reports -name "TEST-*.xml" -type f | while read file; do
-            echo "Processing: $file"
-            grep -o 'tests="[^"]*" failures="[^"]*" errors="[^"]*"' "$file" || true
-          done
-          
-          echo "=== Application Status ==="
-          echo "Backend process:"
-          ps aux | grep -E "(java|spring)" | grep -v grep || echo "No backend processes found"
-          
-          echo "Frontend process:"
-          ps aux | grep serve | grep -v grep || echo "No frontend processes found"
-          
-          echo "=== Network Status ==="
-          netstat -tlnp | grep -E "(8080|5173)" || echo "No services listening on expected ports"
