@@ -44,7 +44,7 @@ jobs:
         run: mvn clean package --no-transfer-progress 
       
       - name: Upload backend artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: backend-jar
           path: backend/target/*.jar
@@ -70,7 +70,7 @@ jobs:
         run: npm run build
       
       - name: Upload frontend artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: frontend-dist
           path: Frontend/dist/
@@ -160,13 +160,13 @@ jobs:
           node-version: '20'
       
       - name: Download backend artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: backend-jar
           path: backend/target/
       
       - name: Download frontend artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: frontend-dist
           path: Frontend/dist/
