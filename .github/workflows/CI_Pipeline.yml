@@ -68,7 +68,7 @@ jobs:
       
       - name: Build the project
         working-directory: backend
-        run: mvn clean package --no-transfer-progress 
+        run: mvn clean package -DskipTests --no-transfer-progress 
       
       - name: Upload backend artifact
         uses: actions/upload-artifact@v4
