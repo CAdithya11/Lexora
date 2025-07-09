@@ -86,11 +86,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: backend-build-artifact
-          path: backend/target/
-          
+          path: backend-target/
+      
       - name: Run JUnit tests
         working-directory: backend
         run: mvn test -Dtest=!*Selenium*Test
+
       
       - name: Print test failure report
         if: failure()
