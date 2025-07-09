@@ -77,27 +77,35 @@ jobs:
           path: backend/target/
           retention-days: 1
 
-
   unit-tests:
     runs-on: ubuntu-latest
     needs: [backend-build]
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+  
+      - name: Setup JDK 21
+        uses: actions/setup-java@v3.14.1
+        with: 
+          java-version: 21
+          distribution: temurin
+  
       - name: Download backend artifact
         uses: actions/download-artifact@v4
         with:
           name: backend-build-artifact
-          path: backend-target/
-      
+          path: backend/target/   # Make sure this doesn't overwrite the project root
+  
       - name: Run JUnit tests
         working-directory: backend
         run: mvn test -Dtest=!*Selenium*Test
-
-      
+  
       - name: Print test failure report
         if: failure()
         run: |
           echo "Printing Surefire test logs:"
           cat backend/target/surefire-reports/*.txt || true
+
 
   selenium-tests:
     runs-on: ubuntu-latest
