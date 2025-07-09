@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*; // for assertTrue, assertEquals, etc.
-
+@Tag("selenium")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PersonaMatcherUITest {
 
