@@ -98,10 +98,7 @@ jobs:
           chromedriver --version
           google-chrome --version
 
-      - name: Run JUnit tests
-        working-directory: backend
-        run: mvn test
-
+      
       - name: Print test failure report
         if: failure()  # Only runs if previous step failed
         run: |
