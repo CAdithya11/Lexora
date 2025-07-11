@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import SidebarSub from '../../../component/template/SidebarSub';
-import TopHeader from '../../../component/template/Quiztop';
+import TopHeader from '../../../component/template/TopHeader';
 
 export default function SkillQuizPage() {
   const { jobRoleId } = useParams();
@@ -153,7 +153,7 @@ export default function SkillQuizPage() {
     <div className="flex h-screen overflow-hidden bg-gray-50">
       <SidebarSub />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <TopHeader />
+        <TopHeader HeaderMessage={"Quizes"}/>
         <div className="flex-1 overflow-y-auto p-6 bg-white">
           <div className="border-b-2 border-solid border-gray-300 mb-6">
             <h1 className="text-2xl font-bold text-gray-800">

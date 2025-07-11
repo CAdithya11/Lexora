@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Briefcase, ChevronDown, Globe, ArrowLeft, TrendingUp, Filter, X } from 'lucide-react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import SidebarSub from '../../../component/template/SidebarSub';
-import TopHeader from '../../../component/template/Quiztop';
+import TopHeader from '../../../component/template/TopHeader';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
@@ -231,7 +231,7 @@ export default function TrendingJobsPage() {
       {/* Main Content Area with Independent Scrolling */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Fixed Header */}
-        <TopHeader />
+        <TopHeader HeaderMessage={"Analysist Result"}/>
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto p-6 bg-white">
