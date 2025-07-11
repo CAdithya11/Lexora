@@ -186,7 +186,7 @@ export default function TrendingJobsPage() {
       // Extract course links to match backend's @ElementCollection List<String>
       const courseLinksArray = courseLinks.map(courseItem => {
         const match = courseItem.match(/\[(.*?)\]\((.*?)\)/);
-        return match ? `${match[1]} - ${match[2]}` : courseItem.replace(/^\d+\.\s*/, '');
+        return match ? `${match[2]}` : courseItem.replace(/^\d+\.\s*/, '');
       });
       
       // If no course links are available, provide default ones
@@ -363,7 +363,7 @@ export default function TrendingJobsPage() {
                               </svg>
                               {match ? (
                                 <a href={match[2]} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                                  {match[1]}
+                                  {match[1]} ::{match[2]}
                                 </a>
                               ) : (
                                 <span className="text-gray-600">{item.replace(/^\d+\.\s*/, '')}</span>
