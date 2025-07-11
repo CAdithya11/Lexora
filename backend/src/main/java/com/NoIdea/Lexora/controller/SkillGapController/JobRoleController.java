@@ -15,7 +15,7 @@ public class JobRoleController {
     @Autowired
     private JobRoleService jobRoleService;
 
-    
+
 
     @GetMapping()
     public List<JobRoleEntity> getJobRole() {
