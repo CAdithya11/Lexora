@@ -457,7 +457,7 @@ export default function PersonaMatcherPage() {
             <div className="mt-6">
               <h3 className="text-lg font-semibold mb-2">Extracted Text from PDFs</h3>
               
-              {uploadedFiles.map(fileObj => (
+              {/* {uploadedFiles.map(fileObj => (
                 fileObj.type === 'application/pdf' && extractedTexts[fileObj.id] ? (
                   <div key={`text-${fileObj.id}`} className="mb-4 p-4 bg-gray-50 rounded-lg">
                     <div className="flex justify-between mb-2">
@@ -477,7 +477,7 @@ export default function PersonaMatcherPage() {
                     </div>
                   </div>
                 ) : null
-              ))}
+              ))} */}
             </div>
           )}
           

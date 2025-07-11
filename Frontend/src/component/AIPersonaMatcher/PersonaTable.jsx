@@ -52,19 +52,30 @@ const MentorAIChat = ({ jobs }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const parseTableResponse = (response) => {
-    const rows = response.split("\n").filter(row => row.trim() !== "");
-    if (rows.length < 3) return [];
-    return rows.slice(2).map(row => {
-      const cells = row.split("|").map(cell => cell.trim()).filter(cell => cell !== "");
-      return {
-        No: cells[0],
-        CareerPersona: cells[1],
-        MatchingPercentage: cells[2],
-        Suggestions: cells[3],
-      };
-    });
-  };
+ const cleanText = (text) => {
+  return text
+    .replace(/\*\*/g, '')       // remove all double asterisks **
+    .replace(/<br\s*\/?>/gi, '') // remove <br> or <br /> tags
+    .replace(/[\r\n]+/g, ' ')   // replace newlines with space
+    .replace(/[\*\-]+/g, '')
+    .trim();                    // remove leading/trailing spaces
+};
+
+const parseTableResponse = (response) => {
+  const rows = response.split("\n").filter(row => row.trim() !== "");
+  if (rows.length < 3) return [];
+
+  return rows.slice(2).map(row => {
+    const cells = row.split("|").map(cell => cleanText(cell.trim())).filter(cell => cell !== "");
+    return {
+      No: cells[0],
+      CareerPersona: cells[1],
+      MatchingPercentage: cells[2],
+      Suggestions: cells[3],
+    };
+  });
+};
+
 
   const handleSendMessage = async (message) => {
     if (!message.trim()) return;
