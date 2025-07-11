@@ -307,22 +307,22 @@ const JobRoleForm = () => {
       </div>
 
       {/* Debug Information */}
-      {debugInfo && (
+      {/* {debugInfo && (
         <div className="mt-4 p-3 bg-gray-100 rounded">
           <h4 className="font-medium mb-2">Debug Information:</h4>
           <pre className="text-sm bg-white p-2 rounded border overflow-auto max-h-40">
             {debugInfo}
           </pre>
         </div>
-      )}
+      )} */}
 
       {/* Current Form State */}
-      <div className="mt-4 p-3 bg-blue-50 rounded">
+      {/* <div className="mt-4 p-3 bg-blue-50 rounded">
         <h4 className="font-medium mb-2">Current Form Data:</h4>
         <pre className="text-sm bg-white p-2 rounded border overflow-auto max-h-40">
           {JSON.stringify({ jobRoleName, skillLists }, null, 2)}
         </pre>
-      </div>
+      </div> */}
     </div>
     </div>
         </div>
