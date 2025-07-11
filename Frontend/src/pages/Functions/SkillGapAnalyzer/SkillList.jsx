@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import SidebarSub from '../../../component/template/SidebarSub';
-import TopHeader from '../../../component/template/SkillGapTop';
+import TopHeader from '../../../component/template/TopHeader';
 import { ArrowLeft } from 'lucide-react';
 
 
@@ -47,7 +47,7 @@ export default function SkillListPage() {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <TopHeader />
+        <TopHeader HeaderMessage={"Skill List"}/>
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6 bg-white">
