@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
-
 import SidebarSub from '../../../component/template/SidebarSub';
 import TopHeader from '../../../component/template/TopHeader';
 import axios from 'axios';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
 const JobRoleForm = () => {
   const [jobRoleName, setJobRoleName] = useState('');
   const [skillLists, setSkillLists] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [debugInfo, setDebugInfo] = useState('');
-  const token = localStorage.getItem('token');
+  const [showAIPopup, setShowAIPopup] = useState(false);
+
+  const [aiJobRoleName, setAiJobRoleName] = useState('');
+  const [aiSkillName, setAiSkillName] = useState('');
+  const [aiNumQuestions, setAiNumQuestions] = useState('');
+  const [aiNumAnswers, setAiNumAnswers] = useState('');
 
   const handleAddSkill = () => {
     setSkillLists([
       ...skillLists,
-      {
-        skillId: null,
-        skillName: '',
-        skillQuestions: []
-      }
+      { skillId: null, skillName: '', skillQuestions: [] }
     ]);
   };
 
@@ -41,11 +42,9 @@ const JobRoleForm = () => {
     setSkillLists(newSkills);
   };
 
-  const handleChange = (e, skillIndex, field, type = 'skill') => {
+  const handleChange = (e, skillIndex, field) => {
     const newSkills = [...skillLists];
-    if (type === 'skill') {
-      newSkills[skillIndex][field] = e.target.value;
-    }
+    newSkills[skillIndex][field] = e.target.value;
     setSkillLists(newSkills);
   };
 
@@ -57,277 +56,212 @@ const JobRoleForm = () => {
 
   const handleAnswerChange = (e, skillIndex, questionIndex, answerIndex, field) => {
     const newSkills = [...skillLists];
-    if (field === 'status') {
-      newSkills[skillIndex].skillQuestions[questionIndex].skillAnswers[answerIndex][field] = e.target.checked;
-    } else {
-      newSkills[skillIndex].skillQuestions[questionIndex].skillAnswers[answerIndex][field] = e.target.value;
-    }
+    const value = field === 'status' ? e.target.checked : e.target.value;
+    newSkills[skillIndex].skillQuestions[questionIndex].skillAnswers[answerIndex][field] = value;
     setSkillLists(newSkills);
   };
 
   const handleSubmit = async () => {
-  if (!jobRoleName.trim()) {
-    alert('Please enter a job role name');
-    return;
-  }
+    if (!jobRoleName.trim()) return alert('Please enter a job role name');
+    if (skillLists.length === 0) return alert('Add at least one skill');
 
-  if (skillLists.length === 0) {
-    alert('Please add at least one skill');
-    return;
-  }
+    for (let i = 0; i < skillLists.length; i++) {
+      const skill = skillLists[i];
+      if (!skill.skillName.trim()) return alert(`Skill ${i + 1} missing name`);
+      if (skill.skillQuestions.length === 0) return alert(`Add question for skill ${skill.skillName}`);
 
-  // Validate skills, questions, answers
-  for (let i = 0; i < skillLists.length; i++) {
-    const skill = skillLists[i];
-    if (!skill.skillName.trim()) {
-      alert(`Please enter a name for skill ${i + 1}`);
-      return;
-    }
-    if (skill.skillQuestions.length === 0) {
-      alert(`Please add at least one question for skill: ${skill.skillName}`);
-      return;
-    }
+      for (let j = 0; j < skill.skillQuestions.length; j++) {
+        const question = skill.skillQuestions[j];
+        if (!question.question.trim()) return alert(`Question ${j + 1} missing text in skill ${skill.skillName}`);
+        if (question.skillAnswers.length === 0) return alert(`Add answers to question: ${question.question}`);
 
-    for (let j = 0; j < skill.skillQuestions.length; j++) {
-      const question = skill.skillQuestions[j];
-      if (!question.question.trim()) {
-        alert(`Please enter question text for question ${j + 1} in skill: ${skill.skillName}`);
-        return;
-      }
-      if (question.skillAnswers.length === 0) {
-        alert(`Please add at least one answer for question: ${question.question}`);
-        return;
-      }
-
-      const hasCorrectAnswer = question.skillAnswers.some(answer => answer.status === true);
-      if (!hasCorrectAnswer) {
-        alert(`Please mark at least one answer as correct for question: ${question.question}`);
-        return;
+        const correct = question.skillAnswers.some(a => a.status);
+        if (!correct) return alert(`Mark a correct answer for question: ${question.question}`);
       }
     }
-  }
 
-  const jobRoleData = {
-    jobRoleName,
-    jobRoleId: null,
-    skillLists
+    try {
+      const jobRoleData = { jobRoleName, jobRoleId: null, skillLists };
+      await axios.post('http://localhost:8080/api/v1/jobRole', [jobRoleData], {
+        headers: { 'Content-Type': 'application/json' }
+      });
+      alert('Job role saved successfully');
+      setJobRoleName('');
+      setSkillLists([]);
+    } catch (err) {
+      console.error('Submit error:', err);
+      alert('Failed to save job role');
+    }
   };
 
-  setIsSubmitting(true);
-  setDebugInfo('Preparing to send data...');
+  const handleGenerateNow = async () => {
+  if (!aiJobRoleName || !aiSkillName || !aiNumQuestions || !aiNumAnswers) {
+    alert('Please fill in all fields');
+    return;
+  }
+
+  const apiKey = 'AIzaSyCQUQ9sYtjSjasfpps4bK00hUkqdMwSDV0';
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+
+  const prompt = `Generate ${aiNumQuestions} quiz questions for the skill "${aiSkillName}" under the job role "${aiJobRoleName}". Each question must have ${aiNumAnswers} answer options. Return JSON:
+[
+  {"question": "What is React?", "answers": [
+    {"text": "A JavaScript library", "isCorrect": true},
+    {"text": "A type of CSS", "isCorrect": false}
+  ]}
+]`;
 
   try {
-    const token = localStorage.getItem('token');
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
+    const jsonMatch = text.match(/\[.*\]/s);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]);
 
-    console.log('Sending job role data:', JSON.stringify(jobRoleData, null, 2));
-    setDebugInfo(`Sending data: ${JSON.stringify(jobRoleData, null, 2)}`);
+      const shuffledSkillQuestions = parsed.map((q) => ({
+        questionId: null,
+        question: q.question,
+        skillAnswers: shuffleArray(
+          q.answers.map((a) => ({
+            skillAnswerId: null,
+            answer: a.text,
+            status: a.isCorrect,
+          }))
+        ),
+      }));
 
-    const response = await axios.post(
-      'http://localhost:8080/api/v1/jobRole',
-      [jobRoleData],
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          
-        }
-      }
-    );
+      const newSkill = {
+        skillId: null,
+        skillName: aiSkillName,
+        skillQuestions: shuffledSkillQuestions,
+      };
 
-    console.log('Success response:', response.data);
-    setDebugInfo(`Success: ${JSON.stringify(response.data, null, 2)}`);
-    alert('Job role saved successfully!');
-    setJobRoleName('');
-    setSkillLists([]);
-
-  } catch (error) {
-    console.error('Error saving job role:', error);
-    if (error.response) {
-      setDebugInfo(`Error ${error.response.status}: ${JSON.stringify(error.response.data, null, 2)}`);
-      alert(`Error ${error.response.status}: ${error.response.data.message || 'Failed to save'}`);
+      setSkillLists((prev) => [...prev, newSkill]);
+      setShowAIPopup(false);
     } else {
-      setDebugInfo(`Error: ${error.message}`);
-      alert(`Error: ${error.message}`);
+      alert('Invalid AI response format');
+      console.log(text);
     }
-  } finally {
-    setIsSubmitting(false);
+  } catch (err) {
+    console.error('AI error:', err);
+    alert('AI generation failed');
   }
 };
 
+// 🔀 Shuffle utility
+function shuffleArray(array) {
+  return [...array].sort(() => Math.random() - 0.5);
+}
 
   return (
-     <div className="flex h-screen overflow-hidden bg-gray-50">
-          {/* Fixed Sidebar */}
-          <SidebarSub />
-    
-          {/* Main Content Area with Independent Scrolling */}
-          <div className="flex-1 flex flex-col overflow-hidden">
-            {/* Fixed Header */}
-            <TopHeader HeaderMessage={'Matched Career Personas'} />
-            {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto p-6 bg-white">
-              {/* Chart Content */}
-              <div className="p-2"></div>
-    
-              {/* Quick Stats Section - Dynamic based on selected category */}
-              <div className></div>
-    <div className="p-4 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Add Job Role</h2>
-      
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Job Role Name</label>
-        <input
-          type="text"
-          placeholder="Enter job role name"
-          value={jobRoleName}
-          onChange={(e) => setJobRoleName(e.target.value)}
-          className="border border-gray-300 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
+    <div className="flex h-screen bg-gray-50">
+      <SidebarSub />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <TopHeader HeaderMessage={'Matched Career Personas'} />
+        <div className="flex-1 overflow-y-auto p-6 bg-white">
+          <div className="p-4 max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold mb-4">Add Job Role</h2>
+            <input
+              type="text"
+              placeholder="Enter job role name"
+              value={jobRoleName}
+              onChange={(e) => setJobRoleName(e.target.value)}
+              className="border p-2 w-full mb-4 rounded"
+            />
 
-      {skillLists.map((skill, skillIndex) => (
-        <div key={skillIndex} className="mb-6 border border-gray-200 p-4 rounded-lg bg-gray-50">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="text-lg font-semibold">Skill {skillIndex + 1}</h3>
-            <button
-              onClick={() => {
-                const newSkills = skillLists.filter((_, index) => index !== skillIndex);
-                setSkillLists(newSkills);
-              }}
-              className="bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600"
-            >
-              Remove Skill
-            </button>
-          </div>
-          
-          <input
-            type="text"
-            placeholder="Skill Name (e.g., JavaScript, React, etc.)"
-            value={skill.skillName}
-            onChange={(e) => handleChange(e, skillIndex, 'skillName')}
-            className="border border-gray-300 p-2 w-full mb-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          
-          <button
-            onClick={() => handleAddQuestion(skillIndex)}
-            className="bg-blue-500 text-white px-3 py-2 rounded mb-3 hover:bg-blue-600"
-          >
-            Add Question
-          </button>
-
-          {skill.skillQuestions.map((question, questionIndex) => (
-            <div key={questionIndex} className="mb-4 p-3 border border-gray-300 rounded bg-white">
-              <div className="flex justify-between items-center mb-2">
-                <h4 className="font-medium">Question {questionIndex + 1}</h4>
-                <button
-                  onClick={() => {
-                    const newSkills = [...skillLists];
-                    newSkills[skillIndex].skillQuestions = newSkills[skillIndex].skillQuestions.filter(
-                      (_, index) => index !== questionIndex
-                    );
-                    setSkillLists(newSkills);
-                  }}
-                  className="bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600"
-                >
-                  Remove Question
-                </button>
-              </div>
-              
-              <input
-                type="text"
-                placeholder="Enter your question here"
-                value={question.question}
-                onChange={(e) => handleQuestionChange(e, skillIndex, questionIndex, 'question')}
-                className="border border-gray-300 p-2 w-full mb-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-
-              <button
-                onClick={() => handleAddAnswer(skillIndex, questionIndex)}
-                className="bg-green-500 text-white px-3 py-2 rounded mb-3 hover:bg-green-600"
-              >
-                Add Answer
-              </button>
-
-              {question.skillAnswers.map((answer, answerIndex) => (
-                <div key={answerIndex} className="flex items-center mb-2 p-2 bg-gray-50 rounded">
-                  <input
-                    type="text"
-                    placeholder="Enter answer option"
-                    value={answer.answer}
-                    onChange={(e) =>
-                      handleAnswerChange(e, skillIndex, questionIndex, answerIndex, 'answer')
-                    }
-                    className="border border-gray-300 p-1 mr-2 flex-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <label className="flex items-center mr-2">
-                    <input
-                      type="checkbox"
-                      checked={answer.status}
-                      onChange={(e) =>
-                        handleAnswerChange(e, skillIndex, questionIndex, answerIndex, 'status')
-                      }
-                      className="mr-1"
-                    />
-                    <span className="text-sm">Correct</span>
-                  </label>
+            {skillLists.map((skill, skillIndex) => (
+              <div key={skillIndex} className="mb-6 border p-4 rounded bg-gray-50">
+                <div className="flex justify-between mb-3">
+                  <h3 className="text-lg font-semibold">Skill {skillIndex + 1}</h3>
                   <button
-                    onClick={() => {
-                      const newSkills = [...skillLists];
-                      newSkills[skillIndex].skillQuestions[questionIndex].skillAnswers = 
-                        newSkills[skillIndex].skillQuestions[questionIndex].skillAnswers.filter(
-                          (_, index) => index !== answerIndex
-                        );
-                      setSkillLists(newSkills);
-                    }}
-                    className="bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600"
-                  >
-                    Remove
-                  </button>
+                    onClick={() => setSkillLists(skillLists.filter((_, i) => i !== skillIndex))}
+                    className="bg-red-500 text-white px-2 rounded"
+                  >Remove</button>
                 </div>
-              ))}
+                <input
+                  type="text"
+                  value={skill.skillName}
+                  onChange={(e) => handleChange(e, skillIndex, 'skillName')}
+                  placeholder="Skill Name"
+                  className="border p-2 w-full mb-3 rounded"
+                />
+                <button
+                  onClick={() => handleAddQuestion(skillIndex)}
+                  className="bg-blue-500 text-white px-3 py-2 rounded mb-3"
+                >Add Question</button>
+
+                {skill.skillQuestions.map((q, qIdx) => (
+                  <div key={qIdx} className="mb-3 border p-3 rounded">
+                    <div className="flex justify-between mb-2">
+                      <strong>Question {qIdx + 1}</strong>
+                      <button
+                        onClick={() => {
+                          const newSkills = [...skillLists];
+                          newSkills[skillIndex].skillQuestions.splice(qIdx, 1);
+                          setSkillLists(newSkills);
+                        }}
+                        className="bg-red-500 text-white px-2 py-1 rounded"
+                      >Remove</button>
+                    </div>
+                    <input
+                      type="text"
+                      value={q.question}
+                      onChange={(e) => handleQuestionChange(e, skillIndex, qIdx, 'question')}
+                      placeholder="Question text"
+                      className="border p-2 w-full mb-2 rounded"
+                    />
+                    <button
+                      onClick={() => handleAddAnswer(skillIndex, qIdx)}
+                      className="bg-green-500 text-white px-3 py-1 rounded mb-2"
+                    >Add Answer</button>
+                    {q.skillAnswers.map((a, aIdx) => (
+                      <div key={aIdx} className="flex items-center mb-1">
+                        <input
+                          type="text"
+                          value={a.answer}
+                          onChange={(e) => handleAnswerChange(e, skillIndex, qIdx, aIdx, 'answer')}
+                          placeholder="Answer"
+                          className="border p-1 flex-1 rounded mr-2"
+                        />
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={a.status}
+                            onChange={(e) => handleAnswerChange(e, skillIndex, qIdx, aIdx, 'status')}
+                            className="mr-1"
+                          />Correct
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            ))}
+
+            <div className="flex gap-4 mb-4">
+              <button onClick={handleAddSkill} className="bg-purple-500 text-white px-4 py-2 rounded">Add Skill</button>
+              <button onClick={handleSubmit} className="bg-green-600 text-white px-4 py-2 rounded">Submit Job Role</button>
+              <button onClick={() => setShowAIPopup(true)} className="bg-blue-600 text-white px-4 py-2 rounded">Generate Quiz by AI</button>
             </div>
-          ))}
-        </div>
-      ))}
-
-      <div className="flex gap-4 mb-4">
-        <button
-          onClick={handleAddSkill}
-          className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600"
-        >
-          Add Skill
-        </button>
-
-        <button
-          onClick={handleSubmit}
-          disabled={isSubmitting}
-          className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 disabled:bg-gray-400"
-        >
-          {isSubmitting ? 'Submitting...' : 'Submit Job Role'}
-        </button>
-      </div>
-
-      {/* Debug Information */}
-      {/* {debugInfo && (
-        <div className="mt-4 p-3 bg-gray-100 rounded">
-          <h4 className="font-medium mb-2">Debug Information:</h4>
-          <pre className="text-sm bg-white p-2 rounded border overflow-auto max-h-40">
-            {debugInfo}
-          </pre>
-        </div>
-      )} */}
-
-      {/* Current Form State */}
-      {/* <div className="mt-4 p-3 bg-blue-50 rounded">
-        <h4 className="font-medium mb-2">Current Form Data:</h4>
-        <pre className="text-sm bg-white p-2 rounded border overflow-auto max-h-40">
-          {JSON.stringify({ jobRoleName, skillLists }, null, 2)}
-        </pre>
-      </div> */}
-    </div>
-    </div>
+          </div>
         </div>
       </div>
-    
+
+      {showAIPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-xl">
+            <h3 className="text-xl font-semibold mb-4">Generate Quiz by AI</h3>
+            <input type="text" value={aiJobRoleName} onChange={(e) => setAiJobRoleName(e.target.value)} placeholder="Job Role Name" className="border p-2 w-full mb-2 rounded" />
+            <input type="text" value={aiSkillName} onChange={(e) => setAiSkillName(e.target.value)} placeholder="Skill Name" className="border p-2 w-full mb-2 rounded" />
+            <input type="number" value={aiNumQuestions} onChange={(e) => setAiNumQuestions(e.target.value)} placeholder="Number of Questions" className="border p-2 w-full mb-2 rounded" />
+            <input type="number" value={aiNumAnswers} onChange={(e) => setAiNumAnswers(e.target.value)} placeholder="Answers per Question" className="border p-2 w-full mb-2 rounded" />
+            <button onClick={handleGenerateNow} className="bg-blue-600 text-white px-4 py-2 rounded mr-2">Generate Now</button>
+            <button onClick={() => setShowAIPopup(false)} className="text-gray-500 underline ml-2">Cancel</button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
