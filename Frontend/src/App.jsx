@@ -30,6 +30,7 @@ import Skill8 from './pages/Functions/SkillGapAnalyzer/adminquestionpost';
 import Skill9 from './pages/Functions/SkillGapAnalyzer/adminquestionput';
 import Skill10 from './pages/Functions/SkillGapAnalyzer/adminskillput';
 import Skill11 from './pages/Functions/SkillGapAnalyzer/adminqizput';
+import GeneratQuiz from './pages/Functions/SkillGapAnalyzer/AIgenrateSkillAseesQuiz';
 
 import FeedbackPage from './pages/Home/FeedbackPage';
 import { ProtectedRoute } from './component/template/protectedRoute/ProtectedRoute';
@@ -150,6 +151,7 @@ function App() {
             <Route path="/sk4" element={<Skill5 />} />
 
             <Route path="/ff" element={<Skill9/>}/>
+            <Route path="GQ" element={<GeneratQuiz/>}/>
 
 
             {/* Admin */}
