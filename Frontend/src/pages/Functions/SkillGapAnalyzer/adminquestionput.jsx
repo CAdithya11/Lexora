@@ -84,7 +84,7 @@ export default function TrendingJobsPage() {
         skillLists: jobRole.skillLists || []
       };
 
-      const response = await axios.post(
+      const response = await axios.put(
   `http://localhost:8080/api/v1/jobRole`, // ✅ No ID in URL
   [updatedJobRoleData],                   // ✅ Wrap in array
   {
@@ -168,7 +168,7 @@ export default function TrendingJobsPage() {
                   <p className="text-gray-500 text-sm">Select a role to begin your skill assessment journey</p>
                 </div>
                 <button
-                  onClick={() => navigate('/job-role/add')}
+                  onClick={() => navigate('/f')}
                   className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
                 >
                   Add New Job Role

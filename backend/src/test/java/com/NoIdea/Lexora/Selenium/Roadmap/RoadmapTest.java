@@ -2,8 +2,8 @@ package com.NoIdea.Lexora.Selenium.Roadmap;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.BeforeEach;
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,63 +11,59 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.Duration;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@Tag("selenium")
 public class RoadmapTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
-    private Path tempProfileDir;
 
     @BeforeEach
     public void setUp() throws IOException {
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
-        
+
         // Always use headless mode for CI reliability
         // Force headless mode to prevent timeout issues in GitHub Actions
         System.out.println("Configuring Chrome for CI environment");
-        
+
         // Essential arguments for GitHub Actions stability
-        options.addArguments("--headless=new");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--disable-background-timer-throttling");
-        options.addArguments("--disable-renderer-backgrounding");
-        options.addArguments("--disable-backgrounding-occluded-windows");
-        options.addArguments("--disable-ipc-flooding-protection");
-        options.addArguments("--window-size=1920,1080");
-        
-        // Additional stability arguments
-        options.addArguments("--disable-features=TranslateUI");
-        options.addArguments("--disable-features=BlinkGenPropertyTrees");
-        options.addArguments("--disable-default-apps");
-        options.addArguments("--disable-background-networking");
-        options.addArguments("--disable-sync");
-        options.addArguments("--metrics-recording-only");
-        options.addArguments("--no-first-run");
-        options.addArguments("--safebrowsing-disable-auto-update");
-        options.addArguments("--disable-component-update");
-        
-        // Memory and performance optimizations
-        options.addArguments("--memory-pressure-off");
-        options.addArguments("--max_old_space_size=4096");
-        
-        // Network settings
-        options.addArguments("--aggressive-cache-discard");
-        options.addArguments("--disable-background-mode");
+        // options.addArguments("--headless=new");
+        // options.addArguments("--no-sandbox");
+        // options.addArguments("--disable-dev-shm-usage");
+        // options.addArguments("--disable-gpu");
+        // options.addArguments("--disable-extensions");
+        // options.addArguments("--disable-background-timer-throttling");
+        // options.addArguments("--disable-renderer-backgrounding");
+        // options.addArguments("--disable-backgrounding-occluded-windows");
+        // options.addArguments("--disable-ipc-flooding-protection");
+        // options.addArguments("--window-size=1920,1080");
+
+        // // Additional stability arguments
+        // options.addArguments("--disable-features=TranslateUI");
+        // options.addArguments("--disable-features=BlinkGenPropertyTrees");
+        // options.addArguments("--disable-default-apps");
+        // options.addArguments("--disable-background-networking");
+        // options.addArguments("--disable-sync");
+        // options.addArguments("--metrics-recording-only");
+        // options.addArguments("--no-first-run");
+        // options.addArguments("--safebrowsing-disable-auto-update");
+        // options.addArguments("--disable-component-update");
+
+        // // Memory and performance optimizations
+        // options.addArguments("--memory-pressure-off");
+        // options.addArguments("--max_old_space_size=4096");
+
+        // // Network settings
+        // options.addArguments("--aggressive-cache-discard");
+        // options.addArguments("--disable-background-mode");
 
         driver = new ChromeDriver(options);
 
@@ -77,7 +73,7 @@ public class RoadmapTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(120));
         driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(120));
-        
+
         // Navigate to application
         driver.get("http://localhost:5173/Lexora/");
     }
@@ -93,8 +89,6 @@ public class RoadmapTest {
             }
         }
     }
-
-
 
     // --- Helper: Wait and click with retry mechanism ---
     private void waitAndClick(By locator) {
@@ -152,27 +146,27 @@ public class RoadmapTest {
         try {
             System.out.println("Starting login process...");
             driver.get("http://localhost:5173/Lexora/");
-            
+
             // Wait for page to load completely
             wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
             Thread.sleep(2000); // Allow additional time for React app to initialize
-            
+
             waitAndClick(By.id("singInButton"));
             System.out.println("Clicked sign in button");
-            
+
             waitAndSendKeys(By.name("signinemail"), "anjalisewmini5@gmail.com");
             System.out.println("Entered email");
-            
+
             waitAndSendKeys(By.name("signinpassword"), "12345678");
             System.out.println("Entered password");
-            
+
             waitAndClick(By.id("loginButton"));
             System.out.println("Clicked login button");
-            
+
             // Wait for successful login and roadmaps element to appear
             wait.until(ExpectedConditions.presenceOfElementLocated(By.id("Roadmaps")));
             System.out.println("Login successful - Roadmaps element found");
-            
+
         } catch (Exception e) {
             System.err.println("Login failed: " + e.getMessage());
             // Take screenshot for debugging (optional)

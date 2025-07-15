@@ -155,7 +155,7 @@ export default function MatchedPersona() {
                 </div>
               </div>
             )}
-            <p>{userId}</p>
+            
             <div className="flex space-x-4 mt-4">
               <button
                 className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium shadow-md transition-colors"

@@ -156,14 +156,14 @@ export default function SidebarSub() {
           <SidebarItem
             icon={
               <AlignVerticalJustifyCenter
-                size={20}
+                size={20}/>}
                 alwaysOpen={
-                  isLocation == '/personas' || isLocation == '/salaryTrends' || isLocation == '/skillTrends'
+                  isLocation == '/sk' || isLocation == '/sk4' 
                     ? true
                     : false
                 }
-              />
-            }
+              
+            
             text="Skill Gap Analyzer"
           >
             <Link to="/sk">
@@ -184,14 +184,14 @@ export default function SidebarSub() {
           <SidebarItem
             icon={
               <UserSearch
-                size={20}
+                size={20} />
+            }
                 alwaysOpen={
                   isLocation == '/persona' || isLocation == '/savedPersonas'
                     ? true
                     : false
                 }
-              />
-            }
+             
             text="Persona Matcher"
           >
             <Link to="/persona">
@@ -201,7 +201,7 @@ export default function SidebarSub() {
               <SidebarSubItem
                 text="Matched Personas"
 
-                active={isLocation == '/savedPersonas' || isLocation ? true : false}
+                active={isLocation == '/savedPersonas'  ? true : false}
 
               />
             </Link>
@@ -260,13 +260,20 @@ export default function SidebarSub() {
           <SidebarItem
             icon={<FileCog size={20} />}
             text="Admin"
-            alwaysOpen={isLocation == '/Admin/MentorRequests' || isLocation == '/Admin/Feedback' ? true : false}
+            alwaysOpen={isLocation == '/Admin/MentorRequests' || isLocation == '/AdminFeedback' || isLocation == '/f' || isLocation == '/ff'? true : false}
           >
             <Link to={'/Admin/MentorRequests'}>
               <SidebarSubItem text="Mentor Varification" active={isLocation == '/Admin/MentorRequests'} />
             </Link>
             <Link to={'/Adminfeedback'}>
               <SidebarSubItem text="Feedback" active={isLocation == '/mentorSessions'} />
+            </Link>
+            <Link to={'/f'}>
+              <SidebarSubItem text="Skill Assement Quiz" active={isLocation == '/f'} />
+            
+            </Link>
+            <Link to={'/ff'}>
+              <SidebarSubItem text="Edit Skill Assement Quiz" active={isLocation == '/ff'} />
             </Link>
           </SidebarItem>
 

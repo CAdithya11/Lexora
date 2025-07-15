@@ -123,7 +123,7 @@ export default function SkillListPage() {
 
       console.log('Adding new skill, updating job role with data:', updatedJobRoleData);
 
-      const response = await axios.post(
+      const response = await axios.put(
         `http://localhost:8080/api/v1/jobRole`,
         [updatedJobRoleData],
         {
@@ -225,7 +225,7 @@ export default function SkillListPage() {
 
       console.log('Updating job role with data:', updatedJobRoleData);
 
-      const response = await axios.post(
+      const response = await axios.put(
         `http://localhost:8080/api/v1/jobRole`,
         [updatedJobRoleData],
         {
@@ -282,7 +282,7 @@ export default function SkillListPage() {
 
       console.log('Deleting skill, updating job role with data:', updatedJobRoleData);
 
-      const response = await axios.post(
+      const response = await axios.put(
         `http://localhost:8080/api/v1/jobRole`,
         [updatedJobRoleData],
         {
