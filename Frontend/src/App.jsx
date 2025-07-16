@@ -88,36 +88,27 @@ function App() {
           <Route path="/rgapi" element={<RoadmapGeminiApi />} />
           {/* <Route path="/ro" element={<RoadmapOption />} /> */}
 
-
           <Route path="/sk" element={<Skill />} />
           <Route path="/sk1/:jobRoleId" element={<Skill1 />} />
           <Route path="/sk2" element={<Skill2 />} />
           <Route path="/sk3" element={<Skill3 />} />
           <Route path="/sk4" element={<Skill5 />} />
-          <Route path="/sk11/:jobRoleId" element={<Skill11 />} />
-          
-            <Route path="/skills/:jobRoleId" element={<Skill4/>} />
-            <Route path="/sk10/:jobRoleId" element={<Skill10/>} />
-          <Route path="/result/:jobRole" element={<Skill6/>} />
-          <Route path="/fetch" element={<Skill7/>} />
-          <Route path="/f" element={<Skill8/>} />
 
-
-          
+          <Route path="/skills/:jobRoleId" element={<Skill4 />} />
+          <Route path="/sk10/:jobRoleId" element={<Skill10 />} />
+          <Route path="/result/:jobRole" element={<Skill6 />} />
+          <Route path="/fetch" element={<Skill7 />} />
 
           {/* Mentor Mentee Matchmaking New */}
           <Route path="/mentorDashboardNew" element={<MentorDashboardNew />} />
           <Route path="/teams" element={<CreateMeetingPage />} />
           <Route path="/join-meeting" element={<JoinMeetingPage />} />
           <Route path="/create-meeting" element={<CreateMeetingPage />} />
-          <Route path="/edit-meeting/:meetingId" element={<CreateMeetingPage title={"Edit Meeting"} />} />
+          <Route path="/edit-meeting/:meetingId" element={<CreateMeetingPage title={'Edit Meeting'} />} />
           <Route path="/meetingsList" element={<MeetingsListPage />} />
           <Route path="join-meeting/:meetingId" element={<JoinMeetingPage />} />
 
-
-
-
-          <Route element={<ProtectedRoute />}>
+          <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'STUDENT']} />}>
             {/* User profiles based*/}
             <Route path="/settings/profile" element={<UserProfileSettings />} />
             <Route path="/settings/password" element={<UserChangePassword />} />
@@ -135,6 +126,13 @@ function App() {
             <Route path="/searchRoadmap" element={<SearchRoadmapPage />} />
             <Route path="/RoadmapDetails" element={<RoadmapDetailsPage />} />
             <Route path="/rgapi" element={<RoadmapGeminiApi />} />
+            {/* Skill Gap Analyzer */}
+            <Route path="/sk" element={<Skill />} />
+            <Route path="/sk1/:jobRoleId" element={<Skill1 />} />
+            <Route path="/sk2" element={<Skill2 />} />
+            <Route path="/sk3" element={<Skill3 />} />
+            <Route path="/sk4" element={<Skill5 />} />
+            <Route path="GQ" element={<GeneratQuiz />} />
             {/* Mentor Mentee matchmaking */}
             <Route path="/mentorDashboard" element={<MentorDashboard />} />
             <Route path="/menteeDashboard" element={<MenteeDashboard />} />
@@ -143,33 +141,31 @@ function App() {
             <Route path="/menteeAddMatchingCriteria" element={<MenteeAddMatchingCriteria />} />
             <Route path="/menteeMatchmaking" element={<MenteeMatchmaking />} />
             {/* <Route path="/bookSession" element={<BookSession />} /> */}
-            {/* Skill Gap Analyzer */}
-            <Route path="/sk" element={<Skill />} />
-            <Route path="/sk1/:jobRoleId" element={<Skill1 />} />
-            <Route path="/sk2" element={<Skill2 />} />
-            <Route path="/sk3" element={<Skill3 />} />
-            <Route path="/sk4" element={<Skill5 />} />
-
-            <Route path="/ff" element={<Skill9/>}/>
-            <Route path="GQ" element={<GeneratQuiz/>}/>
-
-
-            {/* Admin */}
-            <Route path="/Admin/MentorRequests" element={<AdminMentorRequests />} />
-            <Route path="/Adminfeedback" element={<ViewAllFeedbacks />} />
-            <Route path="/notifications" element={<NotificationPage />} />
             {/* Mentor Mentee Matchmaking New */}
-            <Route path="/mentorDashboardNew" element={<MentorDashboardNew />} /> // these are linked with suggested
-            <Route path="/mentorDash" element={<MentorStatsDashboardPage />} /> // these are linked with suggested
-            mentors
-            <Route path="/RequestedSessionsPage/:mentor_id/:user_id" element={<RequestedSessionsPage />} />
+            <Route path="/mentorDashboardNew" element={<MentorDashboardNew />} />
+            {/*  these are linked with suggested mentors */}
             <Route path="/RequestSessionPage/:mentor_id/:user_id" element={<RequestSessionPage />} />
             <Route path="/join-meeting" element={<JoinMeetingPage />} />
             <Route path="/create-meeting/:user_id" element={<CreateMeetingPage />} />
             <Route path="/edit-meeting/:meetingId" element={<CreateMeetingPage title={'Edit Meeting'} />} />
-            <Route path="/meetingsList/:Nothing" element={<MeetingsListPage />} />
             <Route path="join-meeting/:meetingId" element={<JoinMeetingPage />} />
+          </Route>
+          {/* Mentor */}
+          <Route element={<ProtectedRoute allowedRoles={['MENTOR']} />}>
             <Route path="/mentorFeedbacks" element={<MentorFeedbackPage />} />
+            <Route path="/mentorDash" element={<MentorStatsDashboardPage />} />
+            <Route path="/meetingsList/:Nothing" element={<MeetingsListPage />} />
+            <Route path="/RequestedSessionsPage/:mentor_id/:user_id" element={<RequestedSessionsPage />} />
+          </Route>
+
+          {/* Admin */}
+          <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
+            <Route path="/Admin/MentorRequests" element={<AdminMentorRequests />} />
+            <Route path="/Adminfeedback" element={<ViewAllFeedbacks />} />
+            <Route path="/notifications" element={<NotificationPage />} />
+            <Route path="/addQuizes" element={<Skill8 />} />
+            <Route path="/editQuizes" element={<Skill9 />} />
+            <Route path="/sk11/:jobRoleId" element={<Skill11 />} />
           </Route>
         </Routes>
       </BrowserRouter>

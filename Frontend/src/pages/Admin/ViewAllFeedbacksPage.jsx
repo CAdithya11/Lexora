@@ -36,7 +36,7 @@ const ViewAllFeedbacks = ({handleEdit}) => {
 
   const fetchRoadmapDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/feedback/getAll`);
+      const response = await axios.get(`http://localhost:8080/api/feedback/admin/getAll`);
       
       // Use response.data instead of undefined dataList
       const dataList = response.data;

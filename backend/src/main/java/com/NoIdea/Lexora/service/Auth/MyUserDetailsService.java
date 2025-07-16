@@ -22,6 +22,7 @@ public class MyUserDetailsService implements UserDetailsService {
             UserDetails user = User.builder()
                     .username(userEntity.getEmail())
                     .password(userEntity.getPassword())
+                    .roles(userEntity.getRole().toString())
                     .build();
             return user;
         }

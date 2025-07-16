@@ -57,11 +57,11 @@ public class AuthService {
 
         UserEntity userEmailWithData = userRepository.findByEmail(loginDetails.getEmail()).orElse(null);
         Map<String,Object> claims = new HashMap<String,Object>();
-        claims.put("role","user");
         claims.put("username",loginDetails.getEmail());
 
         // Set User_id to jwtToken
         if(userEmailWithData != null){
+            claims.put("role",userEmailWithData.getRole().toString());
             claims.put("user_id",String.valueOf(userEmailWithData.getUser_id()));
         }
         String token = jwtService.getJWTToken(loginDetails.getEmail(),claims);

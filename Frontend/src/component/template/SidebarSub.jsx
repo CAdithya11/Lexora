@@ -1,31 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+
 import {
   LayoutDashboard,
-  Home,
-  StickyNote,
   Route,
-  Layers,
-  Calendar,
-  LifeBuoy,
   Settings,
   FileCog,
   Users,
-  BarChart3,
-  FileCheck,
   Bell,
-  ChevronDown,
-  Search,
-  ArrowLeft,
-  Globe,
-  Filter,
-  TrendingUp,
-  Briefcase,
-  Database,
-  DatabaseZapIcon,
-  DatabaseBackupIcon,
   AlignVerticalJustifyCenter,
-  BarChart2,
   BarChart4Icon,
   UserSearch,
   User,
@@ -49,6 +33,21 @@ const categories = [
 export default function SidebarSub() {
   const location = useLocation();
   const userDetails = JSON.parse(localStorage.getItem('user'));
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    if (userDetails) {
+      const token = userDetails.token;
+      const role = jwtDecode(token).role;
+      setUserRole(role.toUpperCase());
+      console.log('User Role:', role);
+    }
+  }, [userDetails]);
+
+  if (!userDetails) {
+    return null; // or redirect to login
+  }
+
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
@@ -71,8 +70,7 @@ export default function SidebarSub() {
 
   const isLocation = location.pathname;
 
-  useEffect(() => {
-  }, [userDetails]);
+  useEffect(() => {}, [userDetails]);
   // Available years for the filter
   const years = ['2023', '2024', '2025', '2026'];
 
@@ -108,7 +106,7 @@ export default function SidebarSub() {
             </Link>
           </SidebarItem>
 
-          {/* mentoring sessions with suggested mentors and My sessions */}
+          {/* mentoring sessions with suggested MENTOR and My sessions */}
           <SidebarItem
             icon={<Users size={20} />}
             text="Mentoring Sessions"
@@ -122,7 +120,7 @@ export default function SidebarSub() {
             }
           >
             <Link to={'/mentorDashboardNew'}>
-              <SidebarSubItem text="Suggested Mentors" active={isLocation == '/mentorDashboardNew'} />
+              <SidebarSubItem text="Suggested MENTOR" active={isLocation == '/mentorDashboardNew'} />
             </Link>
             <Link to={`/RequestedSessionsPage/${userDetails.user_id}/0`}>
               <SidebarSubItem
@@ -154,61 +152,32 @@ export default function SidebarSub() {
           </SidebarItem>
 
           <SidebarItem
-            icon={
-              <AlignVerticalJustifyCenter
-                size={20}/>}
-                alwaysOpen={
-                  isLocation == '/sk' || isLocation == '/sk4' 
-                    ? true
-                    : false
-                }
-              
-            
+            icon={<AlignVerticalJustifyCenter size={20} />}
+            alwaysOpen={isLocation == '/sk' || isLocation == '/sk4' ? true : false}
             text="Skill Gap Analyzer"
           >
             <Link to="/sk">
-
-            <SidebarSubItem text="Anlyzer" active={isLocation == '/sk' ? true : false} />
+              <SidebarSubItem text="Anlyzer" active={isLocation == '/sk' ? true : false} />
             </Link>
             <Link to="/sk4">
-
-
-              
-
-
               <SidebarSubItem text=" Complted Gaps" active={isLocation == '/sk4' ? true : false} />
-
             </Link>
           </SidebarItem>
 
           <SidebarItem
-            icon={
-              <UserSearch
-                size={20} />
-            }
-                alwaysOpen={
-                  isLocation == '/persona' || isLocation == '/savedPersonas'
-                    ? true
-                    : false
-                }
-             
+            icon={<UserSearch size={20} />}
+            alwaysOpen={isLocation == '/persona' || isLocation == '/savedPersonas' ? true : false}
             text="Persona Matcher"
           >
             <Link to="/persona">
               <SidebarSubItem text="Persona" active={isLocation == '/persona'} />
             </Link>
             <Link to="/savedPersonas">
-              <SidebarSubItem
-                text="Matched Personas"
-
-                active={isLocation == '/savedPersonas'  ? true : false}
-
-              />
+              <SidebarSubItem text="Matched Personas" active={isLocation == '/savedPersonas' ? true : false} />
             </Link>
           </SidebarItem>
 
           <hr className="my-3 border-gray-200" />
-
 
           <Link to={'/notifications'}>
             <SidebarItem
@@ -229,9 +198,11 @@ export default function SidebarSub() {
           <hr className="my-3 border-gray-200" />
 
           <SidebarItem
+            locked={userRole === 'MENTOR' ? false : true}
             icon={<User size={20} />}
             text="Mentor"
             alwaysOpen={
+              userRole === 'MENTOR' ||
               isLocation == '/meetingsList/1' ||
               isLocation == `/RequestedSessionsPage/0/${userDetails.user_id}` ||
               isLocation == '/mentorDash'
@@ -240,40 +211,76 @@ export default function SidebarSub() {
             }
           >
             <Link to={'/mentorDash'}>
-              <SidebarSubItem text="Dashboard" active={isLocation == '/mentorDash'} />
+              <SidebarSubItem
+                text="Dashboard"
+                active={isLocation == '/mentorDash'}
+                locked={userRole === 'MENTOR' ? false : true}
+              />
             </Link>
             <Link to={'/meetingsList/1'}>
-              <SidebarSubItem text="My Meetings" active={isLocation == '/meetingsList/1'} />
+              <SidebarSubItem
+                text="My Meetings"
+                active={isLocation == '/meetingsList/1'}
+                locked={userRole === 'MENTOR' ? false : true}
+              />
             </Link>
             <Link to={`/RequestedSessionsPage/0/${userDetails.user_id}`}>
               <SidebarSubItem
                 text="Requests"
                 active={isLocation == `/RequestedSessionsPage/0/${userDetails.user_id}`}
+                locked={userRole === 'MENTOR' ? false : true}
               />
             </Link>
             <Link to={`/mentorFeedbacks`}>
-              <SidebarSubItem text="Feedbacks" active={isLocation == `/mentorFeedbacks`} />
+              <SidebarSubItem
+                text="Feedbacks"
+                active={isLocation == `/mentorFeedbacks`}
+                locked={userRole === 'MENTOR' ? false : true}
+              />
             </Link>
           </SidebarItem>
 
-
           <SidebarItem
+            locked={userRole === 'ADMIN' ? false : true}
             icon={<FileCog size={20} />}
             text="Admin"
-            alwaysOpen={isLocation == '/Admin/MentorRequests' || isLocation == '/AdminFeedback' || isLocation == '/f' || isLocation == '/ff'? true : false}
+            alwaysOpen={
+              userRole === 'ADMIN' ||
+              isLocation == '/Admin/MentorRequests' ||
+              isLocation == '/AdminFeedback' ||
+              isLocation == '/addQuizes' ||
+              isLocation == '/editQuizes'
+                ? true
+                : false
+            }
           >
             <Link to={'/Admin/MentorRequests'}>
-              <SidebarSubItem text="Mentor Varification" active={isLocation == '/Admin/MentorRequests'} />
+              <SidebarSubItem
+                text="Mentor Varification"
+                active={isLocation == '/Admin/MentorRequests'}
+                locked={userRole === 'ADMIN' ? false : true}
+              />
             </Link>
             <Link to={'/Adminfeedback'}>
-              <SidebarSubItem text="Feedback" active={isLocation == '/mentorSessions'} />
+              <SidebarSubItem
+                text="Feedback"
+                active={isLocation == '/MENTORessions'}
+                locked={userRole === 'ADMIN' ? false : true}
+              />
             </Link>
-            <Link to={'/f'}>
-              <SidebarSubItem text="Skill Assement Quiz" active={isLocation == '/f'} />
-            
+            <Link to={'/addQuizes'}>
+              <SidebarSubItem
+                text="Skill Assement Quiz"
+                active={isLocation == '/addQuizes'}
+                locked={userRole === 'ADMIN' ? false : true}
+              />
             </Link>
-            <Link to={'/ff'}>
-              <SidebarSubItem text="Edit Skill Assement Quiz" active={isLocation == '/ff'} />
+            <Link to={'/editQuizes'}>
+              <SidebarSubItem
+                text="Edit Skill Assement Quiz"
+                active={isLocation == '/editQuizes'}
+                locked={userRole === 'ADMIN' ? false : true}
+              />
             </Link>
           </SidebarItem>
 

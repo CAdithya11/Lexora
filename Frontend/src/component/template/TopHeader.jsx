@@ -4,6 +4,7 @@ import { Home, User, Settings, LogOut, Bell, ChevronDown, X, Check } from 'lucid
 import { authService } from '../../services/AuthService';
 import userProfileHandleService from '../../services/userProfileHandleService';
 import axios from 'axios';
+import defaultProfileImageMale from '../../assets/images/defaultProfileImageMale.png';
 
 // Notification Popup Modal Component
 const NotificationModal = ({ notification, isOpen, onClose, onMarkAsRead }) => {
@@ -145,7 +146,7 @@ export default function TopHeader({ HeaderMessage, handleGetUserDetails }) {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
 
-    if (user?.user_id && user?.token) {
+    if (user.user_id && user.token) {
       // Fetch profile
       userProfileHandleService
         .findUserProfileById(user.user_id)
@@ -271,9 +272,15 @@ export default function TopHeader({ HeaderMessage, handleGetUserDetails }) {
                 onClick={(e) => toggleDropdown(setShowProfileDropdown, showProfileDropdown, e)}
               >
                 <img
-                  src={profileDetails?.profile_image || ''}
+                  src={
+                    profileDetails
+                      ? profileDetails.profile_image != null
+                        ? profileDetails.profile_image
+                        : defaultProfileImageMale
+                      : defaultProfileImageMale
+                  }
                   alt="Profile"
-                  className="h-10 w-10 object-cover rounded-full"
+                  className="h-10 w-10 object-cover rounded-full border border-gray-300"
                 />
                 <div className="flex flex-col justify-center ml-2">
                   <span className="text-sm font-medium hidden md:inline">{profileDetails?.username || ''}</span>

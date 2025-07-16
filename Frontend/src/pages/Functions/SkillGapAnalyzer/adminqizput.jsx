@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { Plus, Trash2, Edit3, Save, CheckCircle, AlertCircle } from 'lucide-react';
 import SidebarSub from '../../../component/template/SidebarSub';
 import TopHeader from '../../../component/template/TopHeader';
 
@@ -9,6 +10,7 @@ export default function MatchedPersona() {
   const [skillLists, setSkillLists] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [debugInfo, setDebugInfo] = useState('');
+  const [filter, setFilter] = useState('all'); // all, skills, questions
 
   const { jobRoleId } = useParams();
   const location = useLocation();
@@ -21,7 +23,7 @@ export default function MatchedPersona() {
       setJobRoleName(data.jobRoleName || '');
 
       const filteredSkills = selectedSkillId
-        ? data.skillLists?.filter(skill => skill.skillId === selectedSkillId)
+        ? data.skillLists?.filter((skill) => skill.skillId === selectedSkillId)
         : data.skillLists || [];
 
       setSkillLists(filteredSkills);
@@ -63,7 +65,7 @@ export default function MatchedPersona() {
     updated[skillIndex].skillQuestions[questionIndex].skillAnswers.push({
       skillAnswerId: null,
       answer: '',
-      status: false
+      status: false,
     });
     setSkillLists(updated);
   };
@@ -79,7 +81,7 @@ export default function MatchedPersona() {
     updated[skillIndex].skillQuestions.push({
       questionId: null,
       question: '',
-      skillAnswers: [{ skillAnswerId: null, answer: '', status: false }]
+      skillAnswers: [{ skillAnswerId: null, answer: '', status: false }],
     });
     setSkillLists(updated);
   };
@@ -110,7 +112,7 @@ export default function MatchedPersona() {
           return;
         }
 
-        const hasCorrectAnswer = question.skillAnswers.some(a => a.status === true);
+        const hasCorrectAnswer = question.skillAnswers.some((a) => a.status === true);
         if (!hasCorrectAnswer) {
           alert(`Please mark at least one answer as correct for question: ${question.question}`);
           return;
@@ -121,7 +123,7 @@ export default function MatchedPersona() {
     const jobRoleData = {
       jobRoleName,
       jobRoleId,
-      skillLists
+      skillLists,
     };
 
     setIsSubmitting(true);
@@ -129,11 +131,11 @@ export default function MatchedPersona() {
 
     try {
       const response = await axios.post('http://localhost:8080/api/v1/jobRole', [jobRoleData], {
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
       });
 
       setDebugInfo(`Success: ${JSON.stringify(response.data, null, 2)}`);
-      alert('Job role saved successfully!');
+      alert('Job role updated successfully!');
       await fetchJobRole(); // Refresh after submit
     } catch (error) {
       setDebugInfo(`POST Error: ${error.message}`);
@@ -143,111 +145,222 @@ export default function MatchedPersona() {
     }
   };
 
+  // Get counts for filter tabs
+  const getCounts = () => {
+    const totalQuestions = skillLists.reduce((acc, skill) => acc + skill.skillQuestions.length, 0);
+    return {
+      all: skillLists.length + totalQuestions,
+      skills: skillLists.length,
+      questions: totalQuestions,
+    };
+  };
+
+  const counts = getCounts();
+
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className="flex h-screen overflow-hidden bg-white">
       <SidebarSub />
+
+      {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header */}
         <TopHeader HeaderMessage="Edit Questions and Answers" />
-        <div className="flex-1 overflow-y-auto p-6 bg-white">
-          <div className="p-6 max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold mb-4">Edit Skill Questions</h2>
 
-            <input
-              type="text"
-              placeholder="Enter Job Role Name"
-              value={jobRoleName}
-              onChange={(e) => setJobRoleName(e.target.value)}
-              className="w-full p-2 mb-4 border border-gray-300 rounded"
-            />
+        <div className="flex-1 flex m-5 flex-col pt-5 pl-10 overflow-auto">
+          {/* Page Header */}
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-gray-900">Edit Job Role</h1>
+            <p className="text-gray-600 mt-2">Modify existing job role with skills and quiz questions</p>
+          </div>
 
-            {skillLists.map((skill, skillIndex) => (
-              <div key={skillIndex} className="mb-6 border border-gray-200 p-4 rounded bg-gray-50">
-                <input
-                  type="text"
-                  placeholder="Skill Name"
-                  value={skill.skillName}
-                  onChange={(e) => handleSkillChange(e, skillIndex)}
-                  className="w-full p-2 mb-3 border border-gray-300 rounded"
-                />
+          {/* Job Role Name Input */}
+          <div className="mb-6">
+            <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Job Role Information</h3>
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Job Role Name</label>
+                  <input
+                    type="text"
+                    placeholder="Enter job role name (e.g., Software Engineer, Data Scientist)"
+                    value={jobRoleName}
+                    onChange={(e) => setJobRoleName(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
 
-                {skill.skillQuestions.map((question, questionIndex) => (
-                  <div key={questionIndex} className="mb-4 p-3 border rounded bg-white">
-                    <input
-                      type="text"
-                      placeholder="Question"
-                      value={question.question}
-                      onChange={(e) => handleQuestionChange(e, skillIndex, questionIndex)}
-                      className="w-full p-2 mb-3 border border-gray-300 rounded"
-                    />
+          {/* Filter Tabs */}
+          <div className="border-b border-gray-200 mb-6">
+            <nav className="flex space-x-8">
+              {[
+                { key: 'all', label: `All Items (${counts.all})` },
+                { key: 'skills', label: `Skills (${counts.skills})` },
+                { key: 'questions', label: `Questions (${counts.questions})` },
+              ].map(({ key, label }) => (
+                <button
+                  key={key}
+                  className={`py-4 px-1 font-medium text-sm ${
+                    filter === key ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                  onClick={() => setFilter(key)}
+                >
+                  {label}
+                </button>
+              ))}
+            </nav>
+          </div>
 
-                    {question.skillAnswers.map((answer, answerIndex) => (
-                      <div key={answerIndex} className="flex items-center mb-2 gap-2">
+          {/* Skills Section */}
+          <div className="mr-8">
+            <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+              {skillLists.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+                  <AlertCircle className="h-12 w-12 text-gray-400 mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-1">No skills found</h3>
+                  <p className="text-sm text-gray-500 mb-4">The selected skill data could not be loaded</p>
+                </div>
+              ) : (
+                <div className="divide-y divide-gray-200">
+                  {skillLists.map((skill, skillIndex) => (
+                    <div key={skillIndex} className="p-6">
+                      {/* Skill Header */}
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span className="text-sm font-medium text-blue-800">{skillIndex + 1}</span>
+                          </div>
+                          <h3 className="ml-3 text-lg font-semibold text-gray-900">
+                            {skill.skillName || `Skill ${skillIndex + 1}`}
+                          </h3>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <button
+                            onClick={() => handleAddQuestion(skillIndex)}
+                            className="inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                          >
+                            <Plus className="h-3 w-3 mr-1" />
+                            Add Question
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Skill Name Input */}
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Skill Name</label>
                         <input
                           type="text"
-                          placeholder="Answer"
-                          value={answer.answer}
-                          onChange={(e) =>
-                            handleAnswerChange(e, skillIndex, questionIndex, answerIndex, 'answer')
-                          }
-                          className="flex-1 p-1 border border-gray-300 rounded"
+                          value={skill.skillName}
+                          onChange={(e) => handleSkillChange(e, skillIndex)}
+                          placeholder="Enter skill name (e.g., JavaScript, Problem Solving)"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         />
-                        <label className="flex items-center gap-1">
-                          <input
-                            type="checkbox"
-                            checked={answer.status}
-                            onChange={(e) =>
-                              handleAnswerChange(e, skillIndex, questionIndex, answerIndex, 'status')
-                            }
-                          />
-                          Correct
-                        </label>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            handleDeleteAnswer(skillIndex, questionIndex, answerIndex)
-                          }
-                          className="text-red-600 hover:underline ml-2"
-                        >
-                          Delete Answer
-                        </button>
                       </div>
-                    ))}
 
-                    <button
-                      type="button"
-                      onClick={() => handleAddAnswer(skillIndex, questionIndex)}
-                      className="text-blue-600 mt-2 hover:underline"
-                    >
-                      + Add Answer
-                    </button>
+                      {/* Questions */}
+                      {skill.skillQuestions.length > 0 && (
+                        <div className="space-y-4">
+                          <h4 className="text-md font-medium text-gray-900 flex items-center">
+                            <Edit3 className="h-4 w-4 mr-2" />
+                            Questions ({skill.skillQuestions.length})
+                          </h4>
+                          {skill.skillQuestions.map((question, qIdx) => (
+                            <div key={qIdx} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                              <div className="flex items-center justify-between mb-3">
+                                <span className="text-sm font-medium text-gray-700">Question {qIdx + 1}</span>
+                                <div className="flex items-center space-x-2">
+                                  <button
+                                    onClick={() => handleAddAnswer(skillIndex, qIdx)}
+                                    className="inline-flex items-center px-2 py-1 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                                  >
+                                    <Plus className="h-3 w-3 mr-1" />
+                                    Add Answer
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteQuestion(skillIndex, qIdx)}
+                                    className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+                                  >
+                                    <Trash2 className="h-3 w-3" />
+                                  </button>
+                                </div>
+                              </div>
 
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteQuestion(skillIndex, questionIndex)}
-                      className="text-red-600 mt-2 hover:underline ml-4"
-                    >
-                      Delete Question
-                    </button>
-                  </div>
-                ))}
+                              <input
+                                type="text"
+                                value={question.question}
+                                onChange={(e) => handleQuestionChange(e, skillIndex, qIdx)}
+                                placeholder="Enter your question here"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mb-3"
+                              />
 
+                              {/* Answers */}
+                              {question.skillAnswers.length > 0 && (
+                                <div className="space-y-2">
+                                  <span className="text-sm font-medium text-gray-700">Answer Options:</span>
+                                  {question.skillAnswers.map((answer, aIdx) => (
+                                    <div key={aIdx} className="flex items-center space-x-2">
+                                      <input
+                                        type="text"
+                                        value={answer.answer}
+                                        onChange={(e) => handleAnswerChange(e, skillIndex, qIdx, aIdx, 'answer')}
+                                        placeholder={`Answer option ${aIdx + 1}`}
+                                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                      />
+                                      <label className="flex items-center space-x-2 min-w-fit">
+                                        <input
+                                          type="checkbox"
+                                          checked={answer.status}
+                                          onChange={(e) => handleAnswerChange(e, skillIndex, qIdx, aIdx, 'status')}
+                                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                        />
+                                        <span className="text-sm text-gray-700">Correct</span>
+                                      </label>
+                                      <button
+                                        onClick={() => handleDeleteAnswer(skillIndex, qIdx, aIdx)}
+                                        className="inline-flex items-center p-1 border border-transparent text-xs font-medium rounded text-red-600 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+                                      >
+                                        <Trash2 className="h-3 w-3" />
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="mt-6 mb-8 mr-8">
+            <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-6">
+              <div className="flex items-center justify-end">
                 <button
-                  type="button"
-                  onClick={() => handleAddQuestion(skillIndex)}
-                  className="text-green-600 mt-2 hover:underline"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting || !jobRoleName.trim() || skillLists.length === 0}
+                  className="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  + Add Question
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                      Updating...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4 mr-2" />
+                      Update Job Role
+                    </>
+                  )}
                 </button>
               </div>
-            ))}
-
-            <button
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-              className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 disabled:bg-gray-400"
-            >
-              {isSubmitting ? 'Updating...' : 'Update'}
-            </button>
+            </div>
           </div>
         </div>
       </div>

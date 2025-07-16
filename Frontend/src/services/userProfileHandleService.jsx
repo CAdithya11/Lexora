@@ -78,15 +78,15 @@ class ProfileSettings {
   }
 
   getAllVerificationRequests() {
-    return axios.get('http://www.localhost:8080/api/v2/request/all');
+    return axios.get('http://www.localhost:8080/api/v2/request/admin/all');
   }
 
   getVerificationRequestByUserId(userId) {
-    return axios.get(`http://www.localhost:8080/api/v2/request/all/${userId}`);
+    return axios.get(`http://www.localhost:8080/api/v2/request/admin/all/${userId}`);
   }
 
   ResponseVerificationRequest(requestId, response) {
-    return axios.put(`http://www.localhost:8080/api/v2/request/${requestId}/${response}`);
+    return axios.put(`http://www.localhost:8080/api/v2/request/admin/${requestId}/${response}`);
   }
 
   sendBecomeAMentorRequest(user_id) {

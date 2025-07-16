@@ -1,4 +1,4 @@
-import { ChevronFirst, ChevronLast, MoreVertical, ChevronDown, ChevronRight } from 'lucide-react';
+import { ChevronFirst, ChevronLast, MoreVertical, ChevronDown, ChevronRight, Lock } from 'lucide-react';
 import logo from '../../assets/logo.png';
 import { createContext, useContext, useState, useEffect } from 'react';
 
@@ -40,7 +40,7 @@ export default function Sidebar({ children }) {
   );
 }
 
-export function SidebarItem({ icon, text, active, alert, children, alwaysOpen = false }) {
+export function SidebarItem({ icon, text, active, alert, children, alwaysOpen = false, locked }) {
   const { expanded } = useContext(SidebarContext);
   const [isOpen, setIsOpen] = useState(alwaysOpen);
 
@@ -68,8 +68,9 @@ export function SidebarItem({ icon, text, active, alert, children, alwaysOpen = 
           {text}
         </span>
 
-        {hasChildren && expanded && !alwaysOpen && (
+        {hasChildren && expanded && !alwaysOpen && locked === false && (
           <div className="ml-auto">
+            {console.log('LOCKED', locked)}
             {isOpen ? (
               <ChevronDown size={16} className="text-gray-500" />
             ) : (
@@ -78,8 +79,15 @@ export function SidebarItem({ icon, text, active, alert, children, alwaysOpen = 
           </div>
         )}
 
-        {hasChildren && expanded && alwaysOpen && (
+        {locked && (
           <div className="ml-auto">
+            <Lock size={16} className="text-gray-500" />
+          </div>
+        )}
+
+        {hasChildren && expanded && alwaysOpen && locked === false && (
+          <div className="ml-auto">
+            {console.log('LOCKED', locked)}
             <ChevronDown size={16} className="text-gray-500" />
           </div>
         )}
@@ -109,7 +117,10 @@ export function SidebarItem({ icon, text, active, alert, children, alwaysOpen = 
   );
 }
 
-export function SidebarSubItem({ text, active }) {
+export function SidebarSubItem({ text, active, locked }) {
+  if (locked) {
+    return;
+  }
   return (
     <li
       id={text}

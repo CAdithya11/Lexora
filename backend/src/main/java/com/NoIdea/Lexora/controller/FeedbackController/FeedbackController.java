@@ -18,7 +18,7 @@ public class FeedbackController {
         return feedbackService.saveFeedBack(feedback);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/admin/getAll")
     public List<Feedbacks> getAllFeedbacks(){
         return feedbackService.getAllFeedbacks();
     }
