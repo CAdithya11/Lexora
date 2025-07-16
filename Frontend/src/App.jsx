@@ -96,8 +96,8 @@ function App() {
           <Route path="/sk4" element={<Skill5 />} />
           <Route path="/sk11/:jobRoleId" element={<Skill11 />} />
           
-            <Route path="/skills/:jobRoleId" element={<Skill4/>} />
-            <Route path="/sk10/:jobRoleId" element={<Skill10/>} />
+          <Route path="/skills/:jobRoleId" element={<Skill4/>} />
+          <Route path="/sk10/:jobRoleId" element={<Skill10/>} />
           <Route path="/result/:jobRole" element={<Skill6/>} />
           <Route path="/fetch" element={<Skill7/>} />
           <Route path="/f" element={<Skill8/>} />
