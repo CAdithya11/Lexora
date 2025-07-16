@@ -1,30 +1,98 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  Menu,
-  X,
-  ChevronDown,
-  Home,
-  Info,
-  Users,
-  Eye,
-  Mail,
-  Box,
-  LogIn,
-  UserPlus,
-  TrendingUp,
-  Map,
-  UserCheck,
-  Book,
-  Users as UsersIcon,
+  Menu, X, ChevronDown, Home, Info, Users, Eye, Mail, Box, Bell,
+  LogOut, User, Settings, LogIn, UserPlus,
+  TrendingUp, Map, UserCheck, Book, Users as UsersIcon,
 } from 'lucide-react';
 import logo from '../../assets/logo.png'; // Assuming logo path
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { authService } from '../../services/AuthService';
+import userProfileHandleService from '../../services/userProfileHandleService';
+import axios from 'axios';
 
 const NavBar = ({ activeNavMenu }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showAppsDropdown, setShowAppsDropdown] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const appsDropdownRef = useRef(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+const [notifications, setNotifications] = useState([]);
+const [unreadCount, setUnreadCount] = useState(0);
+const [profileDetails, setProfileDetails] = useState(null);
+
+const navigate = useNavigate();
+
+  useEffect(() => {
+  const user = localStorage.getItem('user');
+  setIsLoggedIn(!!user); // true if user exists
+}, []);
+
+const toggleDropdown = (setter, currentState, e) => {
+  e.stopPropagation();
+  setter(!currentState);
+};
+
+const markAsRead = async (notificationId) => {
+  try {
+    await axios.put(`http://localhost:8080/api/v2/notification/${notificationId}`, {
+      status: 'READ',
+    });
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user?.user_id) fetchNotifications(user.user_id);
+  } catch (err) {
+    console.error('Failed to mark as read:', err);
+  }
+};
+
+const handleViewAllNotifications = () => {
+  setShowNotificationDropdown(false);
+  navigate('/notifications');
+};
+
+const handleNotificationClick = (notification) => {
+  // You can show modal or redirect based on your UX plan
+  console.log('Clicked Notification:', notification);
+};
+
+useEffect(() => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (user?.user_id) {
+    fetchNotifications(user.user_id);
+    fetchProfile(user.user_id);
+  }
+}, []);
+
+const fetchNotifications = async (userId) => {
+  try {
+    const res = await axios.get(`http://localhost:8080/api/v2/notification/${userId}`);
+    setNotifications(res.data);
+    setUnreadCount(res.data.filter(n => n.status === 'UNREAD').length);
+  } catch (err) {
+    console.error('Failed to load notifications', err);
+  }
+};
+
+const fetchProfile = async (userId) => {
+  try {
+    const res = await userProfileHandleService.findUserProfileById(userId);
+    setProfileDetails(res.data);
+  } catch (err) {
+    console.error('Failed to load profile', err);
+  }
+};
+
+const handleLogout = () => {
+  authService.logout();
+  localStorage.removeItem('user');
+  navigate('/');
+};
+
+
+
 
   // Handle scroll event for navbar shadow effect
   useEffect(() => {
@@ -90,9 +158,7 @@ const NavBar = ({ activeNavMenu }) => {
   ];
 
   return (
-    <nav
-      className={`bg-white fixed w-full top-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-lg' : 'shadow-md'}`}
-    >
+    <nav className={`bg-white fixed w-full top-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-lg' : 'shadow-md'}`}    >
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo and Brand */}
@@ -145,10 +211,12 @@ const NavBar = ({ activeNavMenu }) => {
             </div>
 
             {/* Auth Buttons */}
+            {!isLoggedIn ? (
+            <>
             <div className="flex-shrink-0 ml-22 mr-3">
               <Link to={'/signIn'}>
                 <div
-                  id="singInButton"
+                  id="signInButton"
                   className="block w-full px-5 py-2 text-center font-medium text-blue-600 bg-gray-50 hover:bg-gray-100 rounded-md flex items-center justify-center transition-colors duration-150"
                 >
                   <LogIn size={18} className="mr-1" />
@@ -167,10 +235,95 @@ const NavBar = ({ activeNavMenu }) => {
                 </div>
               </Link>
             </div>
-          </div>
+            </>
+            ):(
+              <div className="flex items-center gap-4 ml-4">
+  {/* Notification Bell */}
+  <div className="relative">
+    <button
+      onClick={(e) => toggleDropdown(setShowNotificationDropdown, showNotificationDropdown, e)}
+      className="relative p-2 text-gray-500 hover:text-blue-600 hover:scale-110 transition-transform duration-200 rounded-lg"
+    >
+      <Bell size={20} />
+      {unreadCount > 0 && (
+        <span className="absolute -top-1 -right-1 bg-blue-500 ring-2 ring-white text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+          {unreadCount > 99 ? '99+' : unreadCount}
+        </span>
+      )}
+    </button>
+
+    {showNotificationDropdown && (
+      <NotificationDropdown
+        notifications={notifications}
+        onMarkAsRead={markAsRead}
+        onClose={() => setShowNotificationDropdown(false)}
+        onViewAll={handleViewAllNotifications}
+        onNotificationClick={handleNotificationClick}
+      />
+    )}
+  </div>
+
+  {/* Profile Dropdown */}
+  <div className="relative">
+    <button
+      onClick={(e) => toggleDropdown(setShowProfileDropdown, showProfileDropdown, e)}
+      className="flex items-center gap-2 border border-transparent rounded-lg px-3 py-2 cursor-pointer bg-white"
+    >
+      <img
+        src={profileDetails?.profile_image || ''}
+        alt="Profile"
+        className="h-10 w-10 object-cover rounded-full"
+      />
+      <div className="hidden md:flex flex-col ml-2">
+        <span className="text-sm font-medium">{profileDetails?.username}</span>
+        <span className="text-xs text-gray-600">{profileDetails?.role || 'Student'}</span>
+      </div>
+      <ChevronDown size={14} className="text-gray-500" />
+    </button>
+
+    {showProfileDropdown && (
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
+      >
+        <div className="p-3 border-b border-gray-100">
+          <p className="text-sm font-semibold">{profileDetails?.username}</p>
+          <p className="text-xs text-gray-500">{profileDetails?.email}</p>
+        </div>
+        <ul className="py-1">
+          <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-gray-700">
+            <Home size={17} />
+            <Link to={'/dashboard'}>Dashboard</Link>
+          </li>
+          <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-gray-700">
+            <User size={17} />
+            <Link to={'/settings/profile'}>Profile</Link>
+          </li>
+          <li className="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-gray-700">
+            <Settings size={17} />
+            <Link to={'/settings/professionalDetails'}>Settings</Link>
+          </li>
+          <li className="border-t border-gray-100 mt-1">
+            <button
+                onClick={() => authService.logout()}
+                className="w-full text-left px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-red-600"
+              >
+                <LogOut size={17} className="text-red-500" />
+                <span className="text-m">Logout</span>
+              </button>
+          </li>
+        </ul>
+      </div>
+    )}
+  </div>
+</div>
+       
+          
+          )}
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
+           
             <button
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-blue-600 hover:bg-gray-100 focus:outline-none transition-colors duration-200"
               onClick={toggleMenu}
@@ -182,6 +335,8 @@ const NavBar = ({ activeNavMenu }) => {
           </div>
         </div>
       </div>
+    </div>
+      
 
       {/* Mobile menu */}
       {isMenuOpen && (
@@ -236,7 +391,7 @@ const NavBar = ({ activeNavMenu }) => {
                 </Link>
               </div>
               <div className="flex-shrink-0">
-                <Link to={'/signIn'}>
+                <Link to={'/signUpPage'}>
                   <div className="block w-full px-5 py-2 text-center font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md flex items-center justify-center transition-colors duration-150 shadow-md">
                     <UserPlus size={18} className="mr-1" />
                     Sign Up
