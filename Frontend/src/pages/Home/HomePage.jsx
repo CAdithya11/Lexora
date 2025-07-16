@@ -6,6 +6,7 @@ import HomeMain from '../../assets/images/Home1.webp'
 import HomeRealTime from '../../assets/images/HomeRealTime.jpg'
 //import { Link } from 'lucide-react';
 import { Link } from "react-router-dom";
+import ModelViewer from '../../3DAnimster/ModelViewer';
 
 
 export default function HomePage() {
@@ -64,12 +65,8 @@ export default function HomePage() {
 
               </div>
 
-              <div className="w-full mt-10 lg:mt-0">
-                <img
-                  className="w-full max-w-md mx-auto lg:max-w-full"
-                  src={HomeMain}
-                  alt="Student using Lexora for career planning"
-                />
+              <div className="w-full h-full ">
+                <ModelViewer />
               </div>
             </div>
           </div>

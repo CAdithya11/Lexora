@@ -64,6 +64,7 @@ import RequestSessionPage from './pages/Functions/MentorMenteeMatchmaking/Mentor
 import NotificationPage from './pages/Notifications/NotificationPage';
 import MentorStatsDashboardPage from './pages/Functions/MentorMenteeMatchmaking/Mentor/MentorStatsDashboardPage';
 import MentorFeedbackPage from './pages/Functions/MentorMenteeMatchmaking/Mentor/MentorFeedbacksPage';
+import ModelViewer from './3DAnimster/ModelViewer';
 
 function App() {
   return (
@@ -81,6 +82,7 @@ function App() {
           <Route path="/aboutus" element={<AboutUsPage />} />
           <Route path="/app" element={<AppsPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/animater" element={<ModelViewer/>} />
 
           {/* <Route path="/PersonaMatching" element={<CareerPersosna />} />
           <Route path="/Personas" element={<MatchedPersosna />} />
