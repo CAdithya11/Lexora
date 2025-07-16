@@ -19,7 +19,7 @@ public class BecomeMentorRequestController {
     private BecomeMentorRequestService becomeMentorRequestService;
 
     //Admin Show all requests
-    @GetMapping("/all")
+    @GetMapping("/admin/all")
     public ResponseEntity<List<BecomeMentorRequestDTO>> getAllRequests(){
         List<BecomeMentorRequestDTO> response = becomeMentorRequestService.getAllRequests();
         HttpStatus status;
@@ -63,7 +63,7 @@ public class BecomeMentorRequestController {
         }
     }
 
-    @PutMapping("/{id}/{status}")
+    @PutMapping("/admin/{id}/{status}")
     public ResponseEntity<String> createResponse(@PathVariable Long id, @PathVariable VerificationStatus status){
         try{
             String makeStatus = becomeMentorRequestService.createResponse(id, status);
