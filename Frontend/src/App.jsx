@@ -64,6 +64,7 @@ import RequestSessionPage from './pages/Functions/MentorMenteeMatchmaking/Mentor
 import NotificationPage from './pages/Notifications/NotificationPage';
 import MentorStatsDashboardPage from './pages/Functions/MentorMenteeMatchmaking/Mentor/MentorStatsDashboardPage';
 import MentorFeedbackPage from './pages/Functions/MentorMenteeMatchmaking/Mentor/MentorFeedbacksPage';
+import UnauthorizedAccess from './pages/Unautherized/UnautherizedAccess';
 
 function App() {
   return (
@@ -94,11 +95,11 @@ function App() {
           <Route path="/sk3" element={<Skill3 />} />
           <Route path="/sk4" element={<Skill5 />} />
           <Route path="/sk11/:jobRoleId" element={<Skill11 />} />
-          <Route path="/skills/:jobRoleId" element={<Skill4/>} />
-          <Route path="/sk10/:jobRoleId" element={<Skill10/>} />
-          <Route path="/result/:jobRole" element={<Skill6/>} />
-          <Route path="/fetch" element={<Skill7/>} />
-          <Route path="/f" element={<Skill8/>} />
+          <Route path="/skills/:jobRoleId" element={<Skill4 />} />
+          <Route path="/sk10/:jobRoleId" element={<Skill10 />} />
+          <Route path="/result/:jobRole" element={<Skill6 />} />
+          <Route path="/fetch" element={<Skill7 />} />
+          <Route path="/f" element={<Skill8 />} />
           <Route path="/skills/:jobRoleId" element={<Skill4 />} />
           <Route path="/sk10/:jobRoleId" element={<Skill10 />} />
           <Route path="/result/:jobRole" element={<Skill6 />} />
@@ -112,8 +113,9 @@ function App() {
           <Route path="/edit-meeting/:meetingId" element={<CreateMeetingPage title={'Edit Meeting'} />} />
           <Route path="/meetingsList" element={<MeetingsListPage />} />
           <Route path="join-meeting/:meetingId" element={<JoinMeetingPage />} />
+          <Route path="/unauthorized" element={<UnauthorizedAccess />} />
 
-          <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'STUDENT']} />}>
+          <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'STUDENT', 'MENTOR']} />}>
             {/* User profiles based*/}
             <Route path="/settings/profile" element={<UserProfileSettings />} />
             <Route path="/settings/password" element={<UserChangePassword />} />

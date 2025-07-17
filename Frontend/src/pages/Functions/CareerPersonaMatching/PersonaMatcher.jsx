@@ -2,30 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
-
 import RoadmapDetails from '../../../component/AIPersonaMatcher/PersonaTable';
 import SidebarSub from '../../../component/template/SidebarSub';
 import TopHeader from '../../../component/template/TopHeader';
 
-
-
-
-
 export default function MatchedPersona() {
-  
- 
   const loc = useLocation();
   const jobs = loc.state?.msg;
-
-  
-
-
-
-  
-
-  
-
-  
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">

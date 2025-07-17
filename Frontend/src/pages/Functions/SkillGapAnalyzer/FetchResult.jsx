@@ -25,7 +25,7 @@ export default function TrendingJobsPage() {
         if (scores && scores.length > 0) {
           const jobRoleMap = new Map();
 
-          scores.forEach(score => {
+          scores.forEach((score) => {
             const jobRoleName = score.jobRoleName;
 
             if (!jobRoleMap.has(jobRoleName)) {
@@ -44,17 +44,17 @@ export default function TrendingJobsPage() {
               totalQuestions: score.totalQuestions,
               percentage: Math.round((score.predictedScore / score.totalQuestions) * 100),
               learningPath: score.learningPath,
-              courseLinks: score.courseLinks
+              courseLinks: score.courseLinks,
             });
 
             jobRole.totalScore += score.predictedScore;
             jobRole.totalQuestions += score.totalQuestions;
           });
 
-          const processedJobRoles = Array.from(jobRoleMap.values()).map(jobRole => ({
+          const processedJobRoles = Array.from(jobRoleMap.values()).map((jobRole) => ({
             ...jobRole,
             averagePercentage: Math.round((jobRole.totalScore / jobRole.totalQuestions) * 100),
-            skillCount: jobRole.skills.length
+            skillCount: jobRole.skills.length,
           }));
 
           setJobRoles(processedJobRoles);
@@ -80,8 +80,8 @@ export default function TrendingJobsPage() {
   const handleJobRoleClick = (jobRole) => {
     navigate(`/result/${encodeURIComponent(jobRole.jobRoleName)}`, {
       state: {
-        jobRoleData: jobRole
-      }
+        jobRoleData: jobRole,
+      },
     });
   };
 
@@ -92,9 +92,9 @@ export default function TrendingJobsPage() {
         <TopHeader HeaderMessage={'Persona Matcher'} />
         <div className="flex-1 overflow-y-auto p-6 bg-white">
           <div className="w-full">
-            <div className="border-b-2 border-solid border-gray-300 mb-4">
-              <h1 className="text-2xl font-bold text-gray-800">Your Skill Assessment Results</h1>
-              <p className="text-gray-500 text-sm">Review your performance across different job roles</p>
+            <div className="mb-6">
+              <h1 className="text-3xl font-bold text-gray-900">Your Skill Assessment Results</h1>
+              <p className="text-gray-600 mt-2">Review your performance across different job roles</p>
             </div>
 
             {isLoading ? (
@@ -106,7 +106,12 @@ export default function TrendingJobsPage() {
               <div className="p-10 text-center text-red-500">
                 <div className="mb-4">
                   <svg className="mx-auto h-12 w-12 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                    />
                   </svg>
                 </div>
                 <p className="text-lg font-medium mb-2">Oops! Something went wrong</p>
@@ -136,27 +141,39 @@ export default function TrendingJobsPage() {
                           <div className="space-y-2 mb-4">
                             <div className="flex justify-between items-center">
                               <span className="text-sm text-gray-600">Overall Score:</span>
-                              <span className={`text-sm font-medium ${
-                                jobRole.averagePercentage >= 80 ? 'text-green-600' :
-                                jobRole.averagePercentage >= 60 ? 'text-yellow-600' : 'text-red-600'
-                              }`}>
+                              <span
+                                className={`text-sm font-medium ${
+                                  jobRole.averagePercentage >= 80
+                                    ? 'text-green-600'
+                                    : jobRole.averagePercentage >= 60
+                                    ? 'text-yellow-600'
+                                    : 'text-red-600'
+                                }`}
+                              >
                                 {jobRole.averagePercentage}%
                               </span>
                             </div>
 
                             <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div 
+                              <div
                                 className={`h-2 rounded-full transition-all duration-300 ${
-                                  jobRole.averagePercentage >= 80 ? 'bg-green-500' :
-                                  jobRole.averagePercentage >= 60 ? 'bg-yellow-500' : 'bg-red-500'
+                                  jobRole.averagePercentage >= 80
+                                    ? 'bg-green-500'
+                                    : jobRole.averagePercentage >= 60
+                                    ? 'bg-yellow-500'
+                                    : 'bg-red-500'
                                 }`}
                                 style={{ width: `${jobRole.averagePercentage}%` }}
                               ></div>
                             </div>
 
                             <div className="flex justify-between items-center text-xs text-gray-500">
-                              <span>{jobRole.skillCount} skill{jobRole.skillCount !== 1 ? 's' : ''}</span>
-                              <span>{jobRole.totalScore}/{jobRole.totalQuestions} questions</span>
+                              <span>
+                                {jobRole.skillCount} skill{jobRole.skillCount !== 1 ? 's' : ''}
+                              </span>
+                              <span>
+                                {jobRole.totalScore}/{jobRole.totalQuestions} questions
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -170,8 +187,18 @@ export default function TrendingJobsPage() {
                 ) : (
                   <div className="col-span-full text-center p-12">
                     <div className="mb-4">
-                      <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      <svg
+                        className="mx-auto h-12 w-12 text-gray-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
                       </svg>
                     </div>
                     <h3 className="text-lg font-medium text-gray-900 mb-2">No assessments found</h3>

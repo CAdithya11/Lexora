@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { Clock, BookOpen, Target, ChevronRight, CheckCircle, AlertCircle, Play, Check } from 'lucide-react';
 import axios from 'axios';
 import SidebarSub from '../../../component/template/SidebarSub';
 import TopHeader from '../../../component/template/TopHeader';
@@ -8,14 +9,14 @@ export default function SkillQuizPage() {
   const { jobRoleId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   // Get the selected skill from location state
   const selectedSkillName = location.state?.selectedSkillName || '';
   const selectedSkillId = location.state?.selectedSkillId || null;
 
   const [skillLists, setSkillLists] = useState([]);
   const [jobRoleName, setJobRoleName] = useState('');
-  const [skillName, setSkillName] = useState(selectedSkillName); // Use the passed skill name
+  const [skillName, setSkillName] = useState(selectedSkillName);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -31,33 +32,30 @@ export default function SkillQuizPage() {
     const fetchJobRoleData = async () => {
       try {
         const id = jobRoleId || '13';
-        //fetch data
         const response = await axios.get(`http://localhost:8080/api/v1/jobRole/${id}`);
         const data = response.data;
 
         if (data && data.skillLists) {
           setSkillLists(data.skillLists);
           setJobRoleName(data.jobRoleName || 'Unknown Role');
-          
-          // If no skill was selected on the previous page, use the first one
+
           if (!selectedSkillName && data.skillLists.length > 0) {
             setSkillName(data.skillLists[0].skillName || '');
           }
 
           const questions = [];
-          data.skillLists.forEach(skill => {
-            // If a skill ID was passed, only include questions from that skill
+          data.skillLists.forEach((skill) => {
             if (selectedSkillId && skill.skillId !== selectedSkillId) {
               return;
             }
-            
+
             if (skill.skillQuestions && skill.skillQuestions.length > 0) {
-              skill.skillQuestions.forEach(question => {
+              skill.skillQuestions.forEach((question) => {
                 if (question.skillAnswers && question.skillAnswers.length > 0) {
                   questions.push({
                     ...question,
                     skillName: skill.skillName,
-                    skillId: skill.skillId
+                    skillId: skill.skillId,
                   });
                 }
               });
@@ -69,7 +67,7 @@ export default function SkillQuizPage() {
           setError('No skills or questions found in the response');
         }
       } catch (err) {
-        console.error("Error fetching job role data:", err);
+        console.error('Error fetching job role data:', err);
         setError('Failed to fetch job role data');
       } finally {
         setIsLoading(false);
@@ -86,168 +84,182 @@ export default function SkillQuizPage() {
   const handleNextQuestion = () => {
     const currentQuestion = allQuestions[currentQuestionIndex];
     const selectedAnswerObj = currentQuestion.skillAnswers.find(
-      answer => answer.skillAnswerId === selectedAnswer?.id
+      (answer) => answer.skillAnswerId === selectedAnswer?.id
     );
 
-    // If answer is correct, increment score
     if (selectedAnswerObj?.status === true) {
-      setScore(prevScore => prevScore + 1);
+      setScore((prevScore) => prevScore + 1);
     } else {
-      // Add only the question if answered incorrectly
-      setWrongQuestions(prev => [
+      setWrongQuestions((prev) => [
         ...prev,
         {
           question: currentQuestion.question,
-          correctAnswer: currentQuestion.skillAnswers.find(ans => ans.status === true)?.answer,
-          skillName: currentQuestion.skillName
-        }
+          correctAnswer: currentQuestion.skillAnswers.find((ans) => ans.status === true)?.answer,
+          skillName: currentQuestion.skillName,
+        },
       ]);
     }
 
-    setAnsweredQuestions(prev => prev + 1);
+    setAnsweredQuestions((prev) => prev + 1);
 
     if (currentQuestionIndex < allQuestions.length - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
+      setCurrentQuestionIndex((prev) => prev + 1);
       setSelectedAnswer(null);
     } else {
-      // Calculate final score including the current question's answer
       const finalScore = score + (selectedAnswerObj?.status === true ? 1 : 0);
       const totalQuestions = allQuestions.length;
-      
-      // Check if the current question was wrong and needs to be added to wrongQuestions
+
       const updatedWrongQuestions = [...wrongQuestions];
       if (selectedAnswerObj?.status !== true) {
         updatedWrongQuestions.push({
           question: currentQuestion.question,
-          correctAnswer: currentQuestion.skillAnswers.find(ans => ans.status === true)?.answer,
-          skillName: currentQuestion.skillName
+          correctAnswer: currentQuestion.skillAnswers.find((ans) => ans.status === true)?.answer,
+          skillName: currentQuestion.skillName,
         });
       }
 
-      // Group wrong questions by skill name
       const groupedWrongQuestions = {};
-      updatedWrongQuestions.forEach(item => {
+      updatedWrongQuestions.forEach((item) => {
         if (!groupedWrongQuestions[item.skillName]) {
           groupedWrongQuestions[item.skillName] = [];
         }
         groupedWrongQuestions[item.skillName].push(item);
       });
 
-      // Navigate to the next page with wrong questions and other data
       navigate('/sk2', {
         state: {
           predictedScore: finalScore,
           totalQuestions,
           jobRoleName,
           wrongQuestions: updatedWrongQuestions,
-          skillName: skillName || (currentQuestion?.skillName || ''), // Use either the passed skill name or the one from the current question
+          skillName: skillName || currentQuestion?.skillName || '',
           groupedWrongQuestions,
-        }
+        },
       });
     }
   };
 
   const currentQuestion = allQuestions[currentQuestionIndex];
+  const progressPercentage = allQuestions.length > 0 ? ((currentQuestionIndex + 1) / allQuestions.length) * 100 : 0;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className="flex h-screen overflow-hidden bg-white">
       <SidebarSub />
+
+      {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <TopHeader HeaderMessage={"Quizes"}/>
-        <div className="flex-1 overflow-y-auto p-6 bg-white">
-          <div className="border-b-2 border-solid border-gray-300 mb-6">
-            <h1 className="text-2xl font-bold text-gray-800">
-              {jobRoleName} Quiz - {skillName}
-            </h1>
+        {/* Header */}
+        <TopHeader HeaderMessage={'Quiz Assessment'} />
+
+        <div className="flex-1 flex m-5 flex-col pt-5 pl-10 overflow-auto">
+          {/* Page Header */}
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-gray-900 flex items-center">{jobRoleName} Quiz</h1>
+            <p className="text-gray-600 mt-2 flex items-center">
+              <BookOpen className="h-4 w-4 mr-2" />
+              Testing your knowledge in {skillName}
+            </p>
           </div>
 
-          <div className="w-[80%] mx-auto p-6 bg-white shadow-md rounded-lg">
-            {isLoading ? (
-              <div className="text-center text-gray-600">Loading quiz...</div>
-            ) : error ? (
-              <div className="text-red-600 mt-4 text-center">{error}</div>
-            ) : allQuestions.length > 0 && currentQuestion ? (
-              <>
-                <div className="flex justify-between mb-4">
-                  <span className="text-gray-600">
-                    Question {currentQuestionIndex + 1} of {allQuestions.length}
-                  </span>
-                  <span className="text-blue-600 font-medium">
-                    Skill: {currentQuestion.skillName}
-                  </span>
+          {/* Quiz Content */}
+          <div className="mr-8">
+            <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+                  <div className="animate-spin h-8 w-8 border-4 border-blue-600 border-t-transparent rounded-full mb-4"></div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-1">Loading Quiz...</h3>
+                  <p className="text-sm text-gray-500">Please wait while we prepare your questions</p>
                 </div>
-
-                <h2 className="text-xl font-semibold mb-6">
-                  {currentQuestion.question}
-                </h2>
-
-                <div className="space-y-4 mb-6">
-                  {currentQuestion.skillAnswers.map((answerObj) => (
-                    <div
-                      key={answerObj.skillAnswerId}
-                      className={`border rounded-lg p-3 cursor-pointer transition-colors duration-200 ${
-                        selectedAnswer && selectedAnswer.id === answerObj.skillAnswerId
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-gray-200 hover:border-gray-300'
-                      }`}
-                      onClick={() => handleAnswerSelect(answerObj.answer, answerObj.skillAnswerId)}
-                    >
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="radio"
-                          name="quiz-option"
-                          className="mr-3 hidden"
-                          checked={selectedAnswer && selectedAnswer.id === answerObj.skillAnswerId}
-                          onChange={() => handleAnswerSelect(answerObj.answer, answerObj.skillAnswerId)}
-                        />
-                        <span
-                          className={`w-4 h-4 mr-3 rounded-full border-2 ${
-                            selectedAnswer && selectedAnswer.id === answerObj.skillAnswerId
-                              ? 'border-blue-500 bg-blue-500'
-                              : 'border-gray-300'
-                          }`}
-                        ></span>
-                        {answerObj.answer}
-                      </label>
+              ) : error ? (
+                <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+                  <AlertCircle className="h-12 w-12 text-red-400 mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-1">Error Loading Quiz</h3>
+                  <p className="text-sm text-red-600">{error}</p>
+                </div>
+              ) : allQuestions.length > 0 && currentQuestion ? (
+                <div className="p-8">
+                  {/* Question Header */}
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        {currentQuestion.skillName}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        Question {currentQuestionIndex + 1} of {allQuestions.length}
+                      </span>
                     </div>
-                  ))}
-                </div>
 
-                <div className="flex justify-between mt-8">
-                  <div className="text-sm text-gray-500">
-                    {/* {answeredQuestions > 0 && (
-                      <span>Current score: {score}/{answeredQuestions}</span>
-                    )} */}
+                    <h2 className="text-2xl font-bold text-gray-900 leading-tight">{currentQuestion.question}</h2>
                   </div>
 
-                  {/* <p>
-                    Predicted score:{' '}
-                    {score + (
-                      selectedAnswer &&
-                      currentQuestion?.skillAnswers.find(
-                        answer => answer.skillAnswerId === selectedAnswer.id && answer.status === true
-                      )
-                        ? 1
-                        : 0
-                    )}
-                  </p> */}
+                  {/* Answer Options */}
+                  <div className="space-y-3 mb-8">
+                    {currentQuestion.skillAnswers.map((answerObj, index) => (
+                      <div
+                        key={answerObj.skillAnswerId}
+                        className={`relative border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${
+                          selectedAnswer && selectedAnswer.id === answerObj.skillAnswerId
+                            ? 'border-blue-500 bg-blue-50 shadow-md'
+                            : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
+                        }`}
+                        onClick={() => handleAnswerSelect(answerObj.answer, answerObj.skillAnswerId)}
+                      >
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 mr-4">
+                            <div
+                              className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                                selectedAnswer && selectedAnswer.id === answerObj.skillAnswerId
+                                  ? 'border-blue-500 bg-blue-500'
+                                  : 'border-gray-300'
+                              }`}
+                            >
+                              {selectedAnswer && selectedAnswer.id === answerObj.skillAnswerId && (
+                                <Check className="h-3 w-3 text-white" />
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between">
+                              <span
+                                className={`text-sm font-medium ${
+                                  selectedAnswer && selectedAnswer.id === answerObj.skillAnswerId
+                                    ? 'text-blue-900'
+                                    : 'text-gray-900'
+                                }`}
+                              >
+                                {String.fromCharCode(65 + index)}. {answerObj.answer}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
 
-                  <button
-                    onClick={handleNextQuestion}
-                    className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors disabled:bg-blue-300 disabled:cursor-not-allowed"
-                    disabled={!selectedAnswer}
-                  >
-                    {currentQuestionIndex >= allQuestions.length - 1 ? 'Finish' : 'Next'}
-                  </button>
+                  {/* Action Button */}
+                  <div className="flex justify-end">
+                    <button
+                      onClick={handleNextQuestion}
+                      disabled={!selectedAnswer}
+                      className="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                      {currentQuestionIndex >= allQuestions.length - 1 ? 'Finish Quiz' : 'Next Question'}
+                      <ChevronRight className="h-4 w-4 ml-2" />
+                    </button>
+                  </div>
                 </div>
-              </>
-            ) : (
-              <div className="text-gray-500 text-center">
-                {skillLists.length > 0
-                  ? "No questions available for this job role or skill."
-                  : "No skills found for this job role."}
-              </div>
-            )}
+              ) : (
+                <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+                  <AlertCircle className="h-12 w-12 text-gray-400 mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-1">No Questions Available</h3>
+                  <p className="text-sm text-gray-500">
+                    {skillLists.length > 0
+                      ? 'No questions available for this job role or skill.'
+                      : 'No skills found for this job role.'}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
